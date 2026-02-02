@@ -1,25 +1,26 @@
-import React, { useEffect, useCallback } from 'react';
-import { View, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
-import { Text, Card, Surface, useTheme, Avatar, ProgressBar, Divider, Button } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useEffect, useCallback } from 'react';
+import { RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Avatar, Card, Divider, ProgressBar, Surface, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import {
+  formatCurrency,
+  formatDate,
+  formatTime,
+  isEventToday,
+} from '../../../shared/utils/helpers';
 import { useAuthStore } from '../../auth/stores/authStore';
-import { useTransactionStore } from '../../transactions/stores/transactionStore';
 import { useCalendarStore } from '../../calendar/stores/calendarStore';
-import { formatCurrency, formatDate, formatTime, isEventToday } from '../../../shared/utils/helpers';
+import { useTransactionStore } from '../../transactions/stores/transactionStore';
 
 const DashboardScreen: React.FC = () => {
   const theme = useTheme();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const { user } = useAuthStore();
-  const { 
-    spendingSummary, 
-    fetchSpendingSummary, 
-    syncStatus,
-    syncTransactions 
-  } = useTransactionStore();
+  const { spendingSummary, fetchSpendingSummary, syncStatus, syncTransactions } =
+    useTransactionStore();
   const { scheduleSummary, fetchEvents, refreshScheduleSummary } = useCalendarStore();
 
   const [refreshing, setRefreshing] = React.useState(false);
@@ -43,10 +44,7 @@ const DashboardScreen: React.FC = () => {
   const onRefresh = async () => {
     setRefreshing(true);
     if (user) {
-      await Promise.all([
-        fetchSpendingSummary(user.id),
-        fetchEvents(),
-      ]);
+      await Promise.all([fetchSpendingSummary(user.id), fetchEvents()]);
     }
     setRefreshing(false);
   };
@@ -62,9 +60,7 @@ const DashboardScreen: React.FC = () => {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <ScrollView
         contentContainerStyle={styles.scrollContent}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       >
         {/* Header */}
         <View style={styles.header}>
@@ -89,11 +85,11 @@ const DashboardScreen: React.FC = () => {
             <Text variant="titleMedium" style={styles.cardTitle}>
               This Month's Spending
             </Text>
-            
+
             <Text variant="headlineLarge" style={[styles.balance, { color: theme.colors.primary }]}>
               {formatCurrency(spendingSummary?.balance || 0)}
             </Text>
-            
+
             <View style={styles.spendingRow}>
               <View style={styles.spendingItem}>
                 <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
@@ -103,7 +99,7 @@ const DashboardScreen: React.FC = () => {
                   {formatCurrency(spendingSummary?.totalIncome || 0)}
                 </Text>
               </View>
-              
+
               <View style={styles.spendingItem}>
                 <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
                   Expenses
@@ -118,7 +114,9 @@ const DashboardScreen: React.FC = () => {
             {spendingSummary?.byCategory && Object.keys(spendingSummary.byCategory).length > 0 && (
               <View style={styles.categories}>
                 <Divider style={styles.divider} />
-                <Text variant="bodyMedium" style={{ marginBottom: 12 }}>By Category</Text>
+                <Text variant="bodyMedium" style={{ marginBottom: 12 }}>
+                  By Category
+                </Text>
                 {Object.entries(spendingSummary.byCategory)
                   .sort(([, a], [, b]) => (b as number) - (a as number))
                   .slice(0, 3)
@@ -129,11 +127,10 @@ const DashboardScreen: React.FC = () => {
                       <View key={category} style={styles.categoryItem}>
                         <View style={styles.categoryHeader}>
                           <Text variant="bodySmall" style={styles.categoryName}>
-                            {(category as string).charAt(0).toUpperCase() + (category as string).slice(1)}
+                            {(category as string).charAt(0).toUpperCase() +
+                              (category as string).slice(1)}
                           </Text>
-                          <Text variant="bodySmall">
-                            {formatCurrency(amount as number)}
-                          </Text>
+                          <Text variant="bodySmall">{formatCurrency(amount as number)}</Text>
                         </View>
                         <ProgressBar
                           progress={percentage / 100}
@@ -154,7 +151,7 @@ const DashboardScreen: React.FC = () => {
             <Text variant="titleMedium" style={styles.cardTitle}>
               Today's Schedule
             </Text>
-            
+
             <View style={styles.scheduleStats}>
               <Surface style={styles.statItem} elevation={0}>
                 <Text variant="headlineMedium" style={{ color: theme.colors.primary }}>
@@ -162,14 +159,14 @@ const DashboardScreen: React.FC = () => {
                 </Text>
                 <Text variant="bodySmall">Events Today</Text>
               </Surface>
-              
+
               <Surface style={styles.statItem} elevation={0}>
                 <Text variant="headlineMedium" style={{ color: theme.colors.secondary }}>
                   {scheduleSummary?.eventsThisWeek || 0}
                 </Text>
                 <Text variant="bodySmall">This Week</Text>
               </Surface>
-              
+
               <Surface style={styles.statItem} elevation={0}>
                 <Text variant="headlineMedium" style={{ color: theme.colors.tertiary }}>
                   {Math.round(scheduleSummary?.freeHoursToday || 0)}
@@ -182,7 +179,9 @@ const DashboardScreen: React.FC = () => {
             {scheduleSummary?.upcomingEvents && scheduleSummary.upcomingEvents.length > 0 && (
               <View style={styles.upcomingEvents}>
                 <Divider style={styles.divider} />
-                <Text variant="bodyMedium" style={{ marginBottom: 12 }}>Upcoming</Text>
+                <Text variant="bodyMedium" style={{ marginBottom: 12 }}>
+                  Upcoming
+                </Text>
                 {scheduleSummary.upcomingEvents.slice(0, 3).map((event) => (
                   <View key={event.id} style={styles.eventItem}>
                     <View
@@ -218,7 +217,9 @@ const DashboardScreen: React.FC = () => {
               style={styles.quickActionButton}
               onPress={() => navigation.navigate('AddTransaction')}
             >
-              <Surface style={[styles.quickActionIcon, { backgroundColor: theme.colors.primaryContainer }]}>
+              <Surface
+                style={[styles.quickActionIcon, { backgroundColor: theme.colors.primaryContainer }]}
+              >
                 <Text style={{ fontSize: 24 }}>💰</Text>
               </Surface>
               <Text variant="bodySmall">Add Expense</Text>
@@ -228,7 +229,12 @@ const DashboardScreen: React.FC = () => {
               style={styles.quickActionButton}
               onPress={() => navigation.navigate('Calendar')}
             >
-              <Surface style={[styles.quickActionIcon, { backgroundColor: theme.colors.secondaryContainer }]}>
+              <Surface
+                style={[
+                  styles.quickActionIcon,
+                  { backgroundColor: theme.colors.secondaryContainer },
+                ]}
+              >
                 <Text style={{ fontSize: 24 }}>📅</Text>
               </Surface>
               <Text variant="bodySmall">View Schedule</Text>
@@ -238,7 +244,12 @@ const DashboardScreen: React.FC = () => {
               style={styles.quickActionButton}
               onPress={() => navigation.navigate('Transactions')}
             >
-              <Surface style={[styles.quickActionIcon, { backgroundColor: theme.colors.tertiaryContainer }]}>
+              <Surface
+                style={[
+                  styles.quickActionIcon,
+                  { backgroundColor: theme.colors.tertiaryContainer },
+                ]}
+              >
                 <Text style={{ fontSize: 24 }}>📊</Text>
               </Surface>
               <Text variant="bodySmall">Transactions</Text>
@@ -249,9 +260,7 @@ const DashboardScreen: React.FC = () => {
         {/* Sync Status */}
         {syncStatus.pendingChanges > 0 && (
           <Surface style={styles.syncBanner} elevation={0}>
-            <Text variant="bodySmall">
-              {syncStatus.pendingChanges} pending changes to sync
-            </Text>
+            <Text variant="bodySmall">{syncStatus.pendingChanges} pending changes to sync</Text>
           </Surface>
         )}
       </ScrollView>

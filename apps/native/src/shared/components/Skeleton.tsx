@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { StyleSheet, View, type ViewStyle } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -31,21 +31,21 @@ interface SkeletonProps {
 /**
  * Skeleton component for loading states
  * Provides a shimmering placeholder while content loads
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
  * if (loading) {
  *   return <Skeleton width={200} height={20} />;
  * }
- * 
+ *
  * // Card skeleton
  * <View>
  *   <Skeleton width="100%" height={200} borderRadius={12} />
  *   <Skeleton width="60%" height={20} style={{ marginTop: 12 }} />
  *   <Skeleton width="40%" height={16} style={{ marginTop: 8 }} />
  * </View>
- * 
+ *
  * // Avatar skeleton
  * <Skeleton width={48} height={48} borderRadius={24} />
  * ```
@@ -63,11 +63,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 
   React.useEffect(() => {
     if (animated) {
-      shimmerProgress.value = withRepeat(
-        withTiming(1, { duration: 1500 }),
-        -1,
-        true
-      );
+      shimmerProgress.value = withRepeat(withTiming(1, { duration: 1500 }), -1, true);
     }
   }, [animated, shimmerProgress]);
 

@@ -37,7 +37,7 @@ interface StorageItem<T> {
  * @param key - Storage key
  * @returns Stored value or null if not found
  * @throws StorageError if operation fails
- * 
+ *
  * @example
  * const value = await storage.getItem('userToken');
  * if (value) {
@@ -59,7 +59,7 @@ const getItem = async (key: string): Promise<string | null> => {
  * @param key - Storage key
  * @returns Parsed value or null if not found
  * @throws StorageError if operation fails or JSON is invalid
- * 
+ *
  * @example
  * const user = await storage.getObject<User>('currentUser');
  * if (user) {
@@ -70,15 +70,15 @@ const getObject = async <T>(key: string): Promise<T | null> => {
   try {
     const value = await AsyncStorage.getItem(key);
     if (value === null) return null;
-    
+
     const item: StorageItem<T> = JSON.parse(value);
-    
+
     // Check TTL
     if (item.ttl && Date.now() > item.timestamp + item.ttl) {
       await removeItem(key);
       return null;
     }
-    
+
     return item.value;
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to get object';
@@ -92,7 +92,7 @@ const getObject = async <T>(key: string): Promise<T | null> => {
  * @param key - Storage key
  * @param value - Value to store
  * @throws StorageError if operation fails
- * 
+ *
  * @example
  * await storage.setItem('userToken', 'abc123');
  */
@@ -112,19 +112,15 @@ const setItem = async (key: string, value: string): Promise<void> => {
  * @param value - Value to store
  * @param ttl - Time-to-live in milliseconds
  * @throws StorageError if operation fails
- * 
+ *
  * @example
  * // Store with no expiration
  * await storage.setObject('user', { name: 'John' });
- * 
+ *
  * // Store with 1 hour TTL
  * await storage.setObject('session', sessionData, 3600000);
  */
-const setObject = async <T>(
-  key: string,
-  value: T,
-  ttl?: number
-): Promise<void> => {
+const setObject = async <T>(key: string, value: T, ttl?: number): Promise<void> => {
   try {
     const item: StorageItem<T> = {
       value,
@@ -143,7 +139,7 @@ const setObject = async <T>(
  * Removes a value from storage
  * @param key - Storage key
  * @throws StorageError if operation fails
- * 
+ *
  * @example
  * await storage.removeItem('userToken');
  */
@@ -161,7 +157,7 @@ const removeItem = async (key: string): Promise<void> => {
  * Removes multiple values from storage
  * @param keys - Array of storage keys
  * @throws StorageError if operation fails
- * 
+ *
  * @example
  * await storage.multiRemove(['token', 'user', 'settings']);
  */
@@ -178,7 +174,7 @@ const multiRemove = async (keys: string[]): Promise<void> => {
 /**
  * Clears all storage
  * @throws StorageError if operation fails
- * 
+ *
  * @example
  * await storage.clear(); // Clear all stored data
  */
@@ -196,7 +192,7 @@ const clear = async (): Promise<void> => {
  * Gets all storage keys
  * @returns Array of keys
  * @throws StorageError if operation fails
- * 
+ *
  * @example
  * const keys = await storage.getAllKeys();
  * console.log('Stored keys:', keys);
@@ -214,14 +210,14 @@ const getAllKeys = async (): Promise<readonly string[]> => {
 /**
  * Gets storage information
  * @returns Object with key count and total size
- * 
+ *
  * @example
  * const info = await storage.getInfo();
  * console.log(`Using ${info.size} bytes in ${info.keys} keys`);
  */
 const getInfo = async (): Promise<{ keys: number; size: number }> => {
   const keys = await getAllKeys();
-  
+
   let totalSize = 0;
   for (const key of keys) {
     const value = await getItem(key);
@@ -229,7 +225,7 @@ const getInfo = async (): Promise<{ keys: number; size: number }> => {
       totalSize += value.length * 2; // Rough estimate (UTF-16)
     }
   }
-  
+
   return {
     keys: keys.length,
     size: totalSize,
@@ -253,6 +249,46 @@ export const STORAGE_KEYS = {
 } as const;
 
 /**
+ * Gets the stored user
+ * @returns User object or null
+ */
+const getUser = async <T>(): Promise<T | null> => {
+  return getObject<T>(STORAGE_KEYS.USER);
+};
+
+/**
+ * Stores the user
+ * @param user - User object to store
+ */
+const setUser = async <T>(user: T): Promise<void> => {
+  return setObject(STORAGE_KEYS.USER, user);
+};
+
+/**
+ * Removes the stored user
+ */
+const removeUser = async (): Promise<void> => {
+  return removeItem(STORAGE_KEYS.USER);
+};
+
+/**
+ * Gets biometric enabled status
+ * @returns Boolean indicating if biometric is enabled
+ */
+const getBiometricEnabled = async (): Promise<boolean> => {
+  const enabled = await getObject<boolean>('@life:biometric_enabled');
+  return enabled ?? false;
+};
+
+/**
+ * Sets biometric enabled status
+ * @param enabled - Boolean value
+ */
+const setBiometricEnabled = async (enabled: boolean): Promise<void> => {
+  return setObject('@life:biometric_enabled', enabled);
+};
+
+/**
  * Storage utility object
  */
 export const storage = {
@@ -265,6 +301,11 @@ export const storage = {
   clear,
   getAllKeys,
   getInfo,
+  getUser,
+  setUser,
+  removeUser,
+  getBiometricEnabled,
+  setBiometricEnabled,
   keys: STORAGE_KEYS,
 };
 

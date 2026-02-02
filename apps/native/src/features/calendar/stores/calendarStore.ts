@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 export interface CalendarEvent {
   id: string;
@@ -15,7 +15,7 @@ export interface CalendarEvent {
 interface CalendarState {
   events: CalendarEvent[];
   isGoogleConnected: boolean;
-  
+
   // Actions
   setEvents: (events: CalendarEvent[]) => void;
   addEvent: (event: Omit<CalendarEvent, 'id'>) => void;
@@ -31,9 +31,9 @@ export const useCalendarStore = create<CalendarState>()(
     (set, get) => ({
       events: [],
       isGoogleConnected: false,
-      
+
       setEvents: (events) => set({ events }),
-      
+
       addEvent: (event) => {
         const newEvent: CalendarEvent = {
           ...event,
@@ -45,30 +45,28 @@ export const useCalendarStore = create<CalendarState>()(
           ),
         }));
       },
-      
+
       updateEvent: (id, updates) => {
         set((state) => ({
-          events: state.events.map((e) =>
-            e.id === id ? { ...e, ...updates } : e
-          ),
+          events: state.events.map((e) => (e.id === id ? { ...e, ...updates } : e)),
         }));
       },
-      
+
       deleteEvent: (id) => {
         set((state) => ({
           events: state.events.filter((e) => e.id !== id),
         }));
       },
-      
+
       setGoogleConnected: (connected) => set({ isGoogleConnected: connected }),
-      
+
       getEventsForDate: (date) => {
         return get().events.filter((e) => {
           const eventDate = e.startDate.split('T')[0];
           return eventDate === date;
         });
       },
-      
+
       getUpcomingEvents: (limit = 5) => {
         const now = new Date().toISOString();
         return get()

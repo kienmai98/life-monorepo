@@ -1,15 +1,32 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl, TouchableOpacity } from 'react-native';
-import { Text, Card, FAB, Chip, useTheme, IconButton, Menu, SegmentedButtons, Divider, Avatar, Button } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { format, startOfMonth, endOfMonth, subMonths } from 'date-fns';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { format, subMonths } from 'date-fns';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { FlatList, RefreshControl, StyleSheet, View } from 'react-native';
+import {
+  Button,
+  Card,
+  Chip,
+  Divider,
+  FAB,
+  IconButton,
+  Menu,
+  SegmentedButtons,
+  Text,
+  useTheme,
+} from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import type { Transaction, TransactionCategory } from '../../../shared/types';
+import {
+  capitalizeFirst,
+  formatCurrency,
+  getCategoryColor,
+  getCategoryIcon,
+} from '../../../shared/utils/helpers';
 import { useAuthStore } from '../../auth/stores/authStore';
 import { useTransactionStore } from '../stores/transactionStore';
-import { formatCurrency, getCategoryIcon, getCategoryColor, capitalizeFirst } from '../../../shared/utils/helpers';
-import { Transaction, TransactionCategory } from '../../../shared/types';
 
 const TransactionsScreen: React.FC = () => {
   const theme = useTheme();
@@ -60,10 +77,7 @@ const TransactionsScreen: React.FC = () => {
     <Card style={styles.transactionCard} mode="outlined">
       <Card.Content style={styles.transactionContent}>
         <View
-          style={[
-            styles.categoryIcon,
-            { backgroundColor: `${getCategoryColor(item.category)}20` },
-          ]}
+          style={[styles.categoryIcon, { backgroundColor: `${getCategoryColor(item.category)}20` }]}
         >
           <Text style={styles.icon}>{getCategoryIcon(item.category)}</Text>
         </View>
@@ -76,7 +90,10 @@ const TransactionsScreen: React.FC = () => {
             <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               {capitalizeFirst(item.category)}
             </Text>
-            <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant, marginHorizontal: 4 }}>
+            <Text
+              variant="bodySmall"
+              style={{ color: theme.colors.onSurfaceVariant, marginHorizontal: 4 }}
+            >
               •
             </Text>
             <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
@@ -84,7 +101,10 @@ const TransactionsScreen: React.FC = () => {
             </Text>
             {item.receiptUrl && (
               <>
-                <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant, marginHorizontal: 4 }}>
+                <Text
+                  variant="bodySmall"
+                  style={{ color: theme.colors.onSurfaceVariant, marginHorizontal: 4 }}
+                >
                   •
                 </Text>
                 <Text variant="bodySmall" style={{ color: theme.colors.primary }}>
@@ -121,7 +141,10 @@ const TransactionsScreen: React.FC = () => {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* Header Summary */}
       <View style={styles.summaryContainer}>
-        <Card style={[styles.summaryCard, { flex: 1, borderColor: theme.colors.secondary + '40' }]} mode="outlined">
+        <Card
+          style={[styles.summaryCard, { flex: 1, borderColor: theme.colors.secondary + '40' }]}
+          mode="outlined"
+        >
           <Card.Content style={styles.summaryContent}>
             <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               Income
@@ -135,15 +158,15 @@ const TransactionsScreen: React.FC = () => {
           </Card.Content>
         </Card>
 
-        <Card style={[styles.summaryCard, { flex: 1, borderColor: theme.colors.error + '40' }]} mode="outlined">
+        <Card
+          style={[styles.summaryCard, { flex: 1, borderColor: theme.colors.error + '40' }]}
+          mode="outlined"
+        >
           <Card.Content style={styles.summaryContent}>
             <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               Expenses
             </Text>
-            <Text
-              variant="titleLarge"
-              style={{ color: theme.colors.error, fontWeight: 'bold' }}
-            >
+            <Text variant="titleLarge" style={{ color: theme.colors.error, fontWeight: 'bold' }}>
               {formatCurrency(totalExpenses)}
             </Text>
           </Card.Content>
@@ -244,9 +267,7 @@ const TransactionsScreen: React.FC = () => {
         data={filteredTransactions}
         keyExtractor={(item) => item.id}
         renderItem={renderTransactionItem}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
         ListEmptyComponent={
           <View style={styles.emptyState}>
             <View style={styles.emptyIcon}>
@@ -255,7 +276,14 @@ const TransactionsScreen: React.FC = () => {
             <Text variant="headlineSmall" style={{ marginBottom: 8, fontWeight: '600' }}>
               No transactions yet
             </Text>
-            <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant, textAlign: 'center', marginBottom: 24 }}>
+            <Text
+              variant="bodyMedium"
+              style={{
+                color: theme.colors.onSurfaceVariant,
+                textAlign: 'center',
+                marginBottom: 24,
+              }}
+            >
               Tap the + button to add your first transaction
             </Text>
             <Button

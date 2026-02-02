@@ -3,14 +3,14 @@ import { useEffect, useRef } from 'react';
 /**
  * Hook that tracks whether a component is still mounted
  * Useful for preventing state updates on unmounted components
- * 
+ *
  * @returns Object with isMounted property that is true while component is mounted
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { isMounted } = useIsMounted();
- *   
+ *
  *   useEffect(() => {
  *     fetchData().then(data => {
  *       if (isMounted()) {
@@ -18,7 +18,7 @@ import { useEffect, useRef } from 'react';
  *       }
  *     });
  *   }, []);
- *   
+ *
  *   return <View />;
  * }
  * ```

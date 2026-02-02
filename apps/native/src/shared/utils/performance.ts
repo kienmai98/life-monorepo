@@ -4,7 +4,7 @@
  * @module shared/utils/performance
  */
 
-import { useMemo, useCallback, useRef, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 /**
  * Memoization cache for expensive computations
@@ -13,7 +13,7 @@ class MemoizationCache<K, V> {
   private cache = new Map<K, V>();
   private maxSize: number;
 
-  constructor(maxSize: number = 100) {
+  constructor(maxSize = 100) {
     this.maxSize = maxSize;
   }
 
@@ -44,7 +44,7 @@ class MemoizationCache<K, V> {
  * @param keyFn - Function to generate cache key from arguments
  * @param maxSize - Maximum cache size
  * @returns Memoized function
- * 
+ *
  * @example
  * const expensiveOperation = memoize(
  *   (n: number) => fibonacci(n),
@@ -57,13 +57,13 @@ class MemoizationCache<K, V> {
 export function memoize<T extends (...args: any[]) => any>(
   fn: T,
   keyFn: (...args: Parameters<T>) => string,
-  maxSize: number = 100
+  maxSize = 100
 ): (...args: Parameters<T>) => ReturnType<T> {
   const cache = new MemoizationCache<string, ReturnType<T>>(maxSize);
 
   return (...args: Parameters<T>): ReturnType<T> => {
     const key = keyFn(...args);
-    
+
     if (cache.has(key)) {
       return cache.get(key)!;
     }
@@ -80,7 +80,7 @@ export function memoize<T extends (...args: any[]) => any>(
  * @param deps - Dependencies array
  * @param isEqual - Custom equality function
  * @returns Memoized value
- * 
+ *
  * @example
  * const sortedData = useDeepMemo(
  *   () => [...data].sort((a, b) => a.date - b.date),
@@ -105,25 +105,25 @@ export function useDeepMemo<T>(
 /**
  * Hook for tracking render count and duration (development only)
  * @param componentName - Name of component to track
- * 
+ *
  * @example
  * useRenderTracker('TransactionList');
  */
 export function useRenderTracker(componentName: string): void {
-  if (process.env.NODE_ENV === 'production') return;
-
   const renderCount = useRef(0);
   const startTime = useRef(performance.now());
 
   useEffect(() => {
+    if (process.env.NODE_ENV === 'production') return;
+
     renderCount.current += 1;
     const duration = performance.now() - startTime.current;
-    
+
     console.log(
       `[RenderTracker] ${componentName} rendered ${renderCount.current} times. ` +
-      `Last render: ${duration.toFixed(2)}ms`
+        `Last render: ${duration.toFixed(2)}ms`
     );
-    
+
     startTime.current = performance.now();
   });
 }
@@ -132,13 +132,13 @@ export function useRenderTracker(componentName: string): void {
  * Hook for lazy initialization of expensive objects
  * @param factory - Factory function
  * @returns Memoized value
- * 
+ *
  * @example
  * const heavyObject = useLazyMemo(() => new HeavyClass());
  */
 export function useLazyMemo<T>(factory: () => T): T {
   const ref = useRef<T | null>(null);
-  
+
   return useMemo(() => {
     if (ref.current === null) {
       ref.current = factory();
@@ -152,7 +152,7 @@ export function useLazyMemo<T>(factory: () => T): T {
  * Useful for event handlers passed to optimized components
  * @param callback - Callback function
  * @returns Stable callback reference
- * 
+ *
  * @example
  * const handleScroll = useStableCallback((event) => {
  *   console.log(event.nativeEvent.contentOffset.y);
@@ -167,16 +167,13 @@ export function useStableCallback<T extends (...args: any[]) => any>(
     callbackRef.current = callback;
   });
 
-  return useCallback(
-    (...args: Parameters<T>) => callbackRef.current(...args),
-    []
-  );
+  return useCallback((...args: Parameters<T>) => callbackRef.current(...args), []);
 }
 
 /**
  * Hook for batching state updates
  * @returns Batched update function
- * 
+ *
  * @example
  * const batchUpdate = useBatchUpdate();
  * batchUpdate(() => {
@@ -209,7 +206,7 @@ import React from 'react';
  * @param Component - Component to memoize
  * @param areEqual - Custom comparison function
  * @returns Memoized component
- * 
+ *
  * @example
  * const MemoizedList = memoWithCompare(
  *   ListComponent,
@@ -231,7 +228,7 @@ export function memoWithCompare<P extends object>(
  * @param viewportHeight - Height of viewport
  * @param overscan - Number of items to render outside viewport
  * @returns Virtualization info
- * 
+ *
  * @example
  * const { startIndex, endIndex, virtualItems } = useVirtualization(
  *   transactions.length,
@@ -244,7 +241,7 @@ export function useVirtualization(
   itemCount: number,
   itemHeight: number,
   viewportHeight: number,
-  overscan: number = 3
+  overscan = 3
 ): {
   startIndex: number;
   endIndex: number;
@@ -253,12 +250,6 @@ export function useVirtualization(
 } {
   const totalHeight = itemCount * itemHeight;
   const visibleCount = Math.ceil(viewportHeight / itemHeight);
-  
-  const calculateRange = (scrollTop: number) => {
-    const start = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);
-    const end = Math.min(itemCount, start + visibleCount + overscan * 2);
-    return { start, end };
-  };
 
   const getItemStyle = (index: number) => ({
     height: itemHeight,

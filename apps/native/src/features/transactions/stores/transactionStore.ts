@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 /**
  * Transaction entity type
@@ -129,7 +129,9 @@ interface TransactionState {
  */
 interface TransactionActions {
   /** Add a new transaction */
-  addTransaction: (transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt' | 'synced'>) => void;
+  addTransaction: (
+    transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt' | 'synced'>
+  ) => void;
   /** Update an existing transaction */
   updateTransaction: (id: string, updates: Partial<Omit<Transaction, 'id' | 'createdAt'>>) => void;
   /** Delete a transaction */
@@ -208,23 +210,23 @@ const generateId = (): string => {
 
 /**
  * Transaction Store - Manages transaction state with persistence
- * 
+ *
  * Features:
  * - Full CRUD operations for transactions
  * - Filtering and searching
  * - Statistics calculations
  * - Pagination support
  * - Offline persistence
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
  * const { transactions, addTransaction } = useTransactionStore();
- * 
+ *
  * // With selectors for performance
  * const transactions = useTransactionStore(selectTransactions);
  * const isLoading = useTransactionStore(selectIsLoading);
- * 
+ *
  * // Using filtered transactions
  * const filtered = useTransactionStore(selectFilteredTransactions);
  * const stats = useTransactionStore(selectStats);
@@ -361,10 +363,13 @@ export const useTransactionStore = create<TransactionStore>()(
 
         const spendingByCategory = transactions
           .filter((t) => t.type === 'expense')
-          .reduce((acc, t) => {
-            acc[t.category] = (acc[t.category] || 0) + t.amount;
-            return acc;
-          }, {} as Record<TransactionCategory, number>);
+          .reduce(
+            (acc, t) => {
+              acc[t.category] = (acc[t.category] || 0) + t.amount;
+              return acc;
+            },
+            {} as Record<TransactionCategory, number>
+          );
 
         return {
           totalIncome: income,
@@ -409,8 +414,7 @@ export const selectFilteredTransactions = (state: TransactionStore) =>
 export const selectStats = (state: TransactionStore) => state.getStats();
 
 /** Select transaction count */
-export const selectTransactionCount = (state: TransactionStore) =>
-  state.transactions.length;
+export const selectTransactionCount = (state: TransactionStore) => state.transactions.length;
 
 /** Select income total */
 export const selectTotalIncome = (state: TransactionStore) =>

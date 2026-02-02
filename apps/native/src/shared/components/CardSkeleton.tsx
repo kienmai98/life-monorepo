@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import type React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Skeleton } from './Skeleton';
 
 /**
@@ -14,7 +14,7 @@ interface CardSkeletonProps {
 
 /**
  * Skeleton placeholder for card components
- * 
+ *
  * @example
  * ```tsx
  * if (loading) {
@@ -22,10 +22,7 @@ interface CardSkeletonProps {
  * }
  * ```
  */
-export const CardSkeleton: React.FC<CardSkeletonProps> = ({
-  count = 1,
-  showHeader = true,
-}) => {
+export const CardSkeleton: React.FC<CardSkeletonProps> = ({ count = 1, showHeader = true }) => {
   return (
     <View style={styles.container}>
       {Array.from({ length: count }).map((_, index) => (

@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 /**
  * Loading state and control utilities
@@ -31,16 +31,16 @@ interface UseLoadingStateReturn {
 /**
  * Hook for managing loading states with optional minimum duration
  * Prevents flickering of loading indicators
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { isLoading, executeWithLoading } = useLoadingState({ minDuration: 500 });
- *   
+ *
  *   const handleSave = executeWithLoading(async (data) => {
  *     await saveToServer(data);
  *   });
- *   
+ *
  *   return (
  *     <Button loading={isLoading} onPress={() => handleSave(formData)}>
  *       Save
@@ -49,9 +49,7 @@ interface UseLoadingStateReturn {
  * }
  * ```
  */
-export function useLoadingState(
-  options: LoadingStateOptions = {}
-): UseLoadingStateReturn {
+export function useLoadingState(options: LoadingStateOptions = {}): UseLoadingStateReturn {
   const { initialLoading = false, minDuration = 0 } = options;
 
   const [isLoading, setIsLoading] = useState(initialLoading);
@@ -74,7 +72,7 @@ export function useLoadingState(
   }, [minDuration]);
 
   const withLoading = useCallback(
-    async <T,>(promise: Promise<T>): Promise<T> => {
+    async <T>(promise: Promise<T>): Promise<T> => {
       startLoading();
       try {
         const result = await promise;

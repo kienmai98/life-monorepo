@@ -9,7 +9,7 @@ export { default as RegisterScreen } from './screens/RegisterScreen';
 export { default as BiometricSetupScreen } from './screens/BiometricSetupScreen';
 
 // Store and selectors
-export { 
+export {
   useAuthStore,
   selectUser,
   selectIsAuthenticated,

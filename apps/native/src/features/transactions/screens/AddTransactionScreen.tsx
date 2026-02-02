@@ -1,37 +1,33 @@
-import React, { useState, useCallback } from 'react';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { format } from 'date-fns';
+import type React from 'react';
+import { useState } from 'react';
 import {
-  View,
-  StyleSheet,
-  ScrollView,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
+  StyleSheet,
   TouchableOpacity,
-  Image,
+  View,
 } from 'react-native';
 import {
+  Button,
+  HelperText,
+  IconButton,
+  Menu,
+  Modal,
+  Portal,
+  SegmentedButtons,
+  Surface,
   Text,
   TextInput,
-  Button,
-  Chip,
   useTheme,
-  SegmentedButtons,
-  Menu,
-  IconButton,
-  Surface,
-  HelperText,
-  FAB,
-  Portal,
-  Modal,
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { format } from 'date-fns';
-
-import { useTransactionStore } from '../stores/transactionStore';
 import { useAuthStore } from '../../auth/stores/authStore';
 import { useTransactionStore } from '../../stores/transactionStore';
-import { TransactionCategory, PaymentMethod } from '../../types';
-import { getCategoryIcon, getCategoryColor, capitalizeFirst } from '../../utils/helpers';
+import type { PaymentMethod, TransactionCategory } from '../../types';
+import { capitalizeFirst, getCategoryIcon } from '../../utils/helpers';
 
 type AddTransactionScreenProps = {
   navigation: NativeStackNavigationProp<any, 'AddTransaction'>;
@@ -98,7 +94,7 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
   const handleSave = async () => {
     setError(null);
 
-    if (!amount || parseFloat(amount) <= 0) {
+    if (!amount || Number.parseFloat(amount) <= 0) {
       setError('Please enter a valid amount');
       return;
     }
@@ -118,7 +114,7 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
     try {
       await addTransaction({
         userId: user.id,
-        amount: parseFloat(amount),
+        amount: Number.parseFloat(amount),
         currency: 'USD',
         category,
         description: description.trim(),
@@ -167,7 +163,10 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
 
           {/* Amount Input */}
           <Surface style={styles.amountContainer} elevation={0}>
-            <Text variant="headlineLarge" style={[styles.currencySymbol, { color: theme.colors.primary }]}>
+            <Text
+              variant="headlineLarge"
+              style={[styles.currencySymbol, { color: theme.colors.primary }]}
+            >
               $
             </Text>
             <TextInput
@@ -252,7 +251,9 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
                 style={styles.input}
                 mode="outlined"
                 editable={false}
-                right={<TextInput.Icon icon="chevron-down" onPress={() => setPaymentMenuVisible(true)} />}
+                right={
+                  <TextInput.Icon icon="chevron-down" onPress={() => setPaymentMenuVisible(true)} />
+                }
                 onPressIn={() => setPaymentMenuVisible(true)}
               />
             }
@@ -287,7 +288,7 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
             <Text variant="bodyMedium" style={{ marginBottom: 12 }}>
               Receipt Photo (Optional)
             </Text>
-            
+
             {receiptImage ? (
               <View style={styles.receiptPreview}>
                 <Surface style={styles.receiptPlaceholder}>
@@ -352,7 +353,13 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
               {format(date, 'MMMM d, yyyy')}
             </Text>
             <View style={styles.dateQuickButtons}>
-              <Button mode="text" onPress={() => { setDate(new Date()); setShowDatePicker(false); }}>
+              <Button
+                mode="text"
+                onPress={() => {
+                  setDate(new Date());
+                  setShowDatePicker(false);
+                }}
+              >
                 Today
               </Button>
               <Button

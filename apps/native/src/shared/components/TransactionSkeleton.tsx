@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import type React from 'react';
+import { StyleSheet, View } from 'react-native';
 import { Skeleton } from './Skeleton';
 
 /**
@@ -12,7 +12,7 @@ interface TransactionSkeletonProps {
 
 /**
  * Skeleton placeholder for transaction list items
- * 
+ *
  * @example
  * ```tsx
  * if (loading) {
@@ -20,9 +20,7 @@ interface TransactionSkeletonProps {
  * }
  * ```
  */
-export const TransactionSkeleton: React.FC<TransactionSkeletonProps> = ({
-  count = 3,
-}) => {
+export const TransactionSkeleton: React.FC<TransactionSkeletonProps> = ({ count = 3 }) => {
   return (
     <View style={styles.container}>
       {Array.from({ length: count }).map((_, index) => (

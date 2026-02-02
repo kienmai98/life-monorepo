@@ -44,7 +44,7 @@ interface UseAsyncReturn<T, E = Error> extends AsyncState<T, E> {
 
 /**
  * Hook for managing async operations with loading, error, and success states
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage with immediate execution
@@ -52,15 +52,15 @@ interface UseAsyncReturn<T, E = Error> extends AsyncState<T, E> {
  *   () => fetchUser(userId),
  *   { immediate: true }
  * );
- * 
+ *
  * // Manual execution with arguments
  * const { execute } = useAsync(searchUsers);
  * const handleSearch = (query: string) => execute(query);
- * 
+ *
  * // With callbacks
  * const { data } = useAsync(
  *   () => saveData(formData),
- *   { 
+ *   {
  *     onSuccess: () => showToast('Saved!'),
  *     onError: (err) => showError(err.message)
  *   }

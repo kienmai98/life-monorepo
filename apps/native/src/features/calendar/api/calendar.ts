@@ -1,6 +1,5 @@
 import RNCalendarEvents from 'react-native-calendar-events';
-import { CalendarEvent } from '../types';
-import { Platform } from 'react-native';
+import type { CalendarEvent } from '../types';
 
 class CalendarService {
   async requestPermission(): Promise<boolean> {
@@ -37,7 +36,11 @@ class CalendarService {
     }
   }
 
-  async fetchEvents(startDate: Date, endDate: Date, calendarIds?: string[]): Promise<CalendarEvent[]> {
+  async fetchEvents(
+    startDate: Date,
+    endDate: Date,
+    calendarIds?: string[]
+  ): Promise<CalendarEvent[]> {
     try {
       const events = await RNCalendarEvents.fetchAllEvents(
         startDate.toISOString(),
@@ -45,7 +48,7 @@ class CalendarService {
         calendarIds
       );
 
-      return events.map(event => ({
+      return events.map((event) => ({
         id: event.id,
         title: event.title,
         description: event.description,

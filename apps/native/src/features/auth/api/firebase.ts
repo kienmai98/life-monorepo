@@ -1,11 +1,11 @@
-import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
-import firestore, { FirebaseFirestoreTypes } from '@react-native-firebase/firestore';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
+import auth, { type FirebaseAuthTypes } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
-import { appleAuth } from '@invertase/react-native-apple-authentication';
 import { Platform } from 'react-native';
+import type { User, UserSettings } from '../types';
 import storage from '../utils/storage';
-import { User, UserSettings } from '../types';
 
 // Initialize Google Sign-In
 GoogleSignin.configure({
@@ -18,38 +18,38 @@ class FirebaseService {
   async signUpWithEmail(email: string, password: string, displayName: string): Promise<User> {
     const userCredential = await auth().createUserWithEmailAndPassword(email, password);
     await userCredential.user.updateProfile({ displayName });
-    
+
     const user = await this.createUserInFirestore(userCredential.user, 'email');
     await this.saveUserToStorage(user);
-    
+
     return user;
   }
 
   async signInWithEmail(email: string, password: string): Promise<User> {
     const userCredential = await auth().signInWithEmailAndPassword(email, password);
     const user = await this.getUserFromFirestore(userCredential.user.uid);
-    
+
     if (user) {
       await this.saveUserToStorage(user);
       return user;
     }
-    
+
     throw new Error('User not found in database');
   }
 
   async signInWithGoogle(): Promise<User> {
     await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
     const { idToken } = await GoogleSignin.signIn();
-    
+
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
     const userCredential = await auth().signInWithCredential(googleCredential);
-    
+
     let user = await this.getUserFromFirestore(userCredential.user.uid);
-    
+
     if (!user) {
       user = await this.createUserInFirestore(userCredential.user, 'google');
     }
-    
+
     await this.saveUserToStorage(user);
     return user;
   }
@@ -75,11 +75,11 @@ class FirebaseService {
     }
 
     let user = await this.getUserFromFirestore(userCredential.user.uid);
-    
+
     if (!user) {
       user = await this.createUserInFirestore(userCredential.user, 'apple');
     }
-    
+
     await this.saveUserToStorage(user);
     return user;
   }
@@ -157,19 +157,19 @@ class FirebaseService {
   }
 
   async saveFCMToken(userId: string, token: string): Promise<void> {
-    await firestore()
-      .collection('users')
-      .doc(userId)
-      .collection('tokens')
-      .doc(token)
-      .set({
-        token,
-        platform: Platform.OS,
-        createdAt: firestore.FieldValue.serverTimestamp(),
-      });
+    await firestore().collection('users').doc(userId).collection('tokens').doc(token).set({
+      token,
+      platform: Platform.OS,
+      createdAt: firestore.FieldValue.serverTimestamp(),
+    });
   }
 
-  onMessage(callback: (message: any) => void) {
+  onMessage(
+    callback: (message: {
+      notification?: { title?: string; body?: string };
+      data?: Record<string, string>;
+    }) => void
+  ) {
     return messaging().onMessage(callback);
   }
 

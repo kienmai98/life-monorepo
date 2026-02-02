@@ -56,10 +56,7 @@ global.console = {
 };
 
 // Mock global fetch
-global.fetch = jest.fn();
-
-// Setup fetch mock
-global.fetch = jest.fn(() =
+global.fetch = jest.fn(() =>
   Promise.resolve({
     ok: true,
     json: () => Promise.resolve({}),
@@ -67,7 +64,7 @@ global.fetch = jest.fn(() =
       get: () => null,
     },
   })
-) as jest.Mock;
+);
 
 // Clean up after each test
 afterEach(() => {

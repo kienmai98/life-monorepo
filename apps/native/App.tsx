@@ -1,7 +1,7 @@
 /**
  * Main Application Component
  * @module App
- * 
+ *
  * Entry point for the Life app with:
  * - Global error boundary for crash recovery
  * - Optimized store subscriptions using selectors
@@ -9,32 +9,32 @@
  * - Safe area and navigation containers
  */
 
-import React, { useMemo } from 'react';
-import { 
-  NavigationContainer, 
-  DefaultTheme as NavigationDefaultTheme,
+import {
+  NavigationContainer,
   DarkTheme as NavigationDarkTheme,
+  DefaultTheme as NavigationDefaultTheme,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import React, { useMemo } from 'react';
 import { StyleSheet, View, useColorScheme } from 'react-native';
-import { 
-  Provider as PaperProvider, 
-  MD3LightTheme, 
-  MD3DarkTheme,
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {
   ActivityIndicator,
+  MD3DarkTheme,
+  MD3LightTheme,
+  Provider as PaperProvider,
 } from 'react-native-paper';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { ErrorBoundary } from './src/shared/components';
-import { 
-  useAuthStore, 
-  selectUser, 
-  selectIsLoading as selectAuthLoading 
+import {
+  selectIsLoading as selectAuthLoading,
+  selectUser,
+  useAuthStore,
 } from './src/features/auth/stores/authStore';
-import { MainNavigator } from './src/navigation/MainNavigator';
 import { AuthNavigator } from './src/navigation/AuthNavigator';
-import { RootStackParamList } from './src/shared/types';
+import { MainNavigator } from './src/navigation/MainNavigator';
+import { ErrorBoundary } from './src/shared/components';
+import type { RootStackParamList } from './src/shared/types';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -72,11 +72,7 @@ const RootNavigator: React.FC = React.memo(() => {
     return <Stack.Screen name="Auth" component={AuthNavigator} />;
   }, [user, isLoading]);
 
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      {screen}
-    </Stack.Navigator>
-  );
+  return <Stack.Navigator screenOptions={{ headerShown: false }}>{screen}</Stack.Navigator>;
 });
 
 RootNavigator.displayName = 'RootNavigator';
@@ -89,53 +85,60 @@ const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) =>
   const isDark = colorScheme === 'dark';
 
   // Memoize themes to prevent recreation on every render
-  const paperTheme = useMemo(() => ({
-    ...MD3LightTheme,
-    colors: {
-      ...MD3LightTheme.colors,
-      primary: '#000000',
-      onPrimary: '#FFFFFF',
-      secondary: '#555555',
-      background: '#FFFFFF',
-      surface: '#FFFFFF',
-    },
-  }), []);
+  const paperTheme = useMemo(
+    () => ({
+      ...MD3LightTheme,
+      colors: {
+        ...MD3LightTheme.colors,
+        primary: '#000000',
+        onPrimary: '#FFFFFF',
+        secondary: '#555555',
+        background: '#FFFFFF',
+        surface: '#FFFFFF',
+      },
+    }),
+    []
+  );
 
-  const darkPaperTheme = useMemo(() => ({
-    ...MD3DarkTheme,
-    colors: {
-      ...MD3DarkTheme.colors,
-      primary: '#FFFFFF',
-      onPrimary: '#000000',
-      secondary: '#AAAAAA',
-      background: '#121212',
-      surface: '#1E1E1E',
-    },
-  }), []);
+  const darkPaperTheme = useMemo(
+    () => ({
+      ...MD3DarkTheme,
+      colors: {
+        ...MD3DarkTheme.colors,
+        primary: '#FFFFFF',
+        onPrimary: '#000000',
+        secondary: '#AAAAAA',
+        background: '#121212',
+        surface: '#1E1E1E',
+      },
+    }),
+    []
+  );
 
-  const navigationTheme = useMemo(() => ({
-    ...(isDark ? NavigationDarkTheme : NavigationDefaultTheme),
-    colors: {
-      ...(isDark ? NavigationDarkTheme.colors : NavigationDefaultTheme.colors),
-      primary: isDark ? '#FFFFFF' : '#000000',
-      background: isDark ? '#121212' : '#FFFFFF',
-      card: isDark ? '#1E1E1E' : '#FFFFFF',
-      text: isDark ? '#FFFFFF' : '#000000',
-    },
-  }), [isDark]);
+  const navigationTheme = useMemo(
+    () => ({
+      ...(isDark ? NavigationDarkTheme : NavigationDefaultTheme),
+      colors: {
+        ...(isDark ? NavigationDarkTheme.colors : NavigationDefaultTheme.colors),
+        primary: isDark ? '#FFFFFF' : '#000000',
+        background: isDark ? '#121212' : '#FFFFFF',
+        card: isDark ? '#1E1E1E' : '#FFFFFF',
+        text: isDark ? '#FFFFFF' : '#000000',
+      },
+    }),
+    [isDark]
+  );
 
   return (
     <PaperProvider theme={isDark ? darkPaperTheme : paperTheme}>
-      <NavigationContainer theme={navigationTheme}>
-        {children}
-      </NavigationContainer>
+      <NavigationContainer theme={navigationTheme}>{children}</NavigationContainer>
     </PaperProvider>
   );
 };
 
 /**
  * Main App Component
- * 
+ *
  * Provides:
  * 1. Global error boundary for crash recovery
  * 2. Gesture handler support

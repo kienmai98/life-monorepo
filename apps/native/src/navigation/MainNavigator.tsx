@@ -1,11 +1,10 @@
-import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { MainTabParamList, MainStackParamList } from '../shared/types';
-import { DashboardScreen } from '../features/dashboard';
 import { CalendarScreen } from '../features/calendar';
-import { TransactionsScreen, AddTransactionScreen } from '../features/transactions';
+import { DashboardScreen } from '../features/dashboard';
 import { ProfileScreen } from '../features/profile';
+import { AddTransactionScreen, TransactionsScreen } from '../features/transactions';
+import type { MainStackParamList, MainTabParamList } from '../shared/types';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 const Stack = createNativeStackNavigator<MainStackParamList>();

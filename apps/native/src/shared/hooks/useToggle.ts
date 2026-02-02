@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 /**
  * Return type for useToggle hook
@@ -18,15 +18,15 @@ interface UseToggleReturn {
 
 /**
  * Hook for simple boolean state toggling
- * 
+ *
  * @param initialValue - Initial boolean value (default: false)
  * @returns Toggle state and control functions
- * 
+ *
  * @example
  * ```tsx
  * function Modal() {
  *   const { value: isOpen, toggle, setOff } = useToggle(false);
- *   
+ *
  *   return (
  *     <View>
  *       <Button onPress={toggle}>{isOpen ? 'Close' : 'Open'}</Button>
@@ -38,7 +38,7 @@ interface UseToggleReturn {
  * }
  * ```
  */
-export function useToggle(initialValue: boolean = false): UseToggleReturn {
+export function useToggle(initialValue = false): UseToggleReturn {
   const [value, setValue] = useState(initialValue);
 
   const toggle = useCallback(() => setValue((v) => !v), []);

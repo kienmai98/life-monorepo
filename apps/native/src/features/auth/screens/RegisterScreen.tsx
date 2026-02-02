@@ -1,12 +1,21 @@
-import React, { useState } from 'react';
-import { View, StyleSheet, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
-import { Text, TextInput, Button, Surface, useTheme, HelperText, Checkbox } from 'react-native-paper';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import type React from 'react';
+import { useState } from 'react';
+import { KeyboardAvoidingView, Platform, ScrollView, StyleSheet, View } from 'react-native';
+import {
+  Button,
+  Checkbox,
+  HelperText,
+  Surface,
+  Text,
+  TextInput,
+  useTheme,
+} from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 
-import { useAuthStore } from '../stores/authStore';
-import { AuthStackParamList } from '../../../shared/types';
+import type { AuthStackParamList } from '../../../shared/types';
 import { validateEmail, validatePassword } from '../../../shared/utils/helpers';
+import { useAuthStore } from '../stores/authStore';
 
 type RegisterScreenProps = {
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Register'>;
@@ -158,11 +167,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
               Create Account
             </Button>
 
-            <Button
-              mode="text"
-              onPress={() => navigation.navigate('Login')}
-              disabled={isLoading}
-            >
+            <Button mode="text" onPress={() => navigation.navigate('Login')} disabled={isLoading}>
               Already have an account? Sign In
             </Button>
           </Surface>

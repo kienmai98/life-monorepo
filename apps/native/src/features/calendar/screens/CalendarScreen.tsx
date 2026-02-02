@@ -1,17 +1,28 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { View, StyleSheet, FlatList, RefreshControl, TouchableOpacity } from 'react-native';
-import { Text, Card, IconButton, useTheme, FAB, Chip, Divider } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
 import { useFocusEffect } from '@react-navigation/native';
-import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday } from 'date-fns';
+import {
+  addMonths,
+  eachDayOfInterval,
+  endOfMonth,
+  format,
+  isSameDay,
+  isToday,
+  startOfMonth,
+  subMonths,
+} from 'date-fns';
+import type React from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { FlatList, RefreshControl, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Card, Chip, Divider, FAB, IconButton, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
+import type { CalendarEvent } from '../../../shared/types';
+import { formatTime } from '../../../shared/utils/helpers';
 import { useCalendarStore } from '../stores/calendarStore';
-import { CalendarEvent } from '../../../shared/types';
-import { formatTime, isEventToday } from '../../../shared/utils/helpers';
 
 const CalendarScreen: React.FC = () => {
   const theme = useTheme();
-  const { events, scheduleSummary, fetchEvents, requestPermission, hasPermission, isLoading } = useCalendarStore();
+  const { events, scheduleSummary, fetchEvents, requestPermission, hasPermission, isLoading } =
+    useCalendarStore();
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -61,7 +72,7 @@ const CalendarScreen: React.FC = () => {
   };
 
   const getEventsForDate = (date: Date): CalendarEvent[] => {
-    return events.filter(event => {
+    return events.filter((event) => {
       const eventDate = new Date(event.startDate);
       return isSameDay(eventDate, date);
     });
@@ -115,15 +126,15 @@ const CalendarScreen: React.FC = () => {
                     color: isTodayDate
                       ? theme.colors.onPrimary
                       : isSelected
-                      ? theme.colors.onPrimaryContainer
-                      : theme.colors.onSurface,
+                        ? theme.colors.onPrimaryContainer
+                        : theme.colors.onSurface,
                     fontWeight: isTodayDate || isSelected ? 'bold' : 'normal',
                   }}
                 >
                   {format(day, 'd')}
                 </Text>
               </View>
-              
+
               {dayEvents.length > 0 && (
                 <View style={styles.eventDots}>
                   {dayEvents.slice(0, 3).map((event, idx) => (
@@ -157,13 +168,13 @@ const CalendarScreen: React.FC = () => {
           <Text variant="titleSmall" numberOfLines={1}>
             {item.title}
           </Text>
-          
+
           <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
             {item.isAllDay
               ? 'All day'
               : `${formatTime(item.startDate)} - ${formatTime(item.endDate)}`}
           </Text>
-          
+
           {item.location && (
             <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
               📍 {item.location}
@@ -186,12 +197,7 @@ const CalendarScreen: React.FC = () => {
           <Text variant="bodyMedium" style={{ textAlign: 'center', marginBottom: 24 }}>
             Please grant calendar access to view your schedule
           </Text>
-          <IconButton
-            icon="refresh"
-            mode="contained"
-            size={32}
-            onPress={checkPermissionAndFetch}
-          />
+          <IconButton icon="refresh" mode="contained" size={32} onPress={checkPermissionAndFetch} />
         </View>
       </SafeAreaView>
     );
@@ -207,9 +213,7 @@ const CalendarScreen: React.FC = () => {
         <IconButton icon="chevron-right" onPress={goToNextMonth} />
       </View>
 
-      <View style={styles.calendarContainer}>
-        {renderCalendarGrid()}
-      </View>
+      <View style={styles.calendarContainer}>{renderCalendarGrid()}</View>
 
       <Divider style={styles.divider} />
 
@@ -225,9 +229,7 @@ const CalendarScreen: React.FC = () => {
           data={selectedDateEvents}
           keyExtractor={(item) => item.id}
           renderItem={renderEventItem}
-          refreshControl={
-            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-          }
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
           ListEmptyComponent={
             <View style={styles.emptyState}>
               <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant }}>

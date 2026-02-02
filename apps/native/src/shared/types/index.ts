@@ -50,9 +50,9 @@ export type MainStackParamList = {
 /**
  * Combined navigation param list
  */
-export type AppNavigationParamList = RootStackParamList & 
-  AuthStackParamList & 
-  MainTabParamList & 
+export type AppNavigationParamList = RootStackParamList &
+  AuthStackParamList &
+  MainTabParamList &
   MainStackParamList;
 
 // ============================================
@@ -369,7 +369,7 @@ export type ActiveTheme = 'light' | 'dark';
 
 // Re-export from features for convenience
 export type { User as AuthUser } from '../../features/auth/stores/authStore';
-export type { 
+export type {
   Transaction as TransactionEntity,
   TransactionCategory,
   TransactionStats,

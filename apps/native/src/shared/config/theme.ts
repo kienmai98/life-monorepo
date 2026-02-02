@@ -10,14 +10,14 @@ export const monochromeTheme = {
     gray500: '#555555',
     gray600: '#333333',
   },
-  
+
   // Common styles
   styles: {
     container: {
       flex: 1,
       backgroundColor: '#FFFFFF',
     },
-    
+
     // Cards
     card: {
       backgroundColor: '#FFFFFF',
@@ -27,7 +27,7 @@ export const monochromeTheme = {
       padding: 20,
       marginBottom: 16,
     },
-    
+
     // Typography
     title: {
       fontSize: 28,
@@ -35,12 +35,12 @@ export const monochromeTheme = {
       color: '#000000',
       letterSpacing: -0.5,
     },
-    
+
     subtitle: {
       fontSize: 16,
       color: '#555555',
     },
-    
+
     label: {
       fontSize: 11,
       fontWeight: '700',
@@ -48,12 +48,12 @@ export const monochromeTheme = {
       textTransform: 'uppercase',
       letterSpacing: 2,
     },
-    
+
     body: {
       fontSize: 15,
       color: '#000000',
     },
-    
+
     // Inputs
     input: {
       borderWidth: 2,
@@ -64,7 +64,7 @@ export const monochromeTheme = {
       backgroundColor: '#FFFFFF',
       color: '#000000',
     },
-    
+
     // Buttons
     buttonPrimary: {
       backgroundColor: '#000000',
@@ -72,7 +72,7 @@ export const monochromeTheme = {
       padding: 16,
       alignItems: 'center',
     },
-    
+
     buttonPrimaryText: {
       color: '#FFFFFF',
       fontSize: 14,
@@ -80,7 +80,7 @@ export const monochromeTheme = {
       textTransform: 'uppercase',
       letterSpacing: 2,
     },
-    
+
     buttonSecondary: {
       backgroundColor: '#FFFFFF',
       borderWidth: 2,
@@ -89,7 +89,7 @@ export const monochromeTheme = {
       padding: 16,
       alignItems: 'center',
     },
-    
+
     buttonSecondaryText: {
       color: '#000000',
       fontSize: 14,
@@ -97,7 +97,7 @@ export const monochromeTheme = {
       textTransform: 'uppercase',
       letterSpacing: 2,
     },
-    
+
     // Lists
     listItem: {
       flexDirection: 'row',
@@ -106,14 +106,14 @@ export const monochromeTheme = {
       borderBottomColor: '#E0E0E0',
       backgroundColor: '#FFFFFF',
     },
-    
+
     // Tab bar
     tabBar: {
       backgroundColor: '#FFFFFF',
       borderTopWidth: 2,
       borderTopColor: '#000000',
     },
-    
+
     // Header
     header: {
       backgroundColor: '#FFFFFF',

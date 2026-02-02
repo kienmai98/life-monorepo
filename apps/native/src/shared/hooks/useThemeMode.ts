@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from 'react';
-import { useColorScheme, Appearance } from 'react-native';
+import { useCallback, useEffect, useState } from 'react';
+import { useColorScheme } from 'react-native';
 import { storage } from '../utils/storage';
 
 /**
@@ -35,14 +35,14 @@ const THEME_STORAGE_KEY = 'app-theme-mode';
 /**
  * Hook for managing app theme mode with system preference support
  * Persists user preference to storage
- * 
+ *
  * @example
  * ```tsx
  * function App() {
  *   const { activeTheme, isDarkMode, setThemeMode } = useThemeMode();
- *   
+ *
  *   const theme = isDarkMode ? darkTheme : lightTheme;
- *   
+ *
  *   return (
  *     <PaperProvider theme={theme}>
  *       <NavigationContainer theme={theme}>
@@ -51,11 +51,11 @@ const THEME_STORAGE_KEY = 'app-theme-mode';
  *     </PaperProvider>
  *   );
  * }
- * 
+ *
  * // In settings screen
  * function SettingsScreen() {
  *   const { themeMode, setThemeMode, toggleTheme } = useThemeMode();
- *   
+ *
  *   return (
  *     <View>
  *       <Button onPress={() => setThemeMode('dark')}>Dark Mode</Button>
@@ -100,9 +100,8 @@ export function useThemeMode(): UseThemeModeReturn {
   }, []);
 
   // Calculate active theme based on preference and system
-  const activeTheme: ActiveTheme = themeMode === 'system' 
-    ? (systemColorScheme ?? 'light')
-    : themeMode;
+  const activeTheme: ActiveTheme =
+    themeMode === 'system' ? (systemColorScheme ?? 'light') : themeMode;
 
   const isDarkMode = activeTheme === 'dark';
 

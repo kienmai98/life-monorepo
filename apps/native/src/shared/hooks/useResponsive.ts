@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback, useMemo } from 'react';
-import { Dimensions, ScaledSize, PixelRatio } from 'react-native';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Dimensions, PixelRatio, type ScaledSize } from 'react-native';
 
 /**
  * Breakpoint values for responsive design

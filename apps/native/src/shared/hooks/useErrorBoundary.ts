@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useCallback, useState } from 'react';
 
 /**
  * Error information structure
@@ -33,20 +33,20 @@ interface UseErrorBoundaryReturn {
 /**
  * Hook for managing error state in components
  * Provides centralized error handling with automatic clearing
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { error, hasError, setError, clearError, withErrorHandling } = useErrorBoundary();
- *   
+ *
  *   const handleSubmit = withErrorHandling(async (data) => {
  *     await saveData(data);
  *   });
- *   
+ *
  *   if (hasError) {
  *     return <ErrorMessage message={error?.message} onDismiss={clearError} />;
  *   }
- *   
+ *
  *   return <Button onPress={() => handleSubmit(formData)} />;
  * }
  * ```

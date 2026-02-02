@@ -1,6 +1,6 @@
-import React, { Component, ErrorInfo, ReactNode } from 'react';
-import { View, StyleSheet } from 'react-native';
-import { Text, Button } from 'react-native-paper';
+import { Component, type ErrorInfo, type ReactNode } from 'react';
+import { StyleSheet, View } from 'react-native';
+import { Button, Text } from 'react-native-paper';
 
 /**
  * Props for ErrorBoundary component
@@ -29,14 +29,14 @@ interface ErrorBoundaryState {
 /**
  * ErrorBoundary - React Class Component for catching JavaScript errors
  * anywhere in the child component tree and displaying a fallback UI.
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
  * <ErrorBoundary>
  *   <MyComponent />
  * </ErrorBoundary>
- * 
+ *
  * // With custom fallback
  * <ErrorBoundary
  *   fallback={<CustomErrorView />}
@@ -44,7 +44,7 @@ interface ErrorBoundaryState {
  * >
  *   <MyComponent />
  * </ErrorBoundary>
- * 
+ *
  * // App-level error boundary
  * function App() {
  *   return (
@@ -89,11 +89,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
           <Text style={styles.message}>
             {this.state.error?.message || 'An unexpected error occurred'}
           </Text>
-          <Button
-            mode="contained"
-            onPress={this.handleReset}
-            style={styles.button}
-          >
+          <Button mode="contained" onPress={this.handleReset} style={styles.button}>
             Try Again
           </Button>
         </View>

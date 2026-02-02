@@ -9,7 +9,10 @@
     "lint": "cd ../.. && biome lint apps/api",
     "check": "cd ../.. && biome check apps/api",
     "format": "cd ../.. && biome format --write apps/api",
-    "test": "vitest"
+    "test": "vitest",
+    "test:watch": "vitest --watch",
+    "test:coverage": "vitest --coverage",
+    "test:integration": "vitest --config vitest.config.ts --reporter=verbose"
   },
   "dependencies": {
     "fastify": "^5.0.0",
@@ -23,6 +26,9 @@
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/supertest": "^6.0.2",
+    "@vitest/coverage-v8": "^1.6.0",
+    "supertest": "^7.0.0",
     "tsx": "^4.0.0",
     "typescript": "^5.8.3",
     "vitest": "^1.0.0"

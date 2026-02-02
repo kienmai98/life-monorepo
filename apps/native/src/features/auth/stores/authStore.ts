@@ -1,6 +1,6 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from 'zustand';
+import { createJSONStorage, persist } from 'zustand/middleware';
 
 /**
  * User entity type
@@ -79,19 +79,19 @@ const initialState: AuthState = {
 
 /**
  * Auth Store - Manages authentication state with persistence
- * 
+ *
  * Uses Zustand with persistence middleware to maintain auth state across app restarts.
  * Provides selectors to prevent unnecessary re-renders.
- * 
+ *
  * @example
  * ```tsx
  * // Basic usage
  * const { user, isLoading } = useAuthStore();
- * 
+ *
  * // With selectors for performance
  * const user = useAuthStore(selectUser);
  * const isAuthenticated = useAuthStore(selectIsAuthenticated);
- * 
+ *
  * // Actions
  * const { login, logout } = useAuthStore();
  * ```
@@ -102,20 +102,20 @@ export const useAuthStore = create<AuthStore>()(
       ...initialState,
 
       setUser: (user) => set({ user, isLoading: false, error: null }),
-      
+
       setLoading: (loading) => set({ isLoading: loading }),
-      
+
       setBiometricEnabled: (enabled) => set({ isBiometricEnabled: enabled }),
-      
+
       setError: (error) => set({ error, isLoading: false }),
-      
+
       clearError: () => set({ error: null }),
-      
+
       logout: () => {
         // TODO: Implement Firebase sign out
         set({ user: null, error: null, isLoading: false });
       },
-      
+
       login: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
@@ -129,7 +129,7 @@ export const useAuthStore = create<AuthStore>()(
           throw error;
         }
       },
-      
+
       loginWithGoogle: async () => {
         set({ isLoading: true, error: null });
         try {
@@ -142,7 +142,7 @@ export const useAuthStore = create<AuthStore>()(
           throw error;
         }
       },
-      
+
       loginWithApple: async () => {
         set({ isLoading: true, error: null });
         try {
@@ -155,7 +155,7 @@ export const useAuthStore = create<AuthStore>()(
           throw error;
         }
       },
-      
+
       register: async (email, password, displayName) => {
         set({ isLoading: true, error: null });
         try {
@@ -168,7 +168,7 @@ export const useAuthStore = create<AuthStore>()(
           throw error;
         }
       },
-      
+
       resetPassword: async (email) => {
         set({ isLoading: true, error: null });
         try {

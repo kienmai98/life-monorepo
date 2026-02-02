@@ -1,11 +1,11 @@
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useEffect } from 'react';
-import { View, StyleSheet, Image } from 'react-native';
-import { Text, Button, Surface, useTheme } from 'react-native-paper';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { StyleSheet, View } from 'react-native';
 import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
+import { Button, Surface, Text, useTheme } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AuthStackParamList } from '../../navigation/AuthNavigator';
+import type { AuthStackParamList } from '../../navigation/AuthNavigator';
 import storage from '../../utils/storage';
 
 type BiometricSetupScreenProps = {
@@ -17,7 +17,10 @@ type BiometricSetupScreenProps = {
   };
 };
 
-const BiometricSetupScreen: React.FC<BiometricSetupScreenProps> = ({ navigation, route }) => {
+const BiometricSetupScreen: React.FC<BiometricSetupScreenProps> = ({
+  navigation: _navigation,
+  route,
+}) => {
   const theme = useTheme();
   const [biometryType, setBiometryType] = React.useState<string | null>(null);
   const [isAvailable, setIsAvailable] = React.useState(false);
@@ -29,7 +32,7 @@ const BiometricSetupScreen: React.FC<BiometricSetupScreenProps> = ({ navigation,
   const checkBiometricAvailability = async () => {
     const { available, biometryType } = await ReactNativeBiometrics.isSensorAvailable();
     setIsAvailable(available);
-    
+
     if (available) {
       switch (biometryType) {
         case BiometryTypes.TouchID:
@@ -71,16 +74,17 @@ const BiometricSetupScreen: React.FC<BiometricSetupScreenProps> = ({ navigation,
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <View style={styles.content}>
         <Surface style={styles.iconContainer} elevation={2}>
-          <Text style={styles.icon}>
-            {biometryType === 'Face ID' ? '👤' : '👆'}
-          </Text>
+          <Text style={styles.icon}>{biometryType === 'Face ID' ? '👤' : '👆'}</Text>
         </Surface>
 
         <Text variant="headlineMedium" style={[styles.title, { color: theme.colors.onBackground }]}>
           Enable {biometryType || 'Biometric Authentication'}
         </Text>
 
-        <Text variant="bodyLarge" style={[styles.description, { color: theme.colors.onSurfaceVariant }]}>
+        <Text
+          variant="bodyLarge"
+          style={[styles.description, { color: theme.colors.onSurfaceVariant }]}
+        >
           {isAvailable
             ? `Use ${biometryType} for quick and secure access to your Life app. You can always change this in settings later.`
             : 'Biometric authentication is not available on this device. You can still use the app with your password.'}
@@ -89,15 +93,15 @@ const BiometricSetupScreen: React.FC<BiometricSetupScreenProps> = ({ navigation,
         {isAvailable && (
           <View style={styles.features}>
             <View style={styles.featureItem}>
-              <Text style={styles.featureIcon}🔒</Text>
+              <Text style={styles.featureIcon}>🔒</Text>
               <Text variant="bodyMedium">Quick & Secure Login</Text>
             </View>
             <View style={styles.featureItem}>
-              <Text style={styles.featureIcon}⚡</Text>
+              <Text style={styles.featureIcon}>⚡</Text>
               <Text variant="bodyMedium">No need to remember passwords</Text>
             </View>
             <View style={styles.featureItem}>
-              <Text style={styles.featureIcon}🛡️</Text>
+              <Text style={styles.featureIcon}>🛡️</Text>
               <Text variant="bodyMedium">Protected by your device</Text>
             </View>
           </View>
@@ -114,7 +118,7 @@ const BiometricSetupScreen: React.FC<BiometricSetupScreenProps> = ({ navigation,
               Enable {biometryType}
             </Button>
           )}
-          
+
           <Button
             mode={isAvailable ? 'text' : 'contained'}
             onPress={skipBiometric}

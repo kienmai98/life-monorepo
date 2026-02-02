@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, ScrollView, Alert, Linking } from 'react-native';
+import { Alert, Linking, ScrollView, StyleSheet, View } from 'react-native';
 import {
-  Text,
-  List,
-  Switch,
-  Divider,
-  Button,
-  Avatar,
-  useTheme,
-  Surface,
-  Dialog,
-  Portal,
   ActivityIndicator,
-  Banner,
+  Avatar,
+  Button,
+  Dialog,
+  Divider,
+  List,
+  Portal,
+  Surface,
+  Switch,
+  Text,
+  useTheme,
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { useAuthStore } from '../../auth/stores/authStore';
-import { useAppStore } from '../stores/appStore';
 import { useTransactionStore } from '../../stores/transactionStore';
 import storage from '../../utils/storage';
 
@@ -106,7 +104,7 @@ const ProfileScreen: React.FC = () => {
             label={(user?.displayName || user?.email || 'U').charAt(0).toUpperCase()}
             style={{ backgroundColor: theme.colors.primary, marginBottom: 16 }}
           />
-          
+
           <Text variant="headlineSmall" style={{ fontWeight: '600' }}>
             {user?.displayName || 'User'}
           </Text>
@@ -114,7 +112,8 @@ const ProfileScreen: React.FC = () => {
             {user?.email}
           </Text>
           <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant, marginTop: 4 }}>
-            Signed in with {user?.provider === 'email' ? 'Email' : capitalizeFirst(user?.provider || '')}
+            Signed in with{' '}
+            {user?.provider === 'email' ? 'Email' : capitalizeFirst(user?.provider || '')}
           </Text>
         </Surface>
 
@@ -126,18 +125,14 @@ const ProfileScreen: React.FC = () => {
             title="Dark Mode"
             description="Switch between light and dark themes"
             left={(props) => <List.Icon {...props} icon="theme-light-dark" />}
-            right={() => (
-              <Switch value={isDarkMode} onValueChange={handleToggleTheme} />
-            )}
+            right={() => <Switch value={isDarkMode} onValueChange={handleToggleTheme} />}
           />
 
           <List.Item
             title="Biometric Authentication"
             description="Use Face ID or Touch ID to unlock"
             left={(props) => <List.Icon {...props} icon="fingerprint" />}
-            right={() => (
-              <Switch value={biometricEnabled} onValueChange={handleToggleBiometric} />
-            )}
+            right={() => <Switch value={biometricEnabled} onValueChange={handleToggleBiometric} />}
           />
 
           <List.Item
@@ -145,10 +140,7 @@ const ProfileScreen: React.FC = () => {
             description="Receive reminders and alerts"
             left={(props) => <List.Icon {...props} icon="bell" />}
             right={() => (
-              <Switch
-                value={notificationsEnabled}
-                onValueChange={handleToggleNotifications}
-              />
+              <Switch value={notificationsEnabled} onValueChange={handleToggleNotifications} />
             )}
           />
         </List.Section>
@@ -204,13 +196,19 @@ const ProfileScreen: React.FC = () => {
             <Text variant="titleMedium" style={{ fontWeight: '600', marginBottom: 4 }}>
               ✨ Coming Soon
             </Text>
-            <Text variant="bodyMedium" style={{ color: theme.colors.onSurfaceVariant, marginBottom: 12 }}>
+            <Text
+              variant="bodyMedium"
+              style={{ color: theme.colors.onSurfaceVariant, marginBottom: 12 }}
+            >
               Bank connection, CSV import, and more advanced features are in development.
             </Text>
             <Button
               mode="outlined"
               onPress={() => {
-                Alert.alert('Coming Soon', 'Premium features will be available in a future update!');
+                Alert.alert(
+                  'Coming Soon',
+                  'Premium features will be available in a future update!'
+                );
               }}
             >
               Get Notified
@@ -266,10 +264,7 @@ const ProfileScreen: React.FC = () => {
       </ScrollView>
 
       <Portal>
-        <Dialog
-          visible={logoutDialogVisible}
-          onDismiss={() => setLogoutDialogVisible(false)}
-        >
+        <Dialog visible={logoutDialogVisible} onDismiss={() => setLogoutDialogVisible(false)}>
           <Dialog.Title>Sign Out?</Dialog.Title>
           <Dialog.Content>
             <Text variant="bodyMedium">

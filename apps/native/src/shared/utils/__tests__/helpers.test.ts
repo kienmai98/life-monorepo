@@ -4,14 +4,14 @@
  */
 
 import {
+  calculatePercentage,
+  capitalizeFirst,
+  debounce,
   formatCurrency,
   formatDate,
-  capitalizeFirst,
+  truncate,
   validateEmail,
   validatePassword,
-  debounce,
-  truncate,
-  calculatePercentage,
 } from '../helpers';
 
 describe('formatCurrency', () => {

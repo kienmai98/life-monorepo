@@ -3,7 +3,7 @@
  * @module shared/utils/api
  */
 
-import { ApiResponse, ApiError, PaginationInfo } from '../types';
+import type { ApiError, ApiResponse, PaginationInfo } from '../types';
 
 /**
  * API configuration
@@ -74,17 +74,17 @@ const createApiError = async (response: Response): Promise<ApiError> => {
  * @param endpoint - API endpoint (relative to baseURL)
  * @param options - Request options
  * @returns Promise with typed response
- * 
+ *
  * @example
  * // GET request
  * const { data } = await apiRequest<User>('/users/me');
- * 
+ *
  * // POST request
  * const { data } = await apiRequest<Transaction>('/transactions', {
  *   method: 'POST',
  *   body: JSON.stringify(newTransaction),
  * });
- * 
+ *
  * // With auth and custom timeout
  * const { data } = await apiRequest<User>('/users/me', {
  *   requiresAuth: true,
@@ -141,7 +141,7 @@ export const apiRequest = async <T = unknown>(
 
       if (!response.ok) {
         const error = await createApiError(response);
-        
+
         // Don't retry on client errors (4xx)
         if (response.status >= 400 && response.status < 500) {
           return {
@@ -150,19 +150,19 @@ export const apiRequest = async <T = unknown>(
             errorCode: error.code,
           };
         }
-        
+
         throw new Error(error.message);
       }
 
       const data = await response.json();
-      
+
       // Check for pagination headers
       const pagination: PaginationInfo | undefined = response.headers.get('X-Total-Count')
         ? {
-            page: parseInt(response.headers.get('X-Page') || '1', 10),
-            pageSize: parseInt(response.headers.get('X-Page-Size') || '20', 10),
-            total: parseInt(response.headers.get('X-Total-Count') || '0', 10),
-            totalPages: parseInt(response.headers.get('X-Total-Pages') || '0', 10),
+            page: Number.parseInt(response.headers.get('X-Page') || '1', 10),
+            pageSize: Number.parseInt(response.headers.get('X-Page-Size') || '20', 10),
+            total: Number.parseInt(response.headers.get('X-Total-Count') || '0', 10),
+            totalPages: Number.parseInt(response.headers.get('X-Total-Pages') || '0', 10),
             hasMore: response.headers.get('X-Has-More') === 'true',
           }
         : undefined;
@@ -174,7 +174,7 @@ export const apiRequest = async <T = unknown>(
       };
     } catch (error) {
       lastError = error instanceof Error ? error : new Error(String(error));
-      
+
       // Don't retry on abort
       if (error instanceof DOMException && error.name === 'AbortError') {
         return {

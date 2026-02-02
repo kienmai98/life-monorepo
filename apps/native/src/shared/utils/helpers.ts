@@ -9,17 +9,13 @@
  * @param currency - Currency code (default: USD)
  * @param locale - Locale string (default: en-US)
  * @returns Formatted currency string
- * 
+ *
  * @example
  * formatCurrency(1234.56) // '$1,234.56'
  * formatCurrency(1234.56, 'EUR') // '€1,234.56'
  * formatCurrency(1234.56, 'JPY', 'ja-JP') // '¥1,235'
  */
-export const formatCurrency = (
-  amount: number,
-  currency: string = 'USD',
-  locale: string = 'en-US'
-): string => {
+export const formatCurrency = (amount: number, currency = 'USD', locale = 'en-US'): string => {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency,
@@ -34,7 +30,7 @@ export const formatCurrency = (
  * @param options - Intl.DateTimeFormatOptions
  * @param locale - Locale string (default: en-US)
  * @returns Formatted date string
- * 
+ *
  * @example
  * formatDate('2024-01-15') // 'Jan 15, 2024'
  * formatDate(new Date(), { weekday: 'long' }) // 'Monday'
@@ -46,10 +42,10 @@ export const formatDate = (
     day: 'numeric',
     year: 'numeric',
   },
-  locale: string = 'en-US'
+  locale = 'en-US'
 ): string => {
-  const d = typeof date === 'string' ? new Date(date) : 
-            typeof date === 'number' ? new Date(date) : date;
+  const d =
+    typeof date === 'string' ? new Date(date) : typeof date === 'number' ? new Date(date) : date;
   return d.toLocaleDateString(locale, options);
 };
 
@@ -66,7 +62,7 @@ export const formatTime = (
     hour: 'numeric',
     minute: '2-digit',
   },
-  locale: string = 'en-US'
+  locale = 'en-US'
 ): string => {
   const d = typeof date === 'string' ? new Date(date) : date;
   return d.toLocaleTimeString(locale, options);
@@ -77,7 +73,7 @@ export const formatTime = (
  * @param fn - Function to debounce
  * @param delay - Delay in milliseconds
  * @returns Debounced function
- * 
+ *
  * @example
  * const debouncedSearch = debounce((query: string) => {
  *   searchAPI(query);
@@ -118,7 +114,7 @@ export const throttle = <T extends (...args: any[]) => any>(
  * Capitalizes the first letter of a string
  * @param str - String to capitalize
  * @returns Capitalized string
- * 
+ *
  * @example
  * capitalizeFirst('hello') // 'Hello'
  * capitalizeFirst('hello world') // 'Hello world'
@@ -132,7 +128,7 @@ export const capitalizeFirst = (str: string): string => {
  * Capitalizes each word in a string
  * @param str - String to capitalize
  * @returns Title-cased string
- * 
+ *
  * @example
  * toTitleCase('hello world') // 'Hello World'
  */
@@ -192,7 +188,7 @@ export const getCategoryColor = (category: string): string => {
  * Formats a number with commas
  * @param num - Number to format
  * @returns Formatted number string
- * 
+ *
  * @example
  * formatNumber(1234567) // '1,234,567'
  */
@@ -206,16 +202,12 @@ export const formatNumber = (num: number): string => {
  * @param total - Total value
  * @param decimals - Decimal places (default: 1)
  * @returns Percentage string
- * 
+ *
  * @example
  * calculatePercentage(25, 100) // '25.0'
  * calculatePercentage(25, 100, 0) // '25'
  */
-export const calculatePercentage = (
-  value: number,
-  total: number,
-  decimals: number = 1
-): string => {
+export const calculatePercentage = (value: number, total: number, decimals = 1): string => {
   if (total === 0) return '0';
   return ((value / total) * 100).toFixed(decimals);
 };
@@ -226,16 +218,12 @@ export const calculatePercentage = (
  * @param maxLength - Maximum length
  * @param suffix - Suffix to add (default: '...')
  * @returns Truncated string
- * 
+ *
  * @example
  * truncate('Hello World', 8) // 'Hello...'
  * truncate('Hello World', 8, '→') // 'Hello W→'
  */
-export const truncate = (
-  str: string,
-  maxLength: number,
-  suffix: string = '...'
-): string => {
+export const truncate = (str: string, maxLength: number, suffix = '...'): string => {
   if (!str || str.length <= maxLength) return str;
   return str.substring(0, maxLength - suffix.length) + suffix;
 };
@@ -263,9 +251,7 @@ export const validateEmail = (email: string): boolean => {
  * @param password - Password to validate
  * @returns Validation result
  */
-export const validatePassword = (
-  password: string
-): { valid: boolean; message?: string } => {
+export const validatePassword = (password: string): { valid: boolean; message?: string } => {
   if (password.length < 8) {
     return { valid: false, message: 'Password must be at least 8 characters' };
   }
@@ -286,7 +272,7 @@ export const validatePassword = (
  * @param obj - Object to clone
  * @returns Deep clone of object
  */
-export const deepClone = <T, (obj: T): T => {
+export const deepClone = <T>(obj: T): T => {
   return JSON.parse(JSON.stringify(obj));
 };
 
@@ -308,7 +294,7 @@ export const isEmpty = (value: unknown): boolean => {
  * @param array - Array to group
  * @param key - Key function
  * @returns Grouped object
- * 
+ *
  * @example
  * groupBy([{type: 'a', val: 1}, {type: 'b', val: 2}], x => x.type)
  * // { a: [{type: 'a', val: 1}], b: [{type: 'b', val: 2}] }
@@ -317,14 +303,17 @@ export const groupBy = <T, K extends string | number>(
   array: T[],
   key: (item: T) => K
 ): Record<K, T[]> => {
-  return array.reduce((acc, item) => {
-    const keyValue = key(item);
-    if (!acc[keyValue]) {
-      acc[keyValue] = [];
-    }
-    acc[keyValue].push(item);
-    return acc;
-  }, {} as Record<K, T[]>);
+  return array.reduce(
+    (acc, item) => {
+      const keyValue = key(item);
+      if (!acc[keyValue]) {
+        acc[keyValue] = [];
+      }
+      acc[keyValue].push(item);
+      return acc;
+    },
+    {} as Record<K, T[]>
+  );
 };
 
 /**
@@ -334,11 +323,7 @@ export const groupBy = <T, K extends string | number>(
  * @param order - Sort order (asc or desc)
  * @returns Sorted array
  */
-export const sortBy = <T>(
-  array: T[],
-  key: keyof T,
-  order: 'asc' | 'desc' = 'asc'
-): T[] => {
+export const sortBy = <T>(array: T[], key: keyof T, order: 'asc' | 'desc' = 'asc'): T[] => {
   return [...array].sort((a, b) => {
     const aVal = a[key];
     const bVal = b[key];
@@ -354,12 +339,9 @@ export const sortBy = <T>(
  * @param locale - Locale string
  * @returns Relative time string
  */
-export const getRelativeTime = (
-  date: string | Date | number,
-  locale: string = 'en-US'
-): string => {
-  const d = typeof date === 'string' ? new Date(date) : 
-            typeof date === 'number' ? new Date(date) : date;
+export const getRelativeTime = (date: string | Date | number, locale = 'en-US'): string => {
+  const d =
+    typeof date === 'string' ? new Date(date) : typeof date === 'number' ? new Date(date) : date;
   const now = new Date();
   const diffInSeconds = Math.floor((now.getTime() - d.getTime()) / 1000);
 

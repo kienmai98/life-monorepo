@@ -3,10 +3,10 @@
  * @module shared/test-utils
  */
 
-import React from 'react';
-import { render as rtlRender, RenderOptions } from '@testing-library/react-native';
-import { PaperProvider } from 'react-native-paper';
 import { NavigationContainer } from '@react-navigation/native';
+import { type RenderOptions, render as rtlRender } from '@testing-library/react-native';
+import type React from 'react';
+import { PaperProvider } from 'react-native-paper';
 
 /**
  * Mock theme for testing

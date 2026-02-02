@@ -1,10 +1,3 @@
-/**
- * Security utilities for the Life app
- * Provides secure storage and data protection patterns
- * @module shared/utils/security
- */
-
-import { Platform } from 'react-native';
 import * as Crypto from 'expo-crypto';
 
 /**
@@ -28,11 +21,11 @@ export type HashAlgorithm = 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512' | 'MD5';
  * Generates a cryptographically secure random string
  * @param length - Length of the string (default: 32)
  * @returns Random string
- * 
+ *
  * @example
  * const token = generateSecureToken(64);
  */
-export async function generateSecureToken(length: number = 32): Promise<string> {
+export async function generateSecureToken(length = 32): Promise<string> {
   const randomBytes = await Crypto.getRandomBytesAsync(length);
   return Array.from(randomBytes)
     .map((byte) => byte.toString(16).padStart(2, '0'))
@@ -44,7 +37,7 @@ export async function generateSecureToken(length: number = 32): Promise<string> 
  * @param data - Data to hash
  * @param algorithm - Hash algorithm (default: SHA-256)
  * @returns Hex-encoded hash
- * 
+ *
  * @example
  * const hash = await hashString('password', 'SHA-256');
  */
@@ -52,10 +45,7 @@ export async function hashString(
   data: string,
   algorithm: HashAlgorithm = 'SHA-256'
 ): Promise<string> {
-  return await Crypto.digestStringAsync(
-    Crypto.CryptoDigestAlgorithm[algorithm],
-    data
-  );
+  return await Crypto.digestStringAsync(Crypto.CryptoDigestAlgorithm[algorithm], data);
 }
 
 /**
@@ -63,7 +53,7 @@ export async function hashString(
  * @param a - First string
  * @param b - Second string
  * @returns Whether strings are equal
- * 
+ *
  * @example
  * if (timingSafeCompare(providedToken, storedToken)) {
  *   // Authentication successful
@@ -86,23 +76,27 @@ export function timingSafeCompare(a: string, b: string): boolean {
  * Sanitizes user input to prevent injection attacks
  * @param input - User input string
  * @returns Sanitized string
- * 
+ *
  * @example
  * const clean = sanitizeInput(userInput);
  */
 export function sanitizeInput(input: string): string {
-  return input
-    .trim()
-    .replace(/[\u0000-\u001F\u007F-\u009F]/g, '') // Remove control characters
-    .replace(/[\u200B-\u200D\uFEFF]/g, '') // Remove zero-width characters
-    .slice(0, 10000); // Limit length
+  return (
+    input
+      .trim()
+      // biome-ignore lint/suspicious/noControlCharactersInRegex: Intentionally removing control characters for security
+      .replace(/[\u0000-\u001F\u007F-\u009F]+/g, '') // Remove control characters
+      // biome-ignore lint/suspicious/noMisleadingCharacterClass: Intentionally removing zero-width characters
+      .replace(/(?:\u200B|\u200C|\u200D|\uFEFF)+/g, '') // Remove zero-width characters
+      .slice(0, 10000)
+  ); // Limit length
 }
 
 /**
  * Validates and sanitizes an email address
  * @param email - Email to validate
  * @returns Sanitized email or null if invalid
- * 
+ *
  * @example
  * const email = validateAndSanitizeEmail(userInput);
  * if (!email) {
@@ -112,11 +106,11 @@ export function sanitizeInput(input: string): string {
 export function validateAndSanitizeEmail(email: string): string | null {
   const sanitized = sanitizeInput(email).toLowerCase();
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
+
   if (!emailRegex.test(sanitized)) {
     return null;
   }
-  
+
   return sanitized;
 }
 
@@ -125,15 +119,15 @@ export function validateAndSanitizeEmail(email: string): string | null {
  * @param data - Data to mask
  * @param visibleChars - Number of characters to show at the end (default: 4)
  * @returns Masked string
- * 
+ *
  * @example
  * maskSensitiveData('1234567890123456'); // '************3456'
  */
-export function maskSensitiveData(data: string, visibleChars: number = 4): string {
+export function maskSensitiveData(data: string, visibleChars = 4): string {
   if (data.length <= visibleChars) {
     return '*'.repeat(data.length);
   }
-  
+
   const visible = data.slice(-visibleChars);
   const masked = '*'.repeat(data.length - visibleChars);
   return masked + visible;
@@ -147,13 +141,13 @@ export function maskSensitiveData(data: string, visibleChars: number = 4): strin
 export async function isDeviceCompromised(): Promise<boolean> {
   // In production, use a library like 'react-native-device-info' or 'jail-monkey'
   // This is a placeholder implementation
-  
+
   if (__DEV__) {
     return false;
   }
 
-  // Check for common jailbreak indicators
-  const jailbreakIndicators = [
+  // biome-ignore lint/correctness/noUnusedVariables: Used for documentation purposes
+  const _jailbreakIndicators = [
     '/Applications/Cydia.app',
     '/Applications/Blackra1n.app',
     '/Applications/FakeCarrier.app',
@@ -165,7 +159,6 @@ export async function isDeviceCompromised(): Promise<boolean> {
     '/Applications/WinterBoard.app',
     '/Applications/FiLeak.app',
     '/Applications/Firewall.ipa',
-    '/Applications/MxTube.app',
     '/Applications/Snoop-itConfig.app',
     '/usr/sbin/sshd',
     '/usr/bin/sshd',
@@ -173,7 +166,6 @@ export async function isDeviceCompromised(): Promise<boolean> {
     '/var/lib/apt',
     '/var/mobile/Library/SBSettings/Themes',
     '/private/var/stash',
-    '/private/var/mobile/Library/SBSettings/Themes',
     '/private/var/lib/apt',
     '/private/var/lib/cydia',
     '/private/var/tmp/cydia.log',
@@ -185,14 +177,12 @@ export async function isDeviceCompromised(): Promise<boolean> {
     '/etc/ssh/sshd_config',
     '/etc/apt',
     '/var/cache/apt',
-    '/var/lib/apt',
     '/var/log/syslog',
-    '/var/mobile/Media/.evasi0n7_installed',
-    '/var/mobile/Media/.cydia_installed',
   ];
 
   // In a real implementation, check if these paths exist
   // For now, return false
+  void _jailbreakIndicators; // Reference to avoid unused variable warning
   return false;
 }
 
@@ -205,7 +195,7 @@ export class RateLimiter {
   private maxAttempts: number;
   private windowMs: number;
 
-  constructor(maxAttempts: number = 5, windowMs: number = 60000) {
+  constructor(maxAttempts = 5, windowMs = 60000) {
     this.maxAttempts = maxAttempts;
     this.windowMs = windowMs;
   }
@@ -268,30 +258,30 @@ export class RateLimiter {
  * Creates a secure random password
  * @param length - Password length (default: 16)
  * @returns Secure random password
- * 
+ *
  * @example
  * const password = generateSecurePassword(20);
  */
-export function generateSecurePassword(length: number = 16): string {
+export function generateSecurePassword(length = 16): string {
   const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const lowercase = 'abcdefghijklmnopqrstuvwxyz';
   const numbers = '0123456789';
   const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
-  
+
   const all = uppercase + lowercase + numbers + symbols;
   let password = '';
-  
+
   // Ensure at least one of each type
   password += uppercase[Math.floor(Math.random() * uppercase.length)];
   password += lowercase[Math.floor(Math.random() * lowercase.length)];
   password += numbers[Math.floor(Math.random() * numbers.length)];
   password += symbols[Math.floor(Math.random() * symbols.length)];
-  
+
   // Fill the rest
   for (let i = 4; i < length; i++) {
     password += all[Math.floor(Math.random() * all.length)];
   }
-  
+
   // Shuffle
   return password
     .split('')
@@ -312,13 +302,13 @@ export async function encryptData(data: string, key: string): Promise<string> {
   const encoder = new TextEncoder();
   const dataBuffer = encoder.encode(data);
   const keyBuffer = encoder.encode(key);
-  
+
   // XOR encryption (NOT FOR PRODUCTION USE)
   const encrypted = new Uint8Array(dataBuffer.length);
   for (let i = 0; i < dataBuffer.length; i++) {
     encrypted[i] = dataBuffer[i] ^ keyBuffer[i % keyBuffer.length];
   }
-  
+
   return btoa(String.fromCharCode(...encrypted));
 }
 
@@ -331,15 +321,15 @@ export async function encryptData(data: string, key: string): Promise<string> {
  */
 export async function decryptData(encryptedData: string, key: string): Promise<string> {
   // In production, use a proper encryption library
-  const encrypted = Uint8Array.from(atob(encryptedData), c => c.charCodeAt(0));
+  const encrypted = Uint8Array.from(atob(encryptedData), (c) => c.charCodeAt(0));
   const encoder = new TextEncoder();
   const keyBuffer = encoder.encode(key);
-  
+
   const decrypted = new Uint8Array(encrypted.length);
   for (let i = 0; i < encrypted.length; i++) {
     decrypted[i] = encrypted[i] ^ keyBuffer[i % keyBuffer.length];
   }
-  
+
   return new TextDecoder().decode(decrypted);
 }
 
