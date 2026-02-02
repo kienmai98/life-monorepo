@@ -1,365 +1,631 @@
-# Life App
+# 📱 Life Mobile App
 
-A React Native application for managing your schedule and spending. Built with modern best practices for scalability, performance, and maintainability.
+A feature-rich React Native application for personal life management — track your schedule, monitor expenses, and stay organized with a beautiful, intuitive interface.
 
-## Features
+[![React Native](https://img.shields.io/badge/React_Native-0.83+-61DAFB?logo=react)](https://reactnative.dev/)
+[![iOS](https://img.shields.io/badge/iOS-13+-000000?logo=apple)](https://developer.apple.com/ios/)
+[![Android](https://img.shields.io/badge/Android-6.0+-3DDC84?logo=android)](https://developer.android.com/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.8+-3178C6?logo=typescript)](https://www.typescriptlang.org/)
 
-- **Authentication**: Email/Password, Google Sign-In, Apple Sign-In, Biometric Authentication
-- **Expense Tracking**: Manual transaction entry with categories, receipts, and location
-- **Schedule Management**: Google Calendar integration
-- **Dashboard**: Overview of finances and schedule
-- **Push Notifications**: Firebase Cloud Messaging
-- **Offline Support**: Background sync with AsyncStorage
-- **Dark Mode**: Full theming support
-- **Responsive Design**: Works on phones and tablets
+---
 
-## Tech Stack
+## ✨ Features
 
-| Category | Technology |
-|----------|------------|
-| Framework | React Native 0.83+ |
-| Language | TypeScript 5.8+ |
-| Navigation | React Navigation v7 |
-| State Management | Zustand with persistence |
-| UI Components | React Native Paper |
-| Animations | React Native Reanimated |
-| Backend | Firebase (Auth, Firestore, Messaging) + Supabase |
-| Storage | AsyncStorage |
-| Testing | Jest + React Native Testing Library |
+### 📅 Calendar Management
+- **Device Calendar Sync** - Two-way synchronization with native calendars
+- **Event Creation** - Add events with location, reminders, and notes
+- **Multiple Calendar Support** - Work, personal, and shared calendars
+- **Smart Scheduling** - Conflict detection and suggestions
 
-## Project Structure
+### 💰 Transaction Tracking
+- **Quick Entry** - Add expenses in seconds with templates
+- **Smart Categories** - AI-powered category suggestions
+- **Receipt Capture** - Photo upload with OCR
+- **Location Tagging** - Auto-tag based on GPS
+- **Budget Insights** - Visual spending analytics
+- **Export Data** - CSV/PDF reports
+
+### 🔐 Authentication
+- **Email/Password** - Traditional authentication
+- **Google Sign-In** - One-tap Google authentication
+- **Apple Sign-In** - Native iOS authentication
+- **Biometric Auth** - Face ID / Touch ID / Fingerprint
+- **Secure Storage** - Keychain/Keystore token storage
+
+### 🔔 Notifications
+- **Push Notifications** - Firebase Cloud Messaging
+- **Smart Reminders** - Context-aware alerts
+- **Quiet Hours** - Respect Do Not Disturb
+
+### 🎨 UI/UX
+- **Dark Mode** - Automatic system theme detection
+- **Responsive Design** - Optimized for phones and tablets
+- **Smooth Animations** - 60fps Reanimated transitions
+- **Offline Support** - Works without internet
+- **Accessibility** - Screen reader and large text support
+
+---
+
+## 🏗️ Architecture
 
 ```
-src/
-├── features/               # Feature-based modules
-│   ├── auth/              # Authentication feature
-│   │   ├── api/           # API clients
-│   │   ├── screens/       # Screen components
-│   │   ├── stores/        # Zustand stores with selectors
-│   │   └── index.ts       # Public exports
-│   ├── transactions/      # Transaction management
-│   ├── calendar/          # Calendar integration
-│   ├── dashboard/         # Dashboard overview
-│   └── profile/           # User profile
-├── navigation/            # Navigation configuration
-│   ├── AppNavigator.tsx
-│   ├── AuthNavigator.tsx
-│   ├── MainNavigator.tsx
-│   └── index.ts
-├── shared/                # Shared resources
-│   ├── components/        # Reusable UI components
-│   │   ├── ErrorBoundary.tsx
-│   │   ├── Skeleton.tsx
-│   │   ├── CardSkeleton.tsx
-│   │   └── TransactionSkeleton.tsx
-│   ├── hooks/             # Custom React hooks
-│   │   ├── useAsync.ts
-│   │   ├── useDebounce.ts
-│   │   ├── useErrorBoundary.ts
-│   │   ├── useIsMounted.ts
-│   │   ├── useLoadingState.ts
-│   │   ├── usePrevious.ts
-│   │   ├── useResponsive.ts
-│   │   ├── useSecureStorage.ts
-│   │   ├── useThemeMode.ts
-│   │   ├── useThrottle.ts
-│   │   └── useToggle.ts
-│   ├── types/             # TypeScript types
-│   ├── utils/             # Utility functions
-│   │   ├── helpers.ts
-│   │   ├── api.ts
-│   │   └── storage.ts
-│   └── test-utils.tsx     # Test utilities
-└── App.tsx               # App entry point
+┌─────────────────────────────────────────────────────────────┐
+│                     PRESENTATION LAYER                       │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
+│  │   Screens   │  │  Components │  │   Navigation        │ │
+│  │  (React)    │  │   (UI Kit)  │  │ (React Navigation)  │ │
+│  └──────┬──────┘  └──────┬──────┘  └─────────────────────┘ │
+└─────────┼────────────────┼──────────────────────────────────┘
+          │                │
+          ▼                ▼
+┌─────────────────────────────────────────────────────────────┐
+│                     STATE LAYER (Zustand)                    │
+├─────────────────────────────────────────────────────────────┤
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
+│  │  AuthStore  │  │  TxnStore   │  │   CalendarStore     │ │
+│  │  (User)     │  │ (Expenses)  │  │   (Events)          │ │
+│  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘ │
+└─────────┼────────────────┼────────────────────┼────────────┘
+          │                │                    │
+          └────────────────┼────────────────────┘
+                           │
+┌──────────────────────────┼──────────────────────────────────┐
+│                     DATA LAYER                               │
+├──────────────────────────┼──────────────────────────────────┤
+│                          ▼                                   │
+│  ┌───────────────────────────────────────────────────────┐  │
+│  │                    API CLIENT                          │  │
+│  │         (Firebase SDK + Supabase Client)               │  │
+│  └───────────────────────────┬───────────────────────────┘  │
+└──────────────────────────────┼──────────────────────────────┘
+                               │
+          ┌────────────────────┼────────────────────┐
+          ▼                    ▼                    ▼
+┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
+│   🔥 Firebase   │  │   🐘 Supabase   │  │  💾 Local Store │
+│                 │  │                 │  │                 │
+│ • Authentication│  │ • PostgreSQL    │  │ • AsyncStorage  │
+│ • Firestore     │  │ • Realtime      │  │ • Secure Store  │
+│ • FCM           │  │ • Storage       │  │ • SQLite        │
+└─────────────────┘  └─────────────────┘  └─────────────────┘
 ```
 
-## Architecture Principles
+---
 
-### 1. Feature-Based Organization
-
-Code is organized by feature rather than by type. Each feature contains:
-- **API**: External service communication
-- **Screens**: UI components
-- **Stores**: State management with Zustand
-- **Types**: Feature-specific TypeScript definitions
-
-### 2. Performance Optimization
-
-**Selectors for State Management:**
-```typescript
-// ❌ Bad: Subscribes to entire store
-const { transactions } = useTransactionStore();
-
-// ✅ Good: Only subscribes to specific data
-const transactions = useTransactionStore(selectTransactions);
-const isLoading = useTransactionStore(selectIsLoading);
-```
-
-**Memoization:**
-```typescript
-// Use React.memo for pure components
-const TransactionCard = React.memo(({ transaction }) => {
-  return <Card>...</Card>;
-});
-
-// Use useMemo for expensive computations
-const filteredTransactions = useMemo(() => {
-  return transactions.filter(t => t.amount > 100);
-}, [transactions]);
-
-// Use useCallback for event handlers
-const handlePress = useCallback(() => {
-  navigation.navigate('Detail', { id });
-}, [navigation, id]);
-```
-
-**FlatList Optimization:**
-```typescript
-<FlatList
-  data={transactions}
-  keyExtractor={(item) => item.id}
-  renderItem={renderTransaction}
-  getItemLayout={(data, index) => ({
-    length: 80,
-    offset: 80 * index,
-    index,
-  })}
-  maxToRenderPerBatch={10}
-  windowSize={10}
-  removeClippedSubviews={true}
-/>
-```
-
-### 3. Error Handling
-
-**Error Boundaries:**
-```typescript
-<ErrorBoundary
-  onError={(error, errorInfo) => logError(error)}
->
-  <AppNavigator />
-</ErrorBoundary>
-```
-
-**Async Error Handling:**
-```typescript
-const { error, hasError, withErrorHandling } = useErrorBoundary();
-
-const handleSubmit = withErrorHandling(async (data) => {
-  await saveTransaction(data);
-});
-```
-
-### 4. Custom Hooks
-
-Reusable logic extracted into custom hooks:
-
-| Hook | Purpose |
-|------|---------|
-| `useAsync` | Async operations with loading/error states |
-| `useDebounce` | Debounce function calls |
-| `useErrorBoundary` | Component-level error handling |
-| `useLoadingState` | Loading state with minimum duration |
-| `useResponsive` | Responsive breakpoint detection |
-| `useSecureStorage` | Persist state to storage |
-| `useThemeMode` | Theme mode with system preference |
-| `useThrottle` | Throttle function calls |
-| `useToggle` | Simple boolean state toggle |
-
-### 5. State Management
-
-**Zustand Store Pattern:**
-```typescript
-export const useStore = create<StoreType>()(
-  persist(
-    (set, get) => ({
-      // State
-      data: [],
-      isLoading: false,
-      
-      // Actions
-      setData: (data) => set({ data }),
-      
-      // Selectors (computed values)
-      getFilteredData: () => {
-        const { data, filter } = get();
-        return data.filter(...);
-      },
-    }),
-    {
-      name: 'store-name',
-      partialize: (state) => ({ data: state.data }),
-    }
-  )
-);
-
-// Selectors for performance
-export const selectData = (state: StoreType) => state.data;
-export const selectIsLoading = (state: StoreType) => state.isLoading;
-```
-
-### 6. Responsive Design
-
-```typescript
-const { width, isTablet, getResponsiveValue } = useResponsive();
-
-// Responsive values
-const padding = getResponsiveValue({
-  sm: 16,
-  md: 24,
-  lg: 32,
-  default: 16,
-});
-
-// Conditional rendering
-if (isTablet) {
-  return <TabletLayout />;
-}
-```
-
-### 7. Testing Strategy
-
-**Unit Tests:**
-```typescript
-describe('formatCurrency', () => {
-  it('formats USD correctly', () => {
-    expect(formatCurrency(1234.56)).toBe('$1,234.56');
-  });
-});
-```
-
-**Component Tests:**
-```typescript
-it('renders transaction details', () => {
-  const { getByText } = render(
-    <TransactionCard transaction={mockTransaction} />
-  );
-  expect(getByText('Grocery shopping')).toBeTruthy();
-});
-```
-
-**Hook Tests:**
-```typescript
-it('debounces function calls', async () => {
-  const fn = jest.fn();
-  const debounced = debounce(fn, 100);
-  
-  debounced();
-  debounced();
-  debounced();
-  
-  expect(fn).not.toHaveBeenCalled();
-  
-  await wait(150);
-  expect(fn).toHaveBeenCalledTimes(1);
-});
-```
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js >= 20
-- React Native CLI
-- Xcode (for iOS)
-- Android Studio (for Android)
-- Firebase project
-- Supabase project
+| Requirement | Version | Notes |
+|-------------|---------|-------|
+| Node.js | >= 20.0.0 | Use [nvm](https://github.com/nvm-sh/nvm) to manage |
+| Watchman | Latest | For file watching |
+| Xcode | >= 15.0 | macOS only, for iOS |
+| Android Studio | Latest | SDK 33+ required |
+| CocoaPods | >= 1.12 | `sudo gem install cocoapods` |
+| JDK | 17 | For Android builds |
 
-### Installation
+### 1. Installation
 
 ```bash
-# Clone repository
-git clone https://github.com/kienmai98/Life.git
-cd Life
+# Navigate to native app
+cd apps/native
 
 # Install dependencies
 npm install
 
-# iOS setup
+# iOS setup (macOS only)
 cd ios && pod install && cd ..
+```
 
-# Environment setup
+### 2. Environment Configuration
+
+Copy the environment template and configure:
+
+```bash
 cp .env.example .env
-# Edit .env with your configuration
 ```
 
-### Running the App
+Edit `.env` with your credentials:
 
 ```bash
-# iOS
-npm run ios
+# Firebase Configuration
+FIREBASE_API_KEY=your_firebase_api_key
+FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+FIREBASE_PROJECT_ID=your-project-id
+FIREBASE_STORAGE_BUCKET=your-project.appspot.com
+FIREBASE_MESSAGING_SENDER_ID=123456789
+FIREBASE_APP_ID=1:123456789:web:abcdef123456
+FIREBASE_MEASUREMENT_ID=G-XXXXXXXXXX
 
-# Android
-npm run android
-
-# Metro bundler
-npm start
-
-# Run tests
-npm test
-
-# Run tests with coverage
-npm test -- --coverage
-```
-
-## Environment Variables
-
-```bash
-# Firebase
-FIREBASE_API_KEY=your_key
-FIREBASE_PROJECT_ID=your_project
-
-# Supabase
+# Supabase Configuration
 SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_ANON_KEY=your_key
+SUPABASE_ANON_KEY=your_supabase_anon_key
 
 # Google Sign-In
-GOOGLE_WEB_CLIENT_ID=your_client_id
-GOOGLE_IOS_CLIENT_ID=your_client_id
+GOOGLE_WEB_CLIENT_ID=your_google_web_client_id.apps.googleusercontent.com
+GOOGLE_IOS_CLIENT_ID=your_google_ios_client_id.apps.googleusercontent.com
+
+# App Configuration
+APP_NAME=Life
+APP_VERSION=1.0.0
+API_URL=https://api.life-app.example.com
 ```
 
-## Performance Checklist
+---
 
-- [ ] Use selectors for Zustand store subscriptions
-- [ ] Wrap components with React.memo when appropriate
-- [ ] Use useMemo for expensive computations
-- [ ] Use useCallback for event handlers passed to children
-- [ ] Optimize FlatList with getItemLayout, maxToRenderPerBatch
-- [ ] Use removeClippedSubviews for long lists
-- [ ] Implement proper loading skeletons
-- [ ] Lazy load screens with React.lazy
-- [ ] Use Hermes engine for smaller bundle size
+## 🔥 Firebase Setup
 
-## Security Considerations
+### 1. Create Firebase Project
 
-- Store sensitive tokens in secure storage (Keychain/Keystore)
-- Never commit `.env` files
-- Validate all user input
-- Use parameterized queries for database operations
-- Implement proper session management
-- Enable certificate pinning for API calls
+1. Go to [Firebase Console](https://console.firebase.google.com/)
+2. Click "Add Project" and follow the wizard
+3. Enable Google Analytics (optional)
 
-## Contributing
+### 2. Register Apps
 
-1. Create a feature branch: `git checkout -b feature/amazing-feature`
-2. Make your changes
-3. Run tests: `npm test`
-4. Run linting: `npm run lint`
-5. Commit changes: `git commit -m 'Add amazing feature'`
-6. Push to branch: `git push origin feature/amazing-feature`
-7. Open a Pull Request
+#### iOS App
 
-## Documentation
+1. In Firebase Console, click "Add app" → iOS
+2. Enter Bundle ID (e.g., `com.yourcompany.life`)
+3. Download `GoogleService-Info.plist`
+4. Place in `ios/Life/GoogleService-Info.plist`
 
-- [Architecture Decision Records](./docs/adr/)
-- [API Documentation](./docs/api.md)
-- [Component Library](./docs/components.md)
+#### Android App
 
-## License
+1. In Firebase Console, click "Add app" → Android
+2. Enter Package Name (e.g., `com.yourcompany.life`)
+3. Download `google-services.json`
+4. Place in `android/app/google-services.json`
 
-MIT
+### 3. Enable Services
 
-## Support
+| Service | How to Enable |
+|---------|---------------|
+| **Authentication** | Build → Authentication → Get Started → Enable Email/Password, Google, Apple |
+| **Firestore** | Build → Firestore Database → Create Database → Start in test mode |
+| **Cloud Messaging** | Build → Cloud Messaging → Click "Enable" |
+| **Analytics** | Already enabled with Google Analytics |
 
-For support, email support@life-app.example.com or open an issue on GitHub.
+### 4. Configure Auth Providers
+
+#### Google Sign-In
+
+1. Go to Authentication → Sign-in method
+2. Enable "Google"
+3. Add support email
+4. Save
+
+#### Apple Sign-In (iOS only)
+
+1. Go to Authentication → Sign-in method
+2. Enable "Apple"
+3. Configure Apple Developer settings
+4. Save
+
+---
+
+## 🐘 Supabase Setup
+
+### 1. Create Supabase Project
+
+1. Go to [Supabase Dashboard](https://app.supabase.io/)
+2. Click "New Project"
+3. Enter project name and database password
+4. Choose region closest to your users
+
+### 2. Get Credentials
+
+1. Go to Project Settings → API
+2. Copy:
+   - **Project URL** → `SUPABASE_URL`
+   - **anon public** key → `SUPABASE_ANON_KEY`
+
+### 3. Database Schema
+
+Run this SQL in Supabase SQL Editor:
+
+```sql
+-- Enable RLS (Row Level Security)
+alter table auth.users enable row level security;
+
+-- Create transactions table
+CREATE TABLE transactions (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) NOT NULL,
+  amount DECIMAL(10,2) NOT NULL,
+  category VARCHAR(50) NOT NULL,
+  description TEXT,
+  date DATE NOT NULL,
+  receipt_url TEXT,
+  location JSONB,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS on transactions
+ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
+
+-- Create policy for users to see only their transactions
+CREATE POLICY "Users can only access their own transactions"
+  ON transactions
+  FOR ALL
+  USING (auth.uid() = user_id);
+
+-- Create calendar events table
+CREATE TABLE calendar_events (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  user_id UUID REFERENCES auth.users(id) NOT NULL,
+  title VARCHAR(255) NOT NULL,
+  start_date TIMESTAMP WITH TIME ZONE NOT NULL,
+  end_date TIMESTAMP WITH TIME ZONE NOT NULL,
+  description TEXT,
+  location VARCHAR(255),
+  is_all_day BOOLEAN DEFAULT FALSE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Enable RLS on calendar events
+ALTER TABLE calendar_events ENABLE ROW LEVEL SECURITY;
+
+-- Create policy for calendar events
+CREATE POLICY "Users can only access their own calendar events"
+  ON calendar_events
+  FOR ALL
+  USING (auth.uid() = user_id);
+
+-- Create function to update updated_at
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+  NEW.updated_at = NOW();
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create trigger for transactions
+CREATE TRIGGER update_transactions_updated_at
+  BEFORE UPDATE ON transactions
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+```
+
+### 4. Storage Setup (Receipts)
+
+1. Go to Storage → New Bucket
+2. Create bucket named: `receipts`
+3. Set to Private
+4. Add RLS policy:
+
+```sql
+-- Allow users to upload their own receipts
+CREATE POLICY "Users can upload their own receipts"
+  ON storage.objects
+  FOR INSERT
+  WITH CHECK (auth.uid() = owner);
+
+-- Allow users to view their own receipts
+CREATE POLICY "Users can view their own receipts"
+  ON storage.objects
+  FOR SELECT
+  USING (auth.uid() = owner);
+```
+
+---
+
+## 🔐 Biometric Authentication Setup
+
+### iOS (Face ID / Touch ID)
+
+#### 1. Add Permissions to Info.plist
+
+Add to `ios/Life/Info.plist`:
+
+```xml
+<key>NSFaceIDUsageDescription</key>
+<string>This app uses Face ID to secure your data</string>
+```
+
+#### 2. Enable Capabilities
+
+In Xcode:
+1. Select project → Target → Signing & Capabilities
+2. Click "+ Capability"
+3. Add "Keychain Sharing"
+
+### Android (Fingerprint / Face Unlock)
+
+#### 1. Add Permissions
+
+Add to `android/app/src/main/AndroidManifest.xml`:
+
+```xml
+<uses-permission android:name="android.permission.USE_BIOMETRIC" />
+<uses-permission android:name="android.permission.USE_FINGERPRINT" />
+```
+
+#### 2. Configure Biometric Prompt
+
+The `react-native-biometrics` library handles the native setup automatically.
+
+### Usage in Code
+
+```typescript
+import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
+
+// Check available biometry
+const { available, biometryType } = await ReactNativeBiometrics.isSensorAvailable();
+
+if (available) {
+  console.log('Biometry type:', biometryType); // 'FaceID', 'TouchID', 'Biometrics'
+}
+
+// Prompt for biometric authentication
+const { success } = await ReactNativeBiometrics.simplePrompt({
+  promptMessage: 'Confirm your identity',
+  cancelButtonText: 'Cancel',
+});
+
+if (success) {
+  // User authenticated successfully
+  console.log('Biometric authentication successful');
+}
+
+// Create and store keys for crypto operations
+const { publicKey } = await ReactNativeBiometrics.createKeys();
+
+// Sign data with biometric authentication
+const { success, signature } = await ReactNativeBiometrics.createSignature({
+  promptMessage: 'Sign in',
+  payload: 'your-payload-data',
+});
+```
+
+### Storing Credentials Securely
+
+```typescript
+import { useSecureStorage } from './shared/hooks/useSecureStorage';
+
+// Store sensitive data
+const [token, setToken, removeToken] = useSecureStorage('authToken');
+
+// Save token
+await setToken('your-jwt-token');
+
+// Retrieve token
+const currentToken = await token;
+
+// Remove token
+await removeToken();
+```
+
+---
+
+## 📱 Build Commands
+
+### Development
+
+```bash
+# Start Metro bundler
+npm start
+
+# Run on iOS simulator
+npm run ios
+
+# Run on specific iOS device
+npm run ios -- --simulator="iPhone 15 Pro"
+
+# Run on Android emulator
+npm run android
+
+# Run on specific Android variant
+npm run android -- --variant=debug
+```
+
+### Testing
+
+```bash
+# Run unit tests
+npm test
+
+# Run with coverage
+npm test -- --coverage
+
+# Run specific test file
+npm test -- Transactions.test.tsx
+
+# Watch mode
+npm test -- --watch
+
+# Update snapshots
+npm test -- --updateSnapshot
+```
+
+### Code Quality
+
+```bash
+# Lint code
+cd ../.. && npm run lint:biome -- apps/native
+
+# Check types
+npm run check
+
+# Format code
+npm run format
+```
+
+### Production Builds
+
+#### iOS
+
+```bash
+# Archive for App Store
+cd ios
+xcodebuild archive \
+  -workspace Life.xcworkspace \
+  -scheme Life \
+  -configuration Release \
+  -archivePath build/Life.xcarchive
+
+# Export IPA
+xcodebuild -exportArchive \
+  -archivePath build/Life.xcarchive \
+  -exportOptionsPlist ExportOptions.plist \
+  -exportPath build/ipa
+```
+
+#### Android
+
+```bash
+# Build release APK
+cd android
+./gradlew assembleRelease
+
+# Output: android/app/build/outputs/apk/release/app-release.apk
+
+# Build release AAB (for Play Store)
+./gradlew bundleRelease
+
+# Output: android/app/build/outputs/bundle/release/app-release.aab
+```
+
+---
+
+## 📂 Project Structure
+
+```
+apps/native/
+├── 📱 ios/                     # iOS native project
+│   ├── Life/                  # iOS app source
+│   ├── Life.xcworkspace       # Xcode workspace
+│   └── Podfile                # CocoaPods dependencies
+│
+├── 🤖 android/                 # Android native project
+│   ├── app/                   # Android app module
+│   ├── gradle/                # Gradle wrapper
+│   └── build.gradle           # Build configuration
+│
+├── 🎨 src/
+│   ├── features/              # Feature-based modules
+│   │   ├── auth/             # Authentication feature
+│   │   │   ├── api/          # Firebase auth API
+│   │   │   ├── screens/      # Login, Register, BiometricSetup
+│   │   │   ├── stores/       # Zustand auth store
+│   │   │   └── index.ts      # Public exports
+│   │   ├── calendar/         # Calendar integration
+│   │   ├── transactions/     # Expense tracking
+│   │   └── dashboard/        # Home dashboard
+│   │
+│   ├── navigation/           # Navigation setup
+│   │   ├── AppNavigator.tsx  # Root navigator
+│   │   ├── AuthNavigator.tsx # Auth flow
+│   │   └── MainNavigator.tsx # Main app tabs
+│   │
+│   └── shared/               # Shared resources
+│       ├── components/       # Reusable UI components
+│       ├── hooks/            # Custom React hooks
+│       ├── types/            # TypeScript types
+│       └── utils/            # Utility functions
+│
+├── 📋 __tests__/             # Test files
+├── 📦 package.json           # Dependencies
+├── ⚙️  tsconfig.json         # TypeScript config
+└── 🔧 babel.config.js        # Babel configuration
+```
+
+---
+
+## 🎨 Customization
+
+### Theming
+
+```typescript
+import { MD3LightTheme, MD3DarkTheme } from 'react-native-paper';
+
+const customTheme = {
+  ...MD3LightTheme,
+  colors: {
+    ...MD3LightTheme.colors,
+    primary: '#6200EE',
+    secondary: '#03DAC6',
+  },
+};
+```
+
+### Adding New Features
+
+1. Create feature folder: `src/features/newFeature/`
+2. Add subdirectories: `api/`, `screens/`, `stores/`
+3. Create barrel export: `index.ts`
+4. Add navigation entry
+5. Update root exports
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+#### iOS Build Fails
+
+```bash
+# Clean build
+cd ios && rm -rf build Pods Podfile.lock
+cd .. && npx pod-install
+
+# Reset Metro cache
+npm start -- --reset-cache
+```
+
+#### Android Build Fails
+
+```bash
+# Clean build
+cd android && ./gradlew clean
+cd .. && npm run android
+
+# Clear Gradle cache
+./gradlew cleanBuildCache
+```
+
+#### Metro Bundler Issues
+
+```bash
+# Reset cache
+npm start -- --reset-cache
+
+# Clear watchman
+watchman watch-del-all
+
+# Remove node_modules
+rm -rf node_modules && npm install
+```
+
+#### Firebase Auth Not Working
+
+- Verify `GoogleService-Info.plist` / `google-services.json` are correct
+- Check bundle ID/package name matches Firebase
+- Enable auth providers in Firebase Console
+
+---
+
+## 📚 Additional Documentation
+
+- [React Native Docs](https://reactnative.dev/docs/getting-started)
+- [Firebase React Native](https://rnfirebase.io/)
+- [Supabase JS Client](https://supabase.com/docs/reference/javascript)
+- [React Navigation](https://reactnavigation.org/)
+- [React Native Paper](https://callstack.github.io/react-native-paper/)
+
+---
+
+## 🤝 Contributing
+
+See [CONTRIBUTING.md](../docs/CONTRIBUTING.md) for development guidelines.
+
+---
+
+## 📝 License
+
+[MIT](../../LICENSE) © 2024 Life App Team
