@@ -1,0 +1,31 @@
+{
+  "name": "@life/web",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "lint": "cd ../.. && biome lint apps/web",
+    "check": "cd ../.. && biome check apps/web",
+    "format": "cd ../.. && biome format --write apps/web",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.20.0",
+    "zustand": "^5.0.3",
+    "date-fns": "^4.1.0",
+    "@life/types": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "@vitejs/plugin-react": "^4.2.0",
+    "typescript": "^5.8.3",
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
+  }
+}
