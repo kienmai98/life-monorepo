@@ -111,6 +111,20 @@ export interface NotificationPreferences {
   billReminders: boolean;
 }
 
+/**
+ * User settings
+ */
+export interface UserSettings {
+  /** Dark mode preference */
+  darkMode: boolean;
+  /** Notifications enabled */
+  notificationsEnabled: boolean;
+  /** Biometric authentication enabled */
+  biometricEnabled: boolean;
+  /** Default currency */
+  currency: string;
+}
+
 // ============================================
 // TRANSACTION TYPES
 // ============================================

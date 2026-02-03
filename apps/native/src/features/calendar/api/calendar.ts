@@ -114,7 +114,8 @@ class CalendarService {
   async syncWithGoogleCalendar(): Promise<void> {
     // This would integrate with Google Calendar API for two-way sync
     // Implementation depends on backend server for secure OAuth handling
-    console.log('Google Calendar sync initiated');
+    // TODO: Implement Google Calendar API integration
+    // console.log('Google Calendar sync initiated');
   }
 }
 

@@ -287,7 +287,7 @@ export const useTransactionStore = create<TransactionStore>()(
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Supabase fetch
-          console.log('Fetching transactions for:', userId, filter);
+          // console.log('Fetching transactions for:', userId, filter);
           // Placeholder - simulate API call
           await new Promise((resolve) => setTimeout(resolve, 1000));
           set({ isLoading: false });
