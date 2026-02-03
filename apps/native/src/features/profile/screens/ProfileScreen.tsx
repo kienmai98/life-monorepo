@@ -15,9 +15,9 @@ import {
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useAuthStore } from '../../auth/stores/authStore';
-import { useTransactionStore } from '../../stores/transactionStore';
-import storage from '../../utils/storage';
+import { useAuthStore } from '@/features/auth/stores/authStore';
+import { useTransactionStore } from '@/features/transactions/stores/transactionStore';
+import { storage } from '@/shared/utils/storage';
 
 const ProfileScreen: React.FC = () => {
   const theme = useTheme();

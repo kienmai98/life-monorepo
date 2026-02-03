@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { storage } from '../utils/storage';
+import { storage } from '@/shared/utils/storage';
 
 /**
  * Storage types supported

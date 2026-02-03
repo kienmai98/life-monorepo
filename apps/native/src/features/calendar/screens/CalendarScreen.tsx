@@ -15,9 +15,9 @@ import { FlatList, RefreshControl, StyleSheet, TouchableOpacity, View } from 're
 import { Card, Chip, Divider, FAB, IconButton, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import type { CalendarEvent } from '../../../shared/types';
-import { formatTime } from '../../../shared/utils/helpers';
-import { useCalendarStore } from '../stores/calendarStore';
+import type { CalendarEvent } from '@/shared/types';
+import { formatTime } from '@/shared/utils/helpers';
+import { useCalendarStore } from '@/features/calendar/stores/calendarStore';
 
 const CalendarScreen: React.FC = () => {
   const theme = useTheme();

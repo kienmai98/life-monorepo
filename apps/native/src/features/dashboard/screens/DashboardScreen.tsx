@@ -10,10 +10,10 @@ import {
   formatDate,
   formatTime,
   isEventToday,
-} from '../../../shared/utils/helpers';
-import { useAuthStore } from '../../auth/stores/authStore';
-import { useCalendarStore } from '../../calendar/stores/calendarStore';
-import { useTransactionStore } from '../../transactions/stores/transactionStore';
+} from '@/shared/utils/helpers';
+import { useAuthStore } from '@/features/auth/stores/authStore';
+import { useCalendarStore } from '@/features/calendar/stores/calendarStore';
+import { useTransactionStore } from '@/features/transactions/stores/transactionStore';
 
 const DashboardScreen: React.FC = () => {
   const theme = useTheme();

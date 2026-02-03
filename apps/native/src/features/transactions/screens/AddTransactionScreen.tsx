@@ -24,10 +24,10 @@ import {
   useTheme,
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useAuthStore } from '../../auth/stores/authStore';
-import { useTransactionStore } from '../../stores/transactionStore';
-import type { PaymentMethod, TransactionCategory } from '../../types';
-import { capitalizeFirst, getCategoryIcon } from '../../utils/helpers';
+import { useAuthStore } from '@/features/auth/stores/authStore';
+import { useTransactionStore } from '@/features/transactions/stores/transactionStore';
+import type { PaymentMethod, TransactionCategory } from '@/shared/types';
+import { capitalizeFirst, getCategoryIcon } from '@/shared/utils/helpers';
 
 type AddTransactionScreenProps = {
   navigation: NativeStackNavigationProp<any, 'AddTransaction'>;

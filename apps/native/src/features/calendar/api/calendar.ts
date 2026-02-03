@@ -1,5 +1,5 @@
 import RNCalendarEvents from 'react-native-calendar-events';
-import type { CalendarEvent } from '../types';
+import type { CalendarEvent } from '@/features/calendar/types';
 
 class CalendarService {
   async requestPermission(): Promise<boolean> {

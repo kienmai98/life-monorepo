@@ -3,7 +3,7 @@
  * @module shared/utils/api
  */
 
-import type { ApiError, ApiResponse, PaginationInfo } from '../types';
+import type { ApiError, ApiResponse, PaginationInfo } from '@/shared/types';
 
 /**
  * API configuration
