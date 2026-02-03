@@ -46,3 +46,17 @@ pnpm-debug.log*
 *.tmp
 *.temp
 .cache/
+
+# OpenClaw specific
+memory/
+openclaw-helpers.sh
+openclaw-utils/
+
+# Package manager (using pnpm)
+package-lock.json
+
+# Turbo cache
+.turbo/
+
+# Nested folder artifact
+life-monorepo/
