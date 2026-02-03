@@ -4,8 +4,8 @@ import firestore from '@react-native-firebase/firestore';
 import messaging from '@react-native-firebase/messaging';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Platform } from 'react-native';
-import type { User, UserSettings } from '../../../shared/types';
-import storage from '../../../shared/utils/storage';
+import type { User, UserSettings } from '@/shared/types';
+import storage from '@/shared/utils/storage';
 
 // Initialize Google Sign-In
 GoogleSignin.configure({

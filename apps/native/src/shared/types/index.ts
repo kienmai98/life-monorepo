@@ -382,11 +382,11 @@ export type ThemeMode = 'light' | 'dark' | 'system';
 export type ActiveTheme = 'light' | 'dark';
 
 // Re-export from features for convenience
-export type { User as AuthUser } from '../../features/auth/stores/authStore';
+export type { User as AuthUser } from '@/features/auth/stores/authStore';
 export type {
   Transaction as TransactionEntity,
   TransactionCategory,
   TransactionStats,
   TransactionFilter,
   PaymentMethod,
-} from '../../features/transactions/stores/transactionStore';
+} from '@/features/transactions/stores/transactionStore';

@@ -5,8 +5,8 @@ import ReactNativeBiometrics, { BiometryTypes } from 'react-native-biometrics';
 import { Button, Surface, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import type { AuthStackParamList } from '../../../navigation/AuthNavigator';
-import storage from '../../../shared/utils/storage';
+import type { AuthStackParamList } from '@/navigation/AuthNavigator';
+import storage from '@/shared/utils/storage';
 
 type BiometricSetupScreenProps = {
   navigation: NativeStackNavigationProp<AuthStackParamList, 'BiometricSetup'>;

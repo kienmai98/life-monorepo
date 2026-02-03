@@ -4,8 +4,8 @@ import type React from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
-import { useAuthStore } from '../features/auth';
-import type { RootStackParamList } from '../shared/types';
+import { useAuthStore } from '@/features/auth';
+import type { RootStackParamList } from '@/shared/types';
 import { AuthNavigator } from './AuthNavigator';
 import { MainNavigator } from './MainNavigator';
 

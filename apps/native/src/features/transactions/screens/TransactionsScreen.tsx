@@ -18,15 +18,15 @@ import {
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import type { Transaction, TransactionCategory } from '../../../shared/types';
+import type { Transaction, TransactionCategory } from '@/shared/types';
 import {
   capitalizeFirst,
   formatCurrency,
   getCategoryColor,
   getCategoryIcon,
-} from '../../../shared/utils/helpers';
-import { useAuthStore } from '../../auth/stores/authStore';
-import { useTransactionStore } from '../stores/transactionStore';
+} from '@/shared/utils/helpers';
+import { useAuthStore } from '@/features/auth/stores/authStore';
+import { useTransactionStore } from '@/features/transactions/stores/transactionStore';
 
 const TransactionsScreen: React.FC = () => {
   const theme = useTheme();

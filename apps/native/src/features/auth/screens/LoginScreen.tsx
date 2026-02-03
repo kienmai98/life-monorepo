@@ -13,9 +13,9 @@ import {
 } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import type { AuthStackParamList } from '../../../shared/types';
-import { validateEmail } from '../../../shared/utils/helpers';
-import { useAuthStore } from '../stores/authStore';
+import type { AuthStackParamList } from '@/shared/types';
+import { validateEmail } from '@/shared/utils/helpers';
+import { useAuthStore } from '@/features/auth/stores/authStore';
 
 type LoginScreenProps = {
   navigation: NativeStackNavigationProp<AuthStackParamList, 'Login'>;

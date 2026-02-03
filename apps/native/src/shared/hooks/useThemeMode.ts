@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useColorScheme } from 'react-native';
-import { storage } from '../utils/storage';
+import { storage } from '@/shared/utils/storage';
 
 /**
  * Theme mode types
