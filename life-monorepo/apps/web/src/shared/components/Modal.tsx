@@ -50,9 +50,9 @@ export const Modal: React.FC<ModalProps> = ({
   return (
     <div className="modal-overlay" onClick={handleOverlayClick}>
       <div className="modal" role="dialog" aria-modal="true">
-        {(title || onClose) && (
+        {(title) && (
           <div className="modal__header">
-            {title && <h2 className="modal__title">{title}</h2>}
+            <h2 className="modal__title">{title}</h2>
             <button
               className="modal__close"
               onClick={onClose}

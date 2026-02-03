@@ -66,7 +66,7 @@ export const useAuthStore = create<AuthStore>()(
         isLoading: false 
       }),
 
-      login: async (email, password) => {
+      login: async (email, _password) => {
         set({ isLoading: true, error: null });
         
         // Simulate API delay
@@ -90,7 +90,7 @@ export const useAuthStore = create<AuthStore>()(
         });
       },
 
-      register: async (email, password, displayName) => {
+      register: async (email, _password, displayName) => {
         set({ isLoading: true, error: null });
         
         // Simulate API delay

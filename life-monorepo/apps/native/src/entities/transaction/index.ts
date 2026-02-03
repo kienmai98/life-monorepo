@@ -1,3 +1,8 @@
+/**
+ * @module entities/transaction
+ * @description Transaction entity exports
+ */
+
 export type {
   Transaction,
   TransactionCategory,
@@ -17,4 +22,8 @@ export {
   selectTransactionCount,
 } from './model/selectors';
 
-export type { TransactionState, defaultFilter, initialTransactionState } from './model/store';
+export type {
+  TransactionState,
+  defaultFilter,
+  initialTransactionState,
+} from './model/store';

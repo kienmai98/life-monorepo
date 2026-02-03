@@ -34,6 +34,12 @@ export interface TransactionStats {
   expenses: number;
   total: number;
   byCategory: Record<TransactionCategory, number>;
+  // Aliases for UI compatibility
+  totalIncome: number;
+  totalExpenses: number;
+  netBalance: number;
+  spendingByCategory: Record<string, number>;
+  transactionCount: number;
 }
 
 export interface TransactionFilter {
@@ -120,11 +126,25 @@ export const useTransactionStore = create<TransactionState>()(
             return acc;
           }, {} as Record<TransactionCategory, number>);
 
+          // Build spendingByCategory (expenses only)
+          const spendingByCategory: Record<string, number> = {};
+          transactions
+            .filter((t) => t.type === 'expense')
+            .forEach((t) => {
+              spendingByCategory[t.category] = (spendingByCategory[t.category] || 0) + t.amount;
+            });
+
           return {
             income,
             expenses,
             total: income - expenses,
             byCategory,
+            // Aliases for UI compatibility
+            totalIncome: income,
+            totalExpenses: expenses,
+            netBalance: income - expenses,
+            spendingByCategory,
+            transactionCount: transactions.length,
           };
         },
 
@@ -149,11 +169,25 @@ export const useTransactionStore = create<TransactionState>()(
             return acc;
           }, {} as Record<TransactionCategory, number>);
 
+          // Build spendingByCategory (expenses only)
+          const spendingByCategory: Record<string, number> = {};
+          monthTransactions
+            .filter((t) => t.type === 'expense')
+            .forEach((t) => {
+              spendingByCategory[t.category] = (spendingByCategory[t.category] || 0) + t.amount;
+            });
+
           return {
             income,
             expenses,
             total: income - expenses,
             byCategory,
+            // Aliases for UI compatibility
+            totalIncome: income,
+            totalExpenses: expenses,
+            netBalance: income - expenses,
+            spendingByCategory,
+            transactionCount: monthTransactions.length,
           };
         },
 

@@ -1,7 +1,8 @@
 import React from 'react';
 import { format } from 'date-fns';
 import type { Transaction } from '../model';
-import { getCategoryIcon, getCategoryColor, formatCurrency, capitalizeFirst } from '../../../shared/lib';
+import { getCategoryIcon, getCategoryColor } from '../model/types';
+import { formatCurrency, capitalizeFirst } from '../../../shared/lib';
 import './TransactionItem.css';
 
 export interface TransactionItemProps {

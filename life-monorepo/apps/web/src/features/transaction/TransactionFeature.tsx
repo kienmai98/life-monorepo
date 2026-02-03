@@ -1,6 +1,6 @@
 import React, { useMemo, useCallback } from 'react';
 import { getMonthName, formatCurrency } from '../../shared/lib';
-import { useTransactionStore, type TransactionCategory } from '../../entities/transaction/model';
+import { useTransactionStore, type TransactionCategory, type Transaction } from '../../entities/transaction/model';
 import { TransactionItem, CategoryFilter, TransactionForm } from '../../entities/transaction/ui';
 import { Button, Card, Modal } from '../../shared/components';
 import { useModal } from '../../shared/hooks';
@@ -84,7 +84,7 @@ const StatsCard: React.FC<StatsCardProps> = ({ income, expenses, total }) => {
  * TransactionList component - displays filtered transactions
  */
 interface TransactionListProps {
-  transactions: ReturnType<typeof useTransactionStore.getState.transactions>;
+  transactions: Transaction[];
 }
 
 const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
@@ -100,7 +100,7 @@ const TransactionList: React.FC<TransactionListProps> = ({ transactions }) => {
 
   return (
     <div className="transaction-list">
-      {transactions.map((transaction) => (
+      {transactions.map((transaction: Transaction) => (
         <TransactionItem key={transaction.id} transaction={transaction} />
       ))}
     </div>

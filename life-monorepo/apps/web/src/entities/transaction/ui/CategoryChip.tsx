@@ -1,6 +1,7 @@
 import React from 'react';
 import type { TransactionCategory } from '../model';
-import { getCategoryIcon, getCategoryColor, capitalizeFirst, COMMON_CATEGORIES } from '../../../shared/lib';
+import { getCategoryIcon, getCategoryColor, COMMON_CATEGORIES } from '../model/types';
+import { capitalizeFirst } from '../../../shared/lib';
 import './CategoryChip.css';
 
 export interface CategoryChipProps {
@@ -66,7 +67,7 @@ export const CategoryFilter: React.FC<CategoryFilterProps> = ({
           onClick={() => onSelect('all')}
         />
       )}
-      {categories.map((category) => (
+      {categories.map((category: TransactionCategory) => (
         <CategoryChip
           key={category}
           category={category}

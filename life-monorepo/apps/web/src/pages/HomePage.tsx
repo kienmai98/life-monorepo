@@ -1,7 +1,7 @@
 import React from 'react';
 import { useAuthStore } from '../entities/user/model/store';
 import { useTransactionStore } from '../entities/transaction/model/store';
-import { useCalendarStore } from '../entities/event/model/store';
+import { useCalendarStore, CalendarEvent } from '../entities/event/model/store';
 import { formatCurrency, getGreeting, capitalizeFirst } from '../shared/lib/helpers';
 import './HomePage.css';
 
@@ -87,7 +87,7 @@ export const HomePage: React.FC = () => {
         
         {upcomingEvents.length > 0 ? (
           <div className="events-list">
-            {upcomingEvents.map((event) => (
+            {upcomingEvents.map((event: CalendarEvent) => (
               <div key={event.id} className="event-item">
                 <div 
                   className="event-indicator" 
@@ -116,7 +116,7 @@ export const HomePage: React.FC = () => {
         <h2 className="card-title">RECENT TRANSACTIONS</h2>
         
         <div className="mini-transaction-list">
-          {>/* Show sample transactions */}
+          {/* Show sample transactions */}
           <>
             <div className="mini-transaction">
               <div className="mini-transaction-icon">🍔</div>

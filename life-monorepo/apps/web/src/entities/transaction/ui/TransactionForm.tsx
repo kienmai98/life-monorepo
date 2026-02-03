@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Button, Input } from '../../../shared/components';
+import { Button } from '../../../shared/components';
 import type { TransactionCategory, TransactionType } from '../model';
-import { ALL_CATEGORIES, getCategoryIcon, capitalizeFirst } from '../../../shared/lib';
+import { ALL_CATEGORIES, getCategoryIcon } from '../model/types';
+import { capitalizeFirst } from '../../../shared/lib';
 import './TransactionForm.css';
 
 export interface TransactionFormData {
@@ -99,7 +100,7 @@ export const TransactionForm: React.FC<TransactionFormProps> = ({
           onChange={(e) => setCategory(e.target.value as TransactionCategory)}
           required
         >
-          {ALL_CATEGORIES.map((cat) => (
+          {ALL_CATEGORIES.map((cat: TransactionCategory) => (
             <option key={cat} value={cat}>
               {getCategoryIcon(cat)} {capitalizeFirst(cat)}
             </option>

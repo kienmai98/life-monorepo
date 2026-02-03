@@ -30,6 +30,7 @@ interface CalendarState {
   // Computed (selectors)
   getEventsForDate: (date: Date) => CalendarEvent[];
   getEventsForMonth: (date: Date) => CalendarEvent[];
+  getUpcomingEvents: (count?: number) => CalendarEvent[];
   
   // Actions
   addEvent: (event: Omit<CalendarEvent, 'id'>) => void;
@@ -83,6 +84,16 @@ export const useCalendarStore = create<CalendarState>()(
               eventDate.getFullYear() === date.getFullYear()
             );
           });
+        },
+
+        getUpcomingEvents: (count: number = 5) => {
+          const { events } = get();
+          const now = new Date();
+          
+          return events
+            .filter((event) => new Date(event.startDate) >= now)
+            .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+            .slice(0, count);
         },
 
         // Actions

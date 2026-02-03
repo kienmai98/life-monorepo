@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { format, isToday } from 'date-fns';
-import { useCalendarStore } from '../../entities/event/model';
+import { useCalendarStore, CalendarEvent } from '../../entities/event/model';
 import { CalendarGrid, EventCard, EventForm } from '../../entities/event/ui';
 import { Button, Modal } from '../../shared/components';
 import { useModal } from '../../shared/hooks';
@@ -46,7 +46,7 @@ const CalendarHeader: React.FC<CalendarHeaderProps> = ({
  */
 interface SelectedDatePanelProps {
   selectedDate: Date;
-  events: ReturnType<typeof useCalendarStore.getState.getEventsForDate>;
+  events: CalendarEvent[];
   onAddEvent: () => void;
 }
 
@@ -76,7 +76,7 @@ const SelectedDatePanel: React.FC<SelectedDatePanelProps> = ({
 
       <div className="selected-date-panel__events">
         {events.length > 0 ? (
-          events.map((event) => (
+          events.map((event: CalendarEvent) => (
             <EventCard key={event.id} event={event} />
           ))
         ) : (

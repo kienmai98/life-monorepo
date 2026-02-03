@@ -1,4 +1,15 @@
 /**
+ * Get a greeting based on the current time of day
+ * @returns Greeting string (e.g., "Good morning", "Good afternoon", "Good evening")
+ */
+export function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good morning';
+  if (hour < 18) return 'Good afternoon';
+  return 'Good evening';
+}
+
+/**
  * Format a number as currency
  * @param amount - The amount to format
  * @param currency - The currency code (default: 'USD')
