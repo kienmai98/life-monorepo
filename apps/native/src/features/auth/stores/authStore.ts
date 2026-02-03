@@ -120,7 +120,8 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Firebase email/password login
-          console.log('Login attempt:', email);
+          // eslint-disable-next-line no-console
+          // console.log('Login attempt:', email);
           // Placeholder - will be implemented with Firebase
           throw new Error('Login not yet implemented');
         } catch (error) {
@@ -134,7 +135,8 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Google Sign-In
-          console.log('Google login attempt');
+          // eslint-disable-next-line no-console
+          // console.log('Google login attempt');
           throw new Error('Google login not yet implemented');
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Google login failed';
@@ -147,7 +149,8 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Apple Sign-In
-          console.log('Apple login attempt');
+          // eslint-disable-next-line no-console
+          // console.log('Apple login attempt');
           throw new Error('Apple login not yet implemented');
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Apple login failed';
@@ -160,7 +163,8 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Firebase registration
-          console.log('Register attempt:', email, displayName);
+          // eslint-disable-next-line no-console
+          // console.log('Register attempt:', email, displayName);
           throw new Error('Registration not yet implemented');
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Registration failed';
@@ -173,7 +177,8 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Firebase password reset
-          console.log('Password reset:', email);
+          // eslint-disable-next-line no-console
+          // console.log('Password reset:', email);
           throw new Error('Password reset not yet implemented');
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Password reset failed';
