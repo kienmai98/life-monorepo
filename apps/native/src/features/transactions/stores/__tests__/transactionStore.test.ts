@@ -25,9 +25,10 @@ describe('TransactionStore', () => {
     tags: ['dining'],
   };
 
-  const createMockTransaction = (overrides: Partial<typeof mockTransaction> = {}): Omit<Transaction, 'id' | 'createdAt' | 'updatedAt' | 'synced'> = (
+  const createMockTransaction = (overrides: Partial<typeof mockTransaction> = {}): Omit<Transaction, 'id' | 'createdAt' | 'updatedAt' | 'synced'> => ({
     ...mockTransaction,
-    ...overrides,);
+    ...overrides,
+  });
 
   beforeEach(() => {
     // Reset store to initial state

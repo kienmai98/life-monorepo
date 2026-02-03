@@ -164,7 +164,7 @@ export const wait = (ms: number): Promise<void> => {
  * @param delay - Delay in milliseconds
  * @returns Mock async function
  */
-export const createMockAsyncFunction = <T, (
+export const createMockAsyncFunction = <T>(
   value: T,
   delay: number = 100
 ): jest.Mock<Promise<T>, any[]> => {

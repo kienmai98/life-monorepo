@@ -136,7 +136,7 @@ export function useResponsive(): UseResponsiveReturn {
   }, [dimensions]);
 
   const getResponsiveValue = useCallback(
-    <T, (values: ResponsiveValue<T>): T | undefined => {
+    <T>(values: ResponsiveValue<T>): T | undefined => {
       const { breakpoint } = deviceInfo;
       
       switch (breakpoint) {

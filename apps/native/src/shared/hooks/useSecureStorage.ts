@@ -41,8 +41,8 @@ interface UseStorageReturn<T> {
 /**
  * Default serialization functions
  */
-const defaultSerialize = <T, (value: T): string => JSON.stringify(value);
-const defaultDeserialize = <T, (value: string): T => JSON.parse(value);
+const defaultSerialize = <T>(value: T): string => JSON.stringify(value);
+const defaultDeserialize = <T>(value: string): T => JSON.parse(value);
 
 /**
  * Hook for persisting state to storage (AsyncStorage or SecureStorage)
