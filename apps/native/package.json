@@ -6,6 +6,9 @@
     "android": "react-native run-android",
     "ios": "react-native run-ios",
     "start": "react-native start",
+    "build": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios/assets && react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
+    "build:ios": "react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios/assets",
+    "build:android": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -13,7 +16,7 @@
     "lint": "cd ../.. && biome lint apps/native",
     "check": "cd ../.. && biome check apps/native",
     "format": "cd ../.. && biome format --write apps/native",
-    "postinstall": "npx pod-install"
+    "postinstall": "node -e \"if (process.platform === 'darwin') { const { execSync } = require('child_process'); try { execSync('which pod', { stdio: 'ignore' }); execSync('npx pod-install', { stdio: 'inherit' }); } catch (e) { console.log('⚠️  CocoaPods not found or not on macOS. Skipping pod install.'); } } else { console.log('⚠️  CocoaPods installation skipped - only required on macOS for iOS builds.'); } \""
   },
   "dependencies": {
     "@invertase/react-native-apple-authentication": "^2.4.0",
