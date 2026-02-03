@@ -5,12 +5,7 @@ import { RefreshControl, ScrollView, StyleSheet, TouchableOpacity, View } from '
 import { Avatar, Card, Divider, ProgressBar, Surface, Text, useTheme } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import {
-  formatCurrency,
-  formatDate,
-  formatTime,
-  isEventToday,
-} from '@/shared/utils/helpers';
+import { formatCurrency, formatDate, formatTime, isEventToday } from '@/shared/utils/helpers';
 import { useAuthStore } from '@/features/auth/stores/authStore';
 import { useCalendarStore } from '@/features/calendar/stores/calendarStore';
 import { useTransactionStore } from '@/features/transactions/stores/transactionStore';

@@ -37,7 +37,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
     clearError();
     setLocalError(null);
 
-    if (!displayName || !email || !password || !confirmPassword) {
+    if (!(displayName && email && password && confirmPassword)) {
       setLocalError('Please fill in all fields');
       return;
     }
@@ -67,7 +67,7 @@ const RegisterScreen: React.FC<RegisterScreenProps> = ({ navigation }) => {
       await register(email, password, displayName);
       // Navigate to biometric setup after successful registration
       navigation.replace('BiometricSetup', { userId: 'temp' });
-    } catch (error) {
+    } catch (_error) {
       // Error is handled by the store
     }
   };

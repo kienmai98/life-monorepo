@@ -34,7 +34,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     clearError();
     setLocalError(null);
 
-    if (!email || !password) {
+    if (!(email && password)) {
       setLocalError('Please fill in all fields');
       return;
     }
@@ -46,7 +46,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
     try {
       await login(email, password);
-    } catch (error) {
+    } catch (_error) {
       // Error is handled by the store
     }
   };
@@ -54,7 +54,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const handleGoogleLogin = async () => {
     try {
       await loginWithGoogle();
-    } catch (error) {
+    } catch (_error) {
       // Error is handled by the store
     }
   };
@@ -62,7 +62,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   const handleAppleLogin = async () => {
     try {
       await loginWithApple();
-    } catch (error) {
+    } catch (_error) {
       // Error is handled by the store
     }
   };

@@ -142,7 +142,7 @@ const TransactionsScreen: React.FC = () => {
       {/* Header Summary */}
       <View style={styles.summaryContainer}>
         <Card
-          style={[styles.summaryCard, { flex: 1, borderColor: theme.colors.secondary + '40' }]}
+          style={[styles.summaryCard, { flex: 1, borderColor: `${theme.colors.secondary}40` }]}
           mode="outlined"
         >
           <Card.Content style={styles.summaryContent}>
@@ -159,7 +159,7 @@ const TransactionsScreen: React.FC = () => {
         </Card>
 
         <Card
-          style={[styles.summaryCard, { flex: 1, borderColor: theme.colors.error + '40' }]}
+          style={[styles.summaryCard, { flex: 1, borderColor: `${theme.colors.error}40` }]}
           mode="outlined"
         >
           <Card.Content style={styles.summaryContent}>

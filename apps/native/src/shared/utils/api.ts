@@ -186,7 +186,7 @@ export const apiRequest = async <T = unknown>(
 
       // Wait before retrying (exponential backoff)
       if (attempt < retries - 1) {
-        await new Promise((resolve) => setTimeout(resolve, Math.pow(2, attempt) * 1000));
+        await new Promise((resolve) => setTimeout(resolve, 2 ** attempt * 1000));
       }
     }
   }

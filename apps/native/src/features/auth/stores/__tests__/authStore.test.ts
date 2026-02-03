@@ -146,7 +146,7 @@ describe('AuthStore', () => {
           await act(async () => {
             await result.current.login('test@example.com', 'wrong');
           });
-        } catch (error) {
+        } catch (_error) {
           // Expected to throw
         }
 
@@ -187,7 +187,7 @@ describe('AuthStore', () => {
           await act(async () => {
             await result.current.loginWithGoogle();
           });
-        } catch (error) {
+        } catch (_error) {
           // Expected
         }
 
@@ -201,7 +201,7 @@ describe('AuthStore', () => {
           await act(async () => {
             await result.current.loginWithApple();
           });
-        } catch (error) {
+        } catch (_error) {
           // Expected
         }
 

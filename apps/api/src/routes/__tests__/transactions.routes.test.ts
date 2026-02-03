@@ -19,7 +19,7 @@ const buildApp = () => {
         return;
       }
       request.user = { id: 'user-123', email: 'test@example.com' };
-    } catch (err) {
+    } catch (_err) {
       reply.status(401).send({ error: 'Unauthorized' });
     }
   });

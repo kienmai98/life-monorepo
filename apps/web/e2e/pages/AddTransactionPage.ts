@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import type { Page, Locator } from '@playwright/test';
 
 export class AddTransactionPage {
   readonly page: Page;
@@ -40,11 +40,11 @@ export class AddTransactionPage {
     await this.amountInput.fill(data.amount);
     await this.categorySelect.selectOption(data.category);
     await this.descriptionInput.fill(data.description);
-    
+
     if (data.type) {
       await this.typeSelect.selectOption(data.type);
     }
-    
+
     if (data.date) {
       await this.dateInput.fill(data.date);
     }

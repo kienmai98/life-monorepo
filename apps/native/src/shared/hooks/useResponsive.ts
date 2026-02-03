@@ -58,7 +58,11 @@ interface UseResponsiveReturn extends DeviceInfo {
   isLte: (breakpoint: keyof typeof Breakpoints) => boolean;
 }
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT, scale: SCREEN_SCALE } = Dimensions.get('window');
+const {
+  width: SCREEN_WIDTH,
+  height: SCREEN_HEIGHT,
+  scale: SCREEN_SCALE,
+} = Dimensions.get('window');
 
 /**
  * Determines if device is a tablet based on screen dimensions
@@ -67,10 +71,10 @@ const isTabletDevice = (): boolean => {
   const pixelDensity = PixelRatio.get();
   const adjustedWidth = SCREEN_WIDTH * pixelDensity;
   const adjustedHeight = SCREEN_HEIGHT * pixelDensity;
-  
+
   // iPad detection (based on Apple's guidelines)
   if (SCREEN_WIDTH >= 768) return true;
-  
+
   // Android tablet detection
   return Math.min(adjustedWidth, adjustedHeight) >= 600;
 };
@@ -88,12 +92,12 @@ const getBreakpoint = (width: number): keyof typeof Breakpoints => {
 /**
  * Hook for responsive design with breakpoint support
  * Automatically updates on orientation changes and dimension changes
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const { isTablet, width, getResponsiveValue, isGte } = useResponsive();
- *   
+ *
  *   // Responsive styles
  *   const padding = getResponsiveValue({
  *     sm: 16,
@@ -101,12 +105,12 @@ const getBreakpoint = (width: number): keyof typeof Breakpoints => {
  *     lg: 32,
  *     default: 16
  *   });
- *   
+ *
  *   // Conditional rendering
  *   if (isGte('MEDIUM')) {
  *     return <TabletLayout />;
  *   }
- *   
+ *
  *   return <MobileLayout />;
  * }
  * ```
@@ -138,7 +142,7 @@ export function useResponsive(): UseResponsiveReturn {
   const getResponsiveValue = useCallback(
     <T>(values: ResponsiveValue<T>): T | undefined => {
       const { breakpoint } = deviceInfo;
-      
+
       switch (breakpoint) {
         case 'XLARGE':
           return values.xl ?? values.lg ?? values.md ?? values.sm ?? values.default;
@@ -146,7 +150,6 @@ export function useResponsive(): UseResponsiveReturn {
           return values.lg ?? values.md ?? values.sm ?? values.default;
         case 'MEDIUM':
           return values.md ?? values.sm ?? values.default;
-        case 'SMALL':
         default:
           return values.sm ?? values.default;
       }

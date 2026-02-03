@@ -98,7 +98,7 @@ const initialState: AuthState = {
  */
 export const useAuthStore = create<AuthStore>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       ...initialState,
 
       setUser: (user) => set({ user, isLoading: false, error: null }),
@@ -116,7 +116,7 @@ export const useAuthStore = create<AuthStore>()(
         set({ user: null, error: null, isLoading: false });
       },
 
-      login: async (email, password) => {
+      login: async (_email, _password) => {
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Firebase email/password login
@@ -159,7 +159,7 @@ export const useAuthStore = create<AuthStore>()(
         }
       },
 
-      register: async (email, password, displayName) => {
+      register: async (_email, _password, _displayName) => {
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Firebase registration
@@ -173,7 +173,7 @@ export const useAuthStore = create<AuthStore>()(
         }
       },
 
-      resetPassword: async (email) => {
+      resetPassword: async (_email) => {
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Firebase password reset
