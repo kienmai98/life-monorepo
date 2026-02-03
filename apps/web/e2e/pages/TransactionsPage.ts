@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import type { Page, Locator } from '@playwright/test';
 
 export class TransactionsPage {
   readonly page: Page;
@@ -36,7 +36,7 @@ export class TransactionsPage {
     const transaction = this.getTransactionByDescription(description);
     const deleteButton = transaction.locator('..').getByTestId('delete-button');
     await deleteButton.click();
-    
+
     // Confirm deletion if confirmation dialog appears
     const confirmButton = this.page.getByTestId('confirm-delete');
     if (await confirmButton.isVisible().catch(() => false)) {

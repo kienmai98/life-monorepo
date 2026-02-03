@@ -84,7 +84,7 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
     setReceiptImage(null);
   };
 
-  const handleDateChange = (event: any, selectedDate?: Date) => {
+  const _handleDateChange = (_event: any, selectedDate?: Date) => {
     setShowDatePicker(Platform.OS === 'ios');
     if (selectedDate) {
       setDate(selectedDate);
@@ -138,7 +138,7 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
     const cleaned = text.replace(/[^0-9.]/g, '');
     const parts = cleaned.split('.');
     if (parts.length > 2) {
-      return parts[0] + '.' + parts.slice(1).join('');
+      return `${parts[0]}.${parts.slice(1).join('')}`;
     }
     return cleaned;
   };

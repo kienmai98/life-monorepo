@@ -21,7 +21,7 @@ jest.mock('../../../shared/utils/helpers', () => ({
   validatePassword: jest.fn(() => true),
 }));
 
-const Stack = createNativeStackNavigator();
+const _Stack = createNativeStackNavigator();
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(
@@ -110,7 +110,7 @@ describe('LoginScreen', () => {
       expect(passwordInput.props.secureTextEntry).toBe(true);
 
       // Toggle visibility
-      const toggleButton = screen.getByTestId('eye-icon') || screen.getByText('eye');
+      const _toggleButton = screen.getByTestId('eye-icon') || screen.getByText('eye');
       // Note: The icon button might be difficult to query, this is a simplified version
     });
   });

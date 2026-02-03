@@ -95,7 +95,7 @@ export function useDeepMemo<T>(
 ): T {
   const ref = useRef<{ deps: React.DependencyList; value: T } | null>(null);
 
-  if (!ref.current || !isEqual(deps, ref.current.deps)) {
+  if (!(ref.current && isEqual(deps, ref.current.deps))) {
     ref.current = { deps, value: factory() };
   }
 
@@ -109,7 +109,7 @@ export function useDeepMemo<T>(
  * @example
  * useRenderTracker('TransactionList');
  */
-export function useRenderTracker(componentName: string): void {
+export function useRenderTracker(_componentName: string): void {
   const renderCount = useRef(0);
   const startTime = useRef(performance.now());
 
@@ -117,12 +117,7 @@ export function useRenderTracker(componentName: string): void {
     if (process.env.NODE_ENV === 'production') return;
 
     renderCount.current += 1;
-    const duration = performance.now() - startTime.current;
-
-    console.log(
-      `[RenderTracker] ${componentName} rendered ${renderCount.current} times. ` +
-        `Last render: ${duration.toFixed(2)}ms`
-    );
+    const _duration = performance.now() - startTime.current;
 
     startTime.current = performance.now();
   });

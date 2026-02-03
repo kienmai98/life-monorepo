@@ -47,7 +47,7 @@ const defaultDeserialize = <T>(value: string): T => JSON.parse(value);
 /**
  * Hook for persisting state to storage (AsyncStorage or SecureStorage)
  * Automatically syncs state with storage
- * 
+ *
  * @example
  * ```tsx
  * // Simple string storage
@@ -55,14 +55,14 @@ const defaultDeserialize = <T>(value: string): T => JSON.parse(value);
  *   key: 'authToken',
  *   storageType: 'secureStorage'
  * });
- * 
+ *
  * // Complex object storage
  * const { value: user, setValue: setUser } = useSecureStorage({
  *   key: 'user',
  *   initialValue: { name: '', email: '' },
  *   storageType: 'asyncStorage'
  * });
- * 
+ *
  * // Usage
  * await setToken('new-token');
  * await setUser(prev => ({ ...prev, name: 'John' }));
@@ -93,7 +93,7 @@ export function useSecureStorage<T>(options: UseStorageOptions<T>): UseStorageRe
         // Note: Secure storage implementation would go here
         // For now, using AsyncStorage wrapper
         const storedValue = await storage.getItem(key);
-        
+
         if (isMounted) {
           if (storedValue !== null) {
             setValueState(deserialize(storedValue));
@@ -124,11 +124,9 @@ export function useSecureStorage<T>(options: UseStorageOptions<T>): UseStorageRe
     async (newValue: T | ((prev: T | undefined) => T)) => {
       try {
         setError(null);
-        
-        const valueToStore = newValue instanceof Function 
-          ? newValue(value) 
-          : newValue;
-        
+
+        const valueToStore = newValue instanceof Function ? newValue(value) : newValue;
+
         setValueState(valueToStore);
         await storage.setItem(key, serialize(valueToStore));
       } catch (err) {

@@ -1,4 +1,4 @@
-import path from 'path';
+import path from 'node:path';
 /**
  * Vitest configuration for Types package
  * Monochrome theme configuration for test outputs

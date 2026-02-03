@@ -1,4 +1,4 @@
-import type { Transaction, } from '@life/types';
+import type { Transaction } from '@life/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { act, renderHook } from '@testing-library/react-native';
 import {
@@ -15,7 +15,7 @@ import {
 
 describe('TransactionStore', () => {
   const mockTransaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt' | 'synced'> = {
-    amount: 50.00,
+    amount: 50.0,
     currency: 'USD',
     category: 'food',
     description: 'Lunch at cafe',
@@ -25,7 +25,9 @@ describe('TransactionStore', () => {
     tags: ['dining'],
   };
 
-  const createMockTransaction = (overrides: Partial<typeof mockTransaction> = {}): Omit<Transaction, 'id' | 'createdAt' | 'updatedAt' | 'synced'> => ({
+  const createMockTransaction = (
+    overrides: Partial<typeof mockTransaction> = {}
+  ): Omit<Transaction, 'id' | 'createdAt' | 'updatedAt' | 'synced'> => ({
     ...mockTransaction,
     ...overrides,
   });
@@ -87,7 +89,7 @@ describe('TransactionStore', () => {
 
         expect(result.current.transactions).toHaveLength(1);
         expect(result.current.transactions[0]).toMatchObject({
-          amount: 50.00,
+          amount: 50.0,
           category: 'food',
           description: 'Lunch at cafe',
           type: 'expense',
@@ -105,7 +107,9 @@ describe('TransactionStore', () => {
 
         act(() => {
           result.current.addTransaction(createMockTransaction({ amount: 50, category: 'food' }));
-          result.current.addTransaction(createMockTransaction({ amount: 30, category: 'transport' }));
+          result.current.addTransaction(
+            createMockTransaction({ amount: 30, category: 'transport' })
+          );
         });
 
         expect(result.current.transactions).toHaveLength(2);
@@ -117,12 +121,14 @@ describe('TransactionStore', () => {
         const { result } = renderHook(() => useTransactionStore());
 
         act(() => {
-          result.current.addTransaction(createMockTransaction({
-            amount: 5000,
-            type: 'income',
-            category: 'income',
-            description: 'Salary',
-          }));
+          result.current.addTransaction(
+            createMockTransaction({
+              amount: 5000,
+              type: 'income',
+              category: 'income',
+              description: 'Salary',
+            })
+          );
         });
 
         expect(result.current.transactions[0].type).toBe('income');
@@ -133,18 +139,20 @@ describe('TransactionStore', () => {
         const { result } = renderHook(() => useTransactionStore());
 
         act(() => {
-          result.current.addTransaction(createMockTransaction({
-            location: {
-              latitude: 40.7128,
-              longitude: -74.0060,
-              address: 'New York, NY',
-            },
-          }));
+          result.current.addTransaction(
+            createMockTransaction({
+              location: {
+                latitude: 40.7128,
+                longitude: -74.006,
+                address: 'New York, NY',
+              },
+            })
+          );
         });
 
         expect(result.current.transactions[0].location).toEqual({
           latitude: 40.7128,
-          longitude: -74.0060,
+          longitude: -74.006,
           address: 'New York, NY',
         });
       });
@@ -161,7 +169,10 @@ describe('TransactionStore', () => {
         const transactionId = result.current.transactions[0].id;
 
         act(() => {
-          result.current.updateTransaction(transactionId, { amount: 75, description: 'Updated description' });
+          result.current.updateTransaction(transactionId, {
+            amount: 75,
+            description: 'Updated description',
+          });
         });
 
         const updated = result.current.transactions[0];
@@ -187,7 +198,9 @@ describe('TransactionStore', () => {
           result.current.updateTransaction(firstId, { description: 'Updated First' });
         });
 
-        expect(result.current.transactions.find(t => t.id === secondId)?.description).toBe('Second');
+        expect(result.current.transactions.find((t) => t.id === secondId)?.description).toBe(
+          'Second'
+        );
       });
     });
 
@@ -207,7 +220,7 @@ describe('TransactionStore', () => {
         });
 
         expect(result.current.transactions).toHaveLength(1);
-        expect(result.current.transactions.find(t => t.id === idToDelete)).toBeUndefined();
+        expect(result.current.transactions.find((t) => t.id === idToDelete)).toBeUndefined();
       });
 
       it('should handle deleting non-existent transaction gracefully', () => {
@@ -231,9 +244,15 @@ describe('TransactionStore', () => {
       const { result } = renderHook(() => useTransactionStore());
 
       act(() => {
-        result.current.addTransaction(createMockTransaction({ type: 'expense', category: 'food', amount: 50 }));
-        result.current.addTransaction(createMockTransaction({ type: 'expense', category: 'transport', amount: 30 }));
-        result.current.addTransaction(createMockTransaction({ type: 'income', category: 'income', amount: 5000 }));
+        result.current.addTransaction(
+          createMockTransaction({ type: 'expense', category: 'food', amount: 50 })
+        );
+        result.current.addTransaction(
+          createMockTransaction({ type: 'expense', category: 'transport', amount: 30 })
+        );
+        result.current.addTransaction(
+          createMockTransaction({ type: 'income', category: 'income', amount: 5000 })
+        );
       });
     });
 
@@ -246,7 +265,7 @@ describe('TransactionStore', () => {
 
       const filtered = result.current.getFilteredTransactions();
       expect(filtered).toHaveLength(2);
-      expect(filtered.every(t => t.type === 'expense')).toBe(true);
+      expect(filtered.every((t) => t.type === 'expense')).toBe(true);
     });
 
     it('should filter by category', () => {
@@ -321,10 +340,18 @@ describe('TransactionStore', () => {
       const { result } = renderHook(() => useTransactionStore());
 
       act(() => {
-        result.current.addTransaction(createMockTransaction({ type: 'income', category: 'income', amount: 5000 }));
-        result.current.addTransaction(createMockTransaction({ type: 'expense', category: 'food', amount: 100 }));
-        result.current.addTransaction(createMockTransaction({ type: 'expense', category: 'food', amount: 50 }));
-        result.current.addTransaction(createMockTransaction({ type: 'expense', category: 'transport', amount: 30 }));
+        result.current.addTransaction(
+          createMockTransaction({ type: 'income', category: 'income', amount: 5000 })
+        );
+        result.current.addTransaction(
+          createMockTransaction({ type: 'expense', category: 'food', amount: 100 })
+        );
+        result.current.addTransaction(
+          createMockTransaction({ type: 'expense', category: 'food', amount: 50 })
+        );
+        result.current.addTransaction(
+          createMockTransaction({ type: 'expense', category: 'transport', amount: 30 })
+        );
       });
 
       const stats = result.current.getStats();

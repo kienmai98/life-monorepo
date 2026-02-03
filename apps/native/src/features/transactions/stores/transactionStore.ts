@@ -283,7 +283,7 @@ export const useTransactionStore = create<TransactionStore>()(
         });
       },
 
-      fetchTransactions: async (userId, filter = {}) => {
+      fetchTransactions: async (_userId, _filter = {}) => {
         set({ isLoading: true, error: null });
         try {
           // TODO: Implement Supabase fetch
@@ -332,7 +332,7 @@ export const useTransactionStore = create<TransactionStore>()(
             const query = filter.searchQuery.toLowerCase();
             const matchesDescription = t.description.toLowerCase().includes(query);
             const matchesCategory = t.category.toLowerCase().includes(query);
-            if (!matchesDescription && !matchesCategory) {
+            if (!(matchesDescription || matchesCategory)) {
               return false;
             }
           }

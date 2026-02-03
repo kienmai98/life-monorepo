@@ -63,9 +63,7 @@ interface AllTheProvidersProps {
 const AllTheProviders: React.FC<AllTheProvidersProps> = ({ children }) => {
   return (
     <NavigationContainer>
-      <PaperProvider theme={mockTheme as any}>
-        {children}
-      </PaperProvider>
+      <PaperProvider theme={mockTheme as any}>{children}</PaperProvider>
     </NavigationContainer>
   );
 };
@@ -75,15 +73,13 @@ const AllTheProviders: React.FC<AllTheProvidersProps> = ({ children }) => {
  * @param ui - Component to render
  * @param options - Render options
  * @returns Render result with additional utilities
- * 
+ *
  * @example
  * const { getByText } = render(<MyComponent />);
  * expect(getByText('Hello')).toBeTruthy();
  */
-const customRender = (
-  ui: React.ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>
-) => rtlRender(ui, { wrapper: AllTheProviders, ...options });
+const customRender = (ui: React.ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
+  rtlRender(ui, { wrapper: AllTheProviders, ...options });
 
 // Re-export everything from testing-library
 export * from '@testing-library/react-native';
@@ -164,9 +160,9 @@ export const wait = (ms: number): Promise<void> => {
  * @param delay - Delay in milliseconds
  * @returns Mock async function
  */
-export const createMockAsyncFunction = <T extends unknown>(
+export const createMockAsyncFunction = <T,>(
   value: T,
-  delay: number = 100
+  delay = 100
 ): jest.Mock<Promise<T>, any[]> => {
   return jest.fn().mockImplementation(() => wait(delay).then(() => value));
 };
@@ -179,7 +175,7 @@ export const createMockAsyncFunction = <T extends unknown>(
 export const suppressConsoleErrors = async (fn: () => void | Promise<void>): Promise<void> => {
   const originalError = console.error;
   console.error = jest.fn();
-  
+
   try {
     await fn();
   } finally {

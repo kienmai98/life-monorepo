@@ -68,7 +68,7 @@ const ProfileScreen: React.FC = () => {
     setLogoutDialogVisible(false);
     try {
       await logout();
-    } catch (error) {
+    } catch (_error) {
       Alert.alert('Error', 'Failed to sign out. Please try again.');
     }
   };

@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import type { Page, Locator } from '@playwright/test';
 
 export class CalendarPage {
   readonly page: Page;
@@ -44,8 +44,8 @@ export class CalendarPage {
 
   async navigateToMonth(month: number, year: number) {
     const targetDate = new Date(year, month - 1, 1);
-    let currentMonth = new Date();
-    
+    const currentMonth = new Date();
+
     while (
       currentMonth.getMonth() !== targetDate.getMonth() ||
       currentMonth.getFullYear() !== targetDate.getFullYear()

@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import type { Page, Locator } from '@playwright/test';
 
 export class DashboardPage {
   readonly page: Page;
@@ -32,18 +32,18 @@ export class DashboardPage {
     const balanceText = await this.balanceDisplay.textContent();
     if (!balanceText) return 0;
     // Parse currency string like "$5,000.00" to number
-    return parseFloat(balanceText.replace(/[^0-9.-]/g, ''));
+    return Number.parseFloat(balanceText.replace(/[^0-9.-]/g, ''));
   }
 
   async getTotalIncome(): Promise<number> {
     const incomeText = await this.page.getByTestId('total-income').textContent();
     if (!incomeText) return 0;
-    return parseFloat(incomeText.replace(/[^0-9.-]/g, ''));
+    return Number.parseFloat(incomeText.replace(/[^0-9.-]/g, ''));
   }
 
   async getTotalExpenses(): Promise<number> {
     const expensesText = await this.page.getByTestId('total-expenses').textContent();
     if (!expensesText) return 0;
-    return parseFloat(expensesText.replace(/[^0-9.-]/g, ''));
+    return Number.parseFloat(expensesText.replace(/[^0-9.-]/g, ''));
   }
 }

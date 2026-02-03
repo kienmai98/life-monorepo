@@ -26,7 +26,7 @@ describe('Auth Middleware', () => {
     });
     mockRequest.jwtVerify.mockResolvedValue({ id: 'user-123' });
 
-    const mockReply = createMockReply();
+    const _mockReply = createMockReply();
     const mockDone = createMockDone();
 
     // Mock the middleware behavior
@@ -44,7 +44,7 @@ describe('Auth Middleware', () => {
   it('rejects requests without authorization header', async () => {
     const mockRequest = createMockRequest();
     const mockReply = createMockReply();
-    const mockDone = createMockDone();
+    const _mockDone = createMockDone();
 
     // Simulate middleware behavior
     if (!mockRequest.headers.authorization) {
@@ -82,7 +82,7 @@ describe('Auth Middleware', () => {
     // Simulate middleware behavior
     try {
       await mockRequest.jwtVerify();
-    } catch (err) {
+    } catch (_err) {
       mockReply.status(401);
       mockReply.send({ error: 'Token expired' });
     }
@@ -101,7 +101,7 @@ describe('Auth Middleware', () => {
 
     try {
       await mockRequest.jwtVerify();
-    } catch (err) {
+    } catch (_err) {
       mockReply.status(401);
       mockReply.send({ error: 'Invalid token' });
     }
@@ -141,7 +141,7 @@ describe('Error Handler Middleware', () => {
   it('handles validation errors', async () => {
     const app = Fastify({ logger: false });
 
-    app.setErrorHandler((error, request, reply) => {
+    app.setErrorHandler((error, _request, reply) => {
       if (error.validation) {
         reply.status(400).send({
           error: 'Validation Error',
@@ -187,7 +187,7 @@ describe('Error Handler Middleware', () => {
   it('handles unknown errors as 500', async () => {
     const app = Fastify({ logger: false });
 
-    app.setErrorHandler((error, request, reply) => {
+    app.setErrorHandler((_error, _request, reply) => {
       reply.status(500).send({
         error: 'Internal Server Error',
       });
