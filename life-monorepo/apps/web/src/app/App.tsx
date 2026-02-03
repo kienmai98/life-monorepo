@@ -9,6 +9,8 @@ import HomePage from '../pages/HomePage';
 import SchedulePage from '../pages/SchedulePage';
 import MoneyPage from '../pages/MoneyPage';
 import ProfilePage from '../pages/ProfilePage';
+import { CmsPage } from '../pages/CmsPage';
+import ContentViewPage from '../pages/ContentViewPage';
 import './App.css';
 
 const PrivateRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -55,6 +57,22 @@ const MainLayout: React.FC = () => {
             element={
               <PrivateRoute>
                 <ProfilePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/cms"
+            element={
+              <PrivateRoute>
+                <CmsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/content/:slug"
+            element={
+              <PrivateRoute>
+                <ContentViewPage />
               </PrivateRoute>
             }
           />

@@ -11,6 +11,7 @@ export const BottomNav: React.FC = () => {
     { path: '/', label: 'Home', icon: '🏠' },
     { path: '/schedule', label: 'Schedule', icon: '📅' },
     { path: '/money', label: 'Money', icon: '💰' },
+    { path: '/cms', label: 'CMS', icon: '📝' },
     { path: '/profile', label: 'Profile', icon: '👤' },
   ];
 
