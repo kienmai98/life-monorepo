@@ -35,7 +35,7 @@ interface UseAsyncOptions<T> {
  */
 interface UseAsyncReturn<T, E = Error> extends AsyncState<T, E> {
   /** Execute the async function manually */
-  execute: (...args: any[]) => Promise<T | null>;
+  execute: (...args: unknown[]) => Promise<T | null>;
   /** Reset the state to initial values */
   reset: () => void;
   /** Set data manually */
@@ -68,7 +68,7 @@ interface UseAsyncReturn<T, E = Error> extends AsyncState<T, E> {
  * ```
  */
 export function useAsync<T, E = Error>(
-  asyncFunction: (...args: any[]) => Promise<T>,
+  asyncFunction: (...args: unknown[]) => Promise<T>,
   options: UseAsyncOptions<T> = {}
 ): UseAsyncReturn<T, E> {
   const { initialData = null, immediate = false, onSuccess, onError } = options;
@@ -81,7 +81,7 @@ export function useAsync<T, E = Error>(
   });
 
   const execute = useCallback(
-    async (...args: any[]): Promise<T | null> => {
+    async (...args: unknown[]): Promise<T | null> => {
       setState((prev) => ({ ...prev, isLoading: true, error: null }));
 
       try {

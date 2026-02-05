@@ -9,7 +9,7 @@ import type { ApiError, ApiResponse, PaginationInfo } from '@/shared/types';
  * API configuration
  */
 const API_CONFIG = {
-  baseURL: process.env.API_URL || 'https://api.life-app.example.com',
+  baseURL: 'https://api.life-app.example.com',
   timeout: 30000,
   retries: 3,
 };
@@ -176,7 +176,7 @@ export const apiRequest = async <T = unknown>(
       lastError = error instanceof Error ? error : new Error(String(error));
 
       // Don't retry on abort
-      if (error instanceof DOMException && error.name === 'AbortError') {
+      if (error instanceof Error && error.name === 'AbortError') {
         return {
           success: false,
           error: 'Request was cancelled',
@@ -186,7 +186,7 @@ export const apiRequest = async <T = unknown>(
 
       // Wait before retrying (exponential backoff)
       if (attempt < retries - 1) {
-        await new Promise((resolve) => setTimeout(resolve, 2 ** attempt * 1000));
+        await new Promise<void>((resolve) => setTimeout(resolve, 2 ** attempt * 1000));
       }
     }
   }
@@ -216,9 +216,9 @@ export const cancelRequest = (requestId: string): void => {
  * Cancels all active requests
  */
 export const cancelAllRequests = (): void => {
-  activeRequests.forEach((request) => {
+  for (const request of activeRequests.values()) {
     request.controller.abort();
-  });
+  }
   activeRequests.clear();
 };
 

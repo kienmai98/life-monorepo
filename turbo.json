@@ -1,23 +1,74 @@
 {
   "$schema": "https://turbo.build/schema.json",
   "globalDependencies": ["**/.env.*local"],
+  "globalEnv": [
+    "NODE_ENV",
+    "VITE_API_URL",
+    "NEXT_PUBLIC_API_URL",
+    "SUPABASE_URL",
+    "SUPABASE_ANON_KEY"
+  ],
   "tasks": {
     "build": {
       "dependsOn": ["^build"],
-      "outputs": [".next/**", "!.next/cache/**", "dist/**", "ios/build/**", "android/build/**"]
+      "outputs": [
+        ".next/**",
+        "!.next/cache/**",
+        "dist/**",
+        "build/**",
+        "ios/build/**",
+        "android/build/**",
+        "ios/main.jsbundle",
+        "android/app/src/main/assets/**"
+      ],
+      "env": ["NODE_ENV", "VITE_API_URL", "NEXT_PUBLIC_API_URL"]
     },
-    "lint": {
-      "dependsOn": ["^lint"]
+    "@life/api#build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**"],
+      "env": ["NODE_ENV", "SUPABASE_URL", "SUPABASE_ANON_KEY"]
     },
-    "check": {
-      "dependsOn": ["^check"]
+    "@life/web#build": {
+      "dependsOn": ["^build", "@life/types#build"],
+      "outputs": ["dist/**"],
+      "env": ["NODE_ENV", "VITE_API_URL"]
+    },
+    "@life/cms#build": {
+      "dependsOn": [],
+      "outputs": [".next/**", "!.next/cache/**"],
+      "env": ["NODE_ENV", "NEXT_PUBLIC_API_URL"]
+    },
+    "@life/native#build": {
+      "dependsOn": [],
+      "outputs": [
+        "ios/main.jsbundle",
+        "ios/assets/**",
+        "android/app/src/main/assets/**",
+        "android/app/src/main/res/**"
+      ]
     },
     "dev": {
       "cache": false,
       "persistent": true
     },
+    "lint": {
+      "dependsOn": []
+    },
+    "check": {
+      "dependsOn": []
+    },
     "test": {
       "dependsOn": ["^build"]
+    },
+    "test:types": {
+      "cache": true
+    },
+    "@life/types#test:types": {
+      "cache": true,
+      "outputs": []
+    },
+    "format": {
+      "cache": false
     }
   }
 }

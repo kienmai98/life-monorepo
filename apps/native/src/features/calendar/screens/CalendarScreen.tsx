@@ -21,8 +21,7 @@ import { useCalendarStore } from '@/features/calendar/stores/calendarStore';
 
 const CalendarScreen: React.FC = () => {
   const theme = useTheme();
-  const { events, scheduleSummary, fetchEvents, requestPermission, hasPermission, isLoading } =
-    useCalendarStore();
+  const { events, fetchEvents, requestPermission, hasPermission } = useCalendarStore();
 
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -32,13 +31,13 @@ const CalendarScreen: React.FC = () => {
     checkPermissionAndFetch();
   }, []);
 
-  useFocusEffect(
-    useCallback(() => {
-      const start = startOfMonth(currentDate);
-      const end = endOfMonth(currentDate);
-      fetchEvents(start, end);
-    }, [currentDate])
-  );
+  const loadEvents = useCallback(() => {
+    const start = startOfMonth(currentDate);
+    const end = endOfMonth(currentDate);
+    fetchEvents(start, end);
+  }, [currentDate, fetchEvents]);
+
+  useFocusEffect(loadEvents);
 
   const checkPermissionAndFetch = async () => {
     const granted = await requestPermission();
@@ -95,8 +94,9 @@ const CalendarScreen: React.FC = () => {
         ))}
 
         {/* Padding days */}
-        {paddingDays.map((_, index) => (
-          <View key={`padding-${index}`} style={styles.dayCell} />
+        {paddingDays.map((_, idx) => (
+          // biome-ignore lint/suspicious/noArrayIndexKey: padding days are static empty cells
+          <View key={`pad-${idx}`} style={styles.dayCell} />
         ))}
 
         {/* Actual days */}
@@ -137,9 +137,9 @@ const CalendarScreen: React.FC = () => {
 
               {dayEvents.length > 0 && (
                 <View style={styles.eventDots}>
-                  {dayEvents.slice(0, 3).map((event, idx) => (
+                  {dayEvents.slice(0, 3).map((event) => (
                     <View
-                      key={idx}
+                      key={event.id}
                       style={[
                         styles.eventDot,
                         { backgroundColor: event.color || theme.colors.primary },

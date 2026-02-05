@@ -1,4 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
+import type { ReactTestInstance } from '@testing-library/react-native';
 import { fireEvent, render, screen } from '@testing-library/react-native';
 import type React from 'react';
 import { PaperProvider } from 'react-native-paper';
@@ -120,7 +121,7 @@ describe('DashboardScreen', () => {
 
     it('displays appropriate greeting based on time', () => {
       const mockDate = new Date('2024-01-15T10:00:00');
-      jest.spyOn(global, 'Date').mockImplementation(() => mockDate as any);
+      jest.spyOn(global, 'Date').mockImplementation(() => mockDate as unknown as Date);
 
       renderWithProviders(<DashboardScreen />);
 
@@ -230,7 +231,7 @@ describe('DashboardScreen', () => {
 
       // Find the Add Expense button by looking for the text
       const addExpenseButton = screen.getByText('Add Expense');
-      fireEvent.press(addExpenseButton.parent as any);
+      fireEvent.press(addExpenseButton.parent as unknown as ReactTestInstance);
 
       expect(mockNavigate).toHaveBeenCalledWith('AddTransaction');
     });
@@ -239,7 +240,7 @@ describe('DashboardScreen', () => {
       renderWithProviders(<DashboardScreen />);
 
       const viewScheduleButton = screen.getByText('View Schedule');
-      fireEvent.press(viewScheduleButton.parent as any);
+      fireEvent.press(viewScheduleButton.parent as unknown as ReactTestInstance);
 
       expect(mockNavigate).toHaveBeenCalledWith('Calendar');
     });
@@ -248,7 +249,7 @@ describe('DashboardScreen', () => {
       renderWithProviders(<DashboardScreen />);
 
       const transactionsButton = screen.getByText('Transactions');
-      fireEvent.press(transactionsButton.parent as any);
+      fireEvent.press(transactionsButton.parent as unknown as ReactTestInstance);
 
       expect(mockNavigate).toHaveBeenCalledWith('Transactions');
     });
@@ -306,7 +307,7 @@ describe('DashboardScreen', () => {
 
   describe('Refresh Control', () => {
     it('triggers refresh when pulled', async () => {
-      const { getByTestId } = renderWithProviders(<DashboardScreen />);
+      renderWithProviders(<DashboardScreen />);
 
       // Note: Testing RefreshControl in RNTL is tricky
       // This test documents the expected behavior

@@ -1,5 +1,21 @@
 import * as Crypto from 'expo-crypto';
 
+// Polyfills for React Native environment
+declare const TextEncoder: {
+  new (): {
+    encode(input: string): Uint8Array;
+  };
+};
+
+declare const TextDecoder: {
+  new (): {
+    decode(input: Uint8Array): string;
+  };
+};
+
+declare const btoa: (input: string) => string;
+declare const atob: (input: string) => string;
+
 /**
  * Secure storage keys
  * Use these constants for all secure storage operations
@@ -27,8 +43,8 @@ export type HashAlgorithm = 'SHA-1' | 'SHA-256' | 'SHA-384' | 'SHA-512' | 'MD5';
  */
 export async function generateSecureToken(length = 32): Promise<string> {
   const randomBytes = await Crypto.getRandomBytesAsync(length);
-  return Array.from(randomBytes)
-    .map((byte) => byte.toString(16).padStart(2, '0'))
+  return Array.from(randomBytes as Uint8Array)
+    .map((byte: number) => byte.toString(16).padStart(2, '0'))
     .join('');
 }
 
@@ -86,7 +102,6 @@ export function sanitizeInput(input: string): string {
       .trim()
       // biome-ignore lint/suspicious/noControlCharactersInRegex: Intentionally removing control characters for security
       .replace(/[\u0000-\u001F\u007F-\u009F]+/g, '') // Remove control characters
-      // biome-ignore lint/suspicious/noMisleadingCharacterClass: Intentionally removing zero-width characters
       .replace(/(?:\u200B|\u200C|\u200D|\uFEFF)+/g, '') // Remove zero-width characters
       .slice(0, 10000)
   ); // Limit length
@@ -146,7 +161,6 @@ export async function isDeviceCompromised(): Promise<boolean> {
     return false;
   }
 
-  // biome-ignore lint/correctness/noUnusedVariables: Used for documentation purposes
   const _jailbreakIndicators = [
     '/Applications/Cydia.app',
     '/Applications/Blackra1n.app',
@@ -306,7 +320,7 @@ export async function encryptData(data: string, key: string): Promise<string> {
   // XOR encryption (NOT FOR PRODUCTION USE)
   const encrypted = new Uint8Array(dataBuffer.length);
   for (let i = 0; i < dataBuffer.length; i++) {
-    encrypted[i] = dataBuffer[i] ^ keyBuffer[i % keyBuffer.length];
+    encrypted[i] = (dataBuffer[i] ?? 0) ^ (keyBuffer[i % keyBuffer.length] ?? 0);
   }
 
   return btoa(String.fromCharCode(...encrypted));
@@ -321,13 +335,13 @@ export async function encryptData(data: string, key: string): Promise<string> {
  */
 export async function decryptData(encryptedData: string, key: string): Promise<string> {
   // In production, use a proper encryption library
-  const encrypted = Uint8Array.from(atob(encryptedData), (c) => c.charCodeAt(0));
+  const encrypted = Uint8Array.from(atob(encryptedData), (c: string) => c.charCodeAt(0));
   const encoder = new TextEncoder();
   const keyBuffer = encoder.encode(key);
 
   const decrypted = new Uint8Array(encrypted.length);
   for (let i = 0; i < encrypted.length; i++) {
-    decrypted[i] = encrypted[i] ^ keyBuffer[i % keyBuffer.length];
+    decrypted[i] = (encrypted[i] ?? 0) ^ (keyBuffer[i % keyBuffer.length] ?? 0);
   }
 
   return new TextDecoder().decode(decrypted);

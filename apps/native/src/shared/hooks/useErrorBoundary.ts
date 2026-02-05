@@ -25,7 +25,7 @@ interface UseErrorBoundaryReturn {
   /** Clear the current error */
   clearError: () => void;
   /** Wrap an async function with error handling */
-  withErrorHandling: <T extends (...args: any[]) => Promise<any>>(
+  withErrorHandling: <T extends (...args: unknown[]) => Promise<unknown>>(
     fn: T
   ) => (...args: Parameters<T>) => Promise<ReturnType<T> | undefined>;
 }
@@ -67,13 +67,13 @@ export function useErrorBoundary(): UseErrorBoundaryReturn {
   }, []);
 
   const withErrorHandling = useCallback(
-    <T extends (...args: any[]) => Promise<any>>(
+    <T extends (...args: unknown[]) => Promise<unknown>>(
       fn: T
     ): ((...args: Parameters<T>) => Promise<ReturnType<T> | undefined>) => {
       return async (...args: Parameters<T>): Promise<ReturnType<T> | undefined> => {
         try {
           clearError();
-          return await fn(...args);
+          return (await fn(...args)) as ReturnType<T>;
         } catch (err) {
           const error = err instanceof Error ? err : new Error(String(err));
           setError(error.message, error);

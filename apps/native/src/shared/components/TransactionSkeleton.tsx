@@ -24,6 +24,7 @@ export const TransactionSkeleton: React.FC<TransactionSkeletonProps> = ({ count 
   return (
     <View style={styles.container}>
       {Array.from({ length: count }).map((_, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: Skeleton items are static and order never changes
         <View key={index} style={styles.item}>
           <View style={styles.row}>
             <Skeleton width={48} height={48} borderRadius={24} />

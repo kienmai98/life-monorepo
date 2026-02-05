@@ -1,4 +1,5 @@
 import Fastify from 'fastify';
+import type { FastifyReply, FastifyRequest } from 'fastify';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
 import { jwtPlugin } from '../plugins/jwt';
@@ -11,7 +12,7 @@ const buildApp = () => {
   app.register(jwtPlugin);
 
   // Mock auth middleware for testing
-  app.decorate('authenticate', async (request: any, reply: any) => {
+  app.decorate('authenticate', async (request: FastifyRequest, reply: FastifyReply) => {
     try {
       const token = request.headers.authorization?.replace('Bearer ', '');
       if (!token || token === 'invalid-token') {

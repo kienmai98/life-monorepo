@@ -23,7 +23,7 @@ interface UseLoadingStateReturn {
   /** Execute function with automatic loading state management */
   withLoading: <T>(promise: Promise<T>) => Promise<T>;
   /** Execute a function with loading state */
-  executeWithLoading: <T extends (...args: any[]) => Promise<any>>(
+  executeWithLoading: <T extends (...args: unknown[]) => Promise<unknown>>(
     fn: T
   ) => (...args: Parameters<T>) => Promise<ReturnType<T>>;
 }
@@ -85,19 +85,17 @@ export function useLoadingState(options: LoadingStateOptions = {}): UseLoadingSt
   );
 
   const executeWithLoading = useCallback(
-    <T extends (...args: any[]) => Promise<any>>(fn: T) => {
+    <T extends (...args: unknown[]) => Promise<unknown>>(fn: T) => {
       return async (...args: Parameters<T>): Promise<ReturnType<T>> => {
         startLoading();
         try {
           const result = await fn(...args);
-          return result;
+          return result as ReturnType<T>;
         } finally {
           stopLoading();
-          // Need to import React
         }
       };
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [startLoading, stopLoading]
   );
 

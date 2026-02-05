@@ -12,9 +12,20 @@ export interface CalendarEvent {
   isAllDay: boolean;
 }
 
+interface ScheduleSummary {
+  eventsToday: number;
+  eventsThisWeek: number;
+  freeHoursToday: number;
+  upcomingEvents: CalendarEvent[];
+}
+
 interface CalendarState {
   events: CalendarEvent[];
   isGoogleConnected: boolean;
+  hasPermission: boolean;
+  isLoading: boolean;
+  error: string | null;
+  scheduleSummary: ScheduleSummary;
 
   // Actions
   setEvents: (events: CalendarEvent[]) => void;
@@ -24,13 +35,49 @@ interface CalendarState {
   setGoogleConnected: (connected: boolean) => void;
   getEventsForDate: (date: string) => CalendarEvent[];
   getUpcomingEvents: (limit?: number) => CalendarEvent[];
+  fetchEvents: (startDate?: Date, endDate?: Date) => Promise<void>;
+  requestPermission: () => Promise<boolean>;
+  refreshScheduleSummary: () => void;
 }
+
+const _calculateScheduleSummary = (events: CalendarEvent[]): ScheduleSummary => {
+  const today = new Date().toISOString().split('T')[0];
+  const eventsToday = events.filter((e) => e.startDate.startsWith(today)).length;
+
+  const now = new Date();
+  const weekLater = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+  const eventsThisWeek = events.filter((e) => {
+    const eventDate = new Date(e.startDate);
+    return eventDate >= now && eventDate <= weekLater;
+  }).length;
+
+  const upcomingEvents = events
+    .filter((e) => new Date(e.startDate) >= now)
+    .sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+    .slice(0, 5);
+
+  return {
+    eventsToday,
+    eventsThisWeek,
+    freeHoursToday: Math.max(0, 8 - eventsToday * 0.5),
+    upcomingEvents,
+  };
+};
 
 export const useCalendarStore = create<CalendarState>()(
   persist(
     (set, get) => ({
       events: [],
       isGoogleConnected: false,
+      hasPermission: true,
+      isLoading: false,
+      error: null,
+      scheduleSummary: {
+        eventsToday: 0,
+        eventsThisWeek: 0,
+        freeHoursToday: 8,
+        upcomingEvents: [],
+      },
 
       setEvents: (events) => set({ events }),
 

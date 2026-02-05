@@ -63,7 +63,9 @@ interface AllTheProvidersProps {
 const AllTheProviders: React.FC<AllTheProvidersProps> = ({ children }) => {
   return (
     <NavigationContainer>
-      <PaperProvider theme={mockTheme as any}>{children}</PaperProvider>
+      <PaperProvider theme={mockTheme as React.ComponentProps<typeof PaperProvider>['theme']}>
+        {children}
+      </PaperProvider>
     </NavigationContainer>
   );
 };
@@ -163,7 +165,7 @@ export const wait = (ms: number): Promise<void> => {
 export const createMockAsyncFunction = <T,>(
   value: T,
   delay = 100
-): jest.Mock<Promise<T>, any[]> => {
+): jest.Mock<Promise<T>, unknown[]> => {
   return jest.fn().mockImplementation(() => wait(delay).then(() => value));
 };
 

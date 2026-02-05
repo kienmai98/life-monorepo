@@ -19,7 +19,7 @@ import { useCallback, useRef } from 'react';
  * <ScrollView onScroll={(e) => throttledScroll(e.nativeEvent.contentOffset.y)} />
  * ```
  */
-export function useThrottle<T extends (...args: any[]) => any>(
+export function useThrottle<T extends (...args: unknown[]) => unknown>(
   fn: T,
   limit: number
 ): (...args: Parameters<T>) => void {

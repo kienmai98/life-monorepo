@@ -6,7 +6,7 @@ module.exports = {
   preset: 'react-native',
   setupFilesAfterEnv: ['<rootDir>/src/shared/__tests__/setupTests.ts'],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-paper|react-native-vector-icons|@react-native-community|zustand)/)',
+    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-paper|react-native-vector-icons|@react-native-community|zustand|@react-native-firebase|react-native-gesture-handler|react-native-reanimated|react-native-screens|react-native-safe-area-context)/)',
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -31,7 +31,6 @@ module.exports = {
   coverageReporters: ['text', 'text-summary', 'lcov', 'html'],
   coverageDirectory: '<rootDir>/coverage',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  testEnvironment: 'node',
   globals: {
     'process.env.NODE_ENV': 'test',
   },

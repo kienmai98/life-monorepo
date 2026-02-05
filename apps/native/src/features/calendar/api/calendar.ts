@@ -26,7 +26,7 @@ class CalendarService {
     }
   }
 
-  async fetchCalendars(): Promise<any[]> {
+  async fetchCalendars(): Promise<Record<string, unknown>[]> {
     try {
       const calendars = await RNCalendarEvents.findCalendars();
       return calendars;

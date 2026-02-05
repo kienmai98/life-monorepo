@@ -79,15 +79,33 @@ export const formatTime = (
  *   searchAPI(query);
  * }, 300);
  */
-export const debounce = <T extends (...args: any[]) => any>(
+export const debounce = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   delay: number
 ): ((...args: Parameters<T>) => void) => {
-  let timeoutId: NodeJS.Timeout;
+  let timeoutId: ReturnType<typeof setTimeout>;
   return (...args: Parameters<T>) => {
     clearTimeout(timeoutId);
     timeoutId = setTimeout(() => fn(...args), delay);
   };
+};
+
+/**
+ * Checks if a date is today
+ * @param date - Date string or Date object
+ * @returns Whether the date is today
+ *
+ * @example
+ * isEventToday('2024-01-15T10:00:00Z') // true if today is 2024-01-15
+ */
+export const isEventToday = (date: string | Date): boolean => {
+  const eventDate = typeof date === 'string' ? new Date(date) : date;
+  const today = new Date();
+  return (
+    eventDate.getDate() === today.getDate() &&
+    eventDate.getMonth() === today.getMonth() &&
+    eventDate.getFullYear() === today.getFullYear()
+  );
 };
 
 /**
@@ -96,7 +114,7 @@ export const debounce = <T extends (...args: any[]) => any>(
  * @param limit - Time limit in milliseconds
  * @returns Throttled function
  */
-export const throttle = <T extends (...args: any[]) => any>(
+export const throttle = <T extends (...args: unknown[]) => unknown>(
   fn: T,
   limit: number
 ): ((...args: Parameters<T>) => void) => {
@@ -105,7 +123,9 @@ export const throttle = <T extends (...args: any[]) => any>(
     if (!inThrottle) {
       fn(...args);
       inThrottle = true;
-      setTimeout(() => (inThrottle = false), limit);
+      setTimeout(() => {
+        inThrottle = false;
+      }, limit);
     }
   };
 };

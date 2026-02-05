@@ -18,7 +18,7 @@ export type Database = {
           display_name: string | null;
           photo_url: string | null;
           provider: string;
-          settings: any;
+          settings: Record<string, unknown>;
           created_at: string;
           updated_at: string;
         };
@@ -28,7 +28,7 @@ export type Database = {
           display_name?: string | null;
           photo_url?: string | null;
           provider?: string;
-          settings?: any;
+          settings?: Record<string, unknown>;
           created_at?: string;
           updated_at?: string;
         };
@@ -38,7 +38,7 @@ export type Database = {
           display_name?: string | null;
           photo_url?: string | null;
           provider?: string;
-          settings?: any;
+          settings?: Record<string, unknown>;
           updated_at?: string;
         };
       };
@@ -54,7 +54,7 @@ export type Database = {
           type: string;
           payment_method: string;
           receipt_url: string | null;
-          location: any | null;
+          location: Record<string, unknown> | null;
           tags: string[];
           created_at: string;
           updated_at: string;
@@ -71,7 +71,7 @@ export type Database = {
           type: string;
           payment_method: string;
           receipt_url?: string | null;
-          location?: any | null;
+          location?: Record<string, unknown> | null;
           tags?: string[];
           created_at?: string;
           updated_at?: string;
@@ -86,7 +86,7 @@ export type Database = {
           type?: string;
           payment_method?: string;
           receipt_url?: string | null;
-          location?: any | null;
+          location?: Record<string, unknown> | null;
           tags?: string[];
           updated_at?: string;
           synced?: boolean;
@@ -201,15 +201,17 @@ export const supabaseApi = {
       byCategory: {} as Record<string, number>,
     };
 
-    data?.forEach((transaction) => {
-      if (transaction.type === 'income') {
-        summary.totalIncome += transaction.amount;
-      } else {
-        summary.totalExpenses += transaction.amount;
-        summary.byCategory[transaction.category] =
-          (summary.byCategory[transaction.category] || 0) + transaction.amount;
+    if (data) {
+      for (const transaction of data) {
+        if (transaction.type === 'income') {
+          summary.totalIncome += transaction.amount;
+        } else {
+          summary.totalExpenses += transaction.amount;
+          summary.byCategory[transaction.category] =
+            (summary.byCategory[transaction.category] || 0) + transaction.amount;
+        }
       }
-    });
+    }
 
     summary.balance = summary.totalIncome - summary.totalExpenses;
     return summary;

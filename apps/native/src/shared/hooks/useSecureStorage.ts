@@ -72,7 +72,7 @@ export function useSecureStorage<T>(options: UseStorageOptions<T>): UseStorageRe
   const {
     key,
     initialValue,
-    storageType = 'asyncStorage',
+    _storageType = 'asyncStorage',
     serialize = defaultSerialize,
     deserialize = defaultDeserialize,
   } = options;

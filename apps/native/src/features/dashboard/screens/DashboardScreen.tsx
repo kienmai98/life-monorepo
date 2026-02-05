@@ -10,31 +10,34 @@ import { useAuthStore } from '@/features/auth/stores/authStore';
 import { useCalendarStore } from '@/features/calendar/stores/calendarStore';
 import { useTransactionStore } from '@/features/transactions/stores/transactionStore';
 
+// Define navigation param list type
+type RootStackParamList = {
+  AddTransaction: undefined;
+  Calendar: undefined;
+  Transactions: undefined;
+};
+
 const DashboardScreen: React.FC = () => {
   const theme = useTheme();
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { user } = useAuthStore();
-  const { spendingSummary, fetchSpendingSummary, syncStatus, syncTransactions } =
-    useTransactionStore();
+  const { spendingSummary, fetchSpendingSummary, syncStatus } = useTransactionStore();
   const { scheduleSummary, fetchEvents, refreshScheduleSummary } = useCalendarStore();
 
   const [refreshing, setRefreshing] = React.useState(false);
 
-  useEffect(() => {
+  const refreshData = useCallback(() => {
     if (user) {
       fetchSpendingSummary(user.id);
       refreshScheduleSummary();
     }
-  }, [user]);
+  }, [user, fetchSpendingSummary, refreshScheduleSummary]);
 
-  useFocusEffect(
-    useCallback(() => {
-      if (user) {
-        fetchSpendingSummary(user.id);
-        refreshScheduleSummary();
-      }
-    }, [user])
-  );
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
+
+  useFocusEffect(refreshData);
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -112,20 +115,19 @@ const DashboardScreen: React.FC = () => {
                 <Text variant="bodyMedium" style={{ marginBottom: 12 }}>
                   By Category
                 </Text>
-                {Object.entries(spendingSummary.byCategory)
-                  .sort(([, a], [, b]) => (b as number) - (a as number))
+                {Object.entries(spendingSummary.byCategory as Record<string, number>)
+                  .sort(([, a], [, b]) => b - a)
                   .slice(0, 3)
                   .map(([category, amount]) => {
                     const total = spendingSummary.totalExpenses || 1;
-                    const percentage = ((amount as number) / total) * 100;
+                    const percentage = (amount / total) * 100;
                     return (
                       <View key={category} style={styles.categoryItem}>
                         <View style={styles.categoryHeader}>
                           <Text variant="bodySmall" style={styles.categoryName}>
-                            {(category as string).charAt(0).toUpperCase() +
-                              (category as string).slice(1)}
+                            {category.charAt(0).toUpperCase() + category.slice(1)}
                           </Text>
-                          <Text variant="bodySmall">{formatCurrency(amount as number)}</Text>
+                          <Text variant="bodySmall">{formatCurrency(amount)}</Text>
                         </View>
                         <ProgressBar
                           progress={percentage / 100}
@@ -177,26 +179,37 @@ const DashboardScreen: React.FC = () => {
                 <Text variant="bodyMedium" style={{ marginBottom: 12 }}>
                   Upcoming
                 </Text>
-                {scheduleSummary.upcomingEvents.slice(0, 3).map((event) => (
-                  <View key={event.id} style={styles.eventItem}>
-                    <View
-                      style={[
-                        styles.eventIndicator,
-                        { backgroundColor: event.color || theme.colors.primary },
-                      ]}
-                    />
-                    <View style={styles.eventDetails}>
-                      <Text variant="bodyMedium" numberOfLines={1}>
-                        {event.title}
-                      </Text>
-                      <Text variant="bodySmall" style={{ color: theme.colors.onSurfaceVariant }}>
-                        {isEventToday(event.startDate)
-                          ? `Today at ${formatTime(event.startDate)}`
-                          : formatDate(event.startDate, 'EEE, MMM d')}
-                      </Text>
-                    </View>
-                  </View>
-                ))}
+                {scheduleSummary.upcomingEvents
+                  .slice(0, 3)
+                  .map(
+                    (event: { id: string; title: string; startDate: string; color?: string }) => (
+                      <View key={event.id} style={styles.eventItem}>
+                        <View
+                          style={[
+                            styles.eventIndicator,
+                            { backgroundColor: event.color || theme.colors.primary },
+                          ]}
+                        />
+                        <View style={styles.eventDetails}>
+                          <Text variant="bodyMedium" numberOfLines={1}>
+                            {event.title}
+                          </Text>
+                          <Text
+                            variant="bodySmall"
+                            style={{ color: theme.colors.onSurfaceVariant }}
+                          >
+                            {isEventToday(event.startDate)
+                              ? `Today at ${formatTime(event.startDate)}`
+                              : formatDate(event.startDate, {
+                                  weekday: 'short',
+                                  month: 'short',
+                                  day: 'numeric',
+                                })}
+                          </Text>
+                        </View>
+                      </View>
+                    )
+                  )}
               </View>
             )}
           </Card.Content>

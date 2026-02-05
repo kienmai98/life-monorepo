@@ -28,11 +28,15 @@ import {
 import { useAuthStore } from '@/features/auth/stores/authStore';
 import { useTransactionStore } from '@/features/transactions/stores/transactionStore';
 
+type RootStackParamList = {
+  AddTransaction: undefined;
+};
+
 const TransactionsScreen: React.FC = () => {
   const theme = useTheme();
-  const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { user } = useAuthStore();
-  const { transactions, fetchTransactions, isLoading } = useTransactionStore();
+  const { transactions, fetchTransactions, _isLoading } = useTransactionStore();
 
   const [refreshing, setRefreshing] = useState(false);
   const [filterType, setFilterType] = useState<'all' | 'income' | 'expense'>('all');
@@ -177,7 +181,7 @@ const TransactionsScreen: React.FC = () => {
       <View style={styles.filtersContainer}>
         <SegmentedButtons
           value={filterType}
-          onValueChange={(value) => setFilterType(value as any)}
+          onValueChange={(value) => setFilterType(value as 'all' | 'income' | 'expense')}
           buttons={[
             { value: 'all', label: 'All' },
             { value: 'income', label: 'Income' },

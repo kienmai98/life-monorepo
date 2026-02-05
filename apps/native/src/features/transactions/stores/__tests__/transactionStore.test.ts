@@ -454,27 +454,31 @@ describe('TransactionStore', () => {
     });
 
     it('selectIsLoading should return loading state', () => {
-      const state = { isLoading: true } as any;
+      const state = { isLoading: true } as unknown as { isLoading: boolean };
       expect(selectIsLoading(state)).toBe(true);
     });
 
     it('selectError should return error', () => {
-      const state = { error: 'Test error' } as any;
+      const state = { error: 'Test error' } as unknown as { error: string | null };
       expect(selectError(state)).toBe('Test error');
     });
 
     it('selectFilter should return current filter', () => {
-      const state = { filter: { type: 'expense' } } as any;
+      const state = { filter: { type: 'expense' } } as unknown as {
+        filter: { type: string; category?: string };
+      };
       expect(selectFilter(state)).toEqual({ type: 'expense' });
     });
 
     it('selectTransactionCount should return count', () => {
-      const state = { transactions: [{ id: '1' }, { id: '2' }] } as any;
+      const state = { transactions: [{ id: '1' }, { id: '2' }] } as unknown as {
+        transactions: Array<{ id: string }>;
+      };
       expect(selectTransactionCount(state)).toBe(2);
     });
 
     it('selectHasMore should return pagination state', () => {
-      const state = { hasMore: false } as any;
+      const state = { hasMore: false } as unknown as { hasMore: boolean };
       expect(selectHasMore(state)).toBe(false);
     });
   });

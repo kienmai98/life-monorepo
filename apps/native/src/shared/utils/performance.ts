@@ -54,7 +54,7 @@ class MemoizationCache<K, V> {
  * expensiveOperation(40); // Computes
  * expensiveOperation(40); // Returns from cache
  */
-export function memoize<T extends (...args: any[]) => any>(
+export function memoize<T extends (...args: unknown[]) => unknown>(
   fn: T,
   keyFn: (...args: Parameters<T>) => string,
   maxSize = 100
@@ -65,10 +65,13 @@ export function memoize<T extends (...args: any[]) => any>(
     const key = keyFn(...args);
 
     if (cache.has(key)) {
-      return cache.get(key)!;
+      const cached = cache.get(key);
+      if (cached !== undefined) {
+        return cached;
+      }
     }
 
-    const result = fn(...args);
+    const result = fn(...args) as ReturnType<T>;
     cache.set(key, result);
     return result;
   };
@@ -111,16 +114,16 @@ export function useDeepMemo<T>(
  */
 export function useRenderTracker(_componentName: string): void {
   const renderCount = useRef(0);
-  const startTime = useRef(performance.now());
+  const startTime = useRef(Date.now());
 
+  // biome-ignore lint/correctness/useExhaustiveDependencies: intentional dependency for debugging trigger
   useEffect(() => {
-    if (process.env.NODE_ENV === 'production') return;
-
-    renderCount.current += 1;
-    const _duration = performance.now() - startTime.current;
-
-    startTime.current = performance.now();
-  });
+    if (__DEV__) {
+      renderCount.current += 1;
+      const _duration = Date.now() - startTime.current;
+      startTime.current = Date.now();
+    }
+  }, [_componentName]);
 }
 
 /**
@@ -133,10 +136,14 @@ export function useRenderTracker(_componentName: string): void {
  */
 export function useLazyMemo<T>(factory: () => T): T {
   const ref = useRef<T | null>(null);
+  const factoryRef = useRef(factory);
+
+  // Update factory ref if it changes
+  factoryRef.current = factory;
 
   return useMemo(() => {
     if (ref.current === null) {
-      ref.current = factory();
+      ref.current = factoryRef.current();
     }
     return ref.current;
   }, []);
@@ -153,7 +160,7 @@ export function useLazyMemo<T>(factory: () => T): T {
  *   console.log(event.nativeEvent.contentOffset.y);
  * });
  */
-export function useStableCallback<T extends (...args: any[]) => any>(
+export function useStableCallback<T extends (...args: unknown[]) => unknown>(
   callback: T
 ): (...args: Parameters<T>) => ReturnType<T> {
   const callbackRef = useRef(callback);
@@ -162,7 +169,7 @@ export function useStableCallback<T extends (...args: any[]) => any>(
     callbackRef.current = callback;
   });
 
-  return useCallback((...args: Parameters<T>) => callbackRef.current(...args), []);
+  return useCallback((...args: Parameters<T>) => callbackRef.current(...args) as ReturnType<T>, []);
 }
 
 /**
@@ -180,7 +187,14 @@ export function useStableCallback<T extends (...args: any[]) => any>(
 export function useBatchUpdate(): (fn: () => void) => void {
   const [tick, setTick] = React.useState(0);
   const fnRef = useRef<(() => void) | null>(null);
+  const tickRef = useRef(tick);
 
+  // Sync tick ref with state
+  useEffect(() => {
+    tickRef.current = tick;
+  }, [tick]);
+
+  // biome-ignore lint/correctness/useExhaustiveDependencies: tick is intentional trigger for batch updates
   useEffect(() => {
     if (fnRef.current) {
       fnRef.current();

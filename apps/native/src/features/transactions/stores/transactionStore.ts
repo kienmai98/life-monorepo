@@ -289,7 +289,7 @@ export const useTransactionStore = create<TransactionStore>()(
           // TODO: Implement Supabase fetch
           // console.log('Fetching transactions for:', userId, filter);
           // Placeholder - simulate API call
-          await new Promise((resolve) => setTimeout(resolve, 1000));
+          await new Promise<void>((resolve) => setTimeout(resolve, 1000));
           set({ isLoading: false });
         } catch (error) {
           const message = error instanceof Error ? error.message : 'Failed to fetch transactions';

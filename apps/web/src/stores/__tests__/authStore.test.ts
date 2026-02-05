@@ -10,7 +10,7 @@ describe('useAuthStore', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    (useAuthStore as any).mockReturnValue({
+    (useAuthStore as unknown as { mockReturnValue: (value: unknown) => void }).mockReturnValue({
       user: null,
       isLoading: false,
       error: null,

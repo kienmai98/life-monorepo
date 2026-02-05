@@ -26,6 +26,7 @@ export const CardSkeleton: React.FC<CardSkeletonProps> = ({ count = 1, showHeade
   return (
     <View style={styles.container}>
       {Array.from({ length: count }).map((_, index) => (
+        // biome-ignore lint/suspicious/noArrayIndexKey: Skeleton items are static and order never changes
         <View key={index} style={styles.card}>
           {showHeader && (
             <View style={styles.header}>

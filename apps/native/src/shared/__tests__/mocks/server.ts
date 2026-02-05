@@ -154,7 +154,7 @@ export const handlers = [
   }),
 
   // Calendar endpoints
-  http.get('/api/calendar/events', async ({ request }) => {
+  http.get('/api/calendar/events', async () => {
     await delay(150);
 
     return HttpResponse.json({

@@ -29,8 +29,12 @@ import { useTransactionStore } from '@/features/transactions/stores/transactionS
 import type { PaymentMethod, TransactionCategory } from '@/shared/types';
 import { capitalizeFirst, getCategoryIcon } from '@/shared/utils/helpers';
 
+type RootStackParamList = {
+  AddTransaction: undefined;
+};
+
 type AddTransactionScreenProps = {
-  navigation: NativeStackNavigationProp<any, 'AddTransaction'>;
+  navigation: NativeStackNavigationProp<RootStackParamList, 'AddTransaction'>;
 };
 
 const CATEGORIES: TransactionCategory[] = [
@@ -84,7 +88,7 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
     setReceiptImage(null);
   };
 
-  const _handleDateChange = (_event: any, selectedDate?: Date) => {
+  const _handleDateChange = (_event: unknown, selectedDate?: Date) => {
     setShowDatePicker(Platform.OS === 'ios');
     if (selectedDate) {
       setDate(selectedDate);
@@ -126,8 +130,8 @@ const AddTransactionScreen: React.FC<AddTransactionScreenProps> = ({ navigation 
       });
 
       navigation.goBack();
-    } catch (err: any) {
-      setError(err.message || 'Failed to save transaction');
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Failed to save transaction');
     } finally {
       setIsLoading(false);
     }

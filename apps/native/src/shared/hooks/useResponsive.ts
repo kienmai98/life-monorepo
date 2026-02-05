@@ -61,7 +61,7 @@ interface UseResponsiveReturn extends DeviceInfo {
 const {
   width: SCREEN_WIDTH,
   height: SCREEN_HEIGHT,
-  scale: SCREEN_SCALE,
+  scale: _SCREEN_SCALE,
 } = Dimensions.get('window');
 
 /**

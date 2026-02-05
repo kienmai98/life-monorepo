@@ -1,0 +1,179 @@
+diff --git a/.github/workflows/test.yml b/.github/workflows/test.yml
+index 9d7fc25..256a216 100644
+--- a/.github/workflows/test.yml
++++ b/.github/workflows/test.yml
+@@ -21,24 +21,29 @@ jobs:
+       - name: Checkout repository
+         uses: actions/checkout@v4
+ 
++      - name: Setup pnpm
++        uses: pnpm/action-setup@v3
++        with:
++          version: 10.28.2
++
+       - name: Setup Node.js
+         uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+-          cache: 'npm'
++          cache: 'pnpm'
+ 
+       - name: Install dependencies
+-        run: npm ci
++        run: pnpm install --frozen-lockfile
+ 
+       - name: Run Biome linting
+-        run: npm run lint:biome
++        run: pnpm run lint:biome
+ 
+       - name: Run Biome format check
+-        run: npm run format:check
++        run: pnpm run format:check
+ 
+       - name: Type check packages
+         run: |
+-          cd packages/types && npx tsc --noEmit
++          cd packages/types && pnpm exec tsc --noEmit
+           cd ../..
+ 
+   # ============================================
+@@ -52,18 +57,23 @@ jobs:
+       - name: Checkout repository
+         uses: actions/checkout@v4
+ 
++      - name: Setup pnpm
++        uses: pnpm/action-setup@v3
++        with:
++          version: 10.28.2
++
+       - name: Setup Node.js
+         uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+-          cache: 'npm'
++          cache: 'pnpm'
+ 
+       - name: Install dependencies
+-        run: npm ci
++        run: pnpm install --frozen-lockfile
+ 
+       - name: Run Native tests
+         working-directory: apps/native
+-        run: npm run test:coverage -- --coverageReporters=text-summary --coverageReporters=lcov
++        run: pnpm run test:coverage -- --coverageReporters=text-summary --coverageReporters=lcov
+ 
+       - name: Upload Native coverage
+         uses: codecov/codecov-action@v3
+@@ -91,18 +101,23 @@ jobs:
+       - name: Checkout repository
+         uses: actions/checkout@v4
+ 
++      - name: Setup pnpm
++        uses: pnpm/action-setup@v3
++        with:
++          version: 10.28.2
++
+       - name: Setup Node.js
+         uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+-          cache: 'npm'
++          cache: 'pnpm'
+ 
+       - name: Install dependencies
+-        run: npm ci
++        run: pnpm install --frozen-lockfile
+ 
+       - name: Run Web tests
+         working-directory: apps/web
+-        run: npm run test:coverage
++        run: pnpm run test:coverage
+ 
+       - name: Upload Web coverage
+         uses: codecov/codecov-action@v3
+@@ -122,18 +137,23 @@ jobs:
+       - name: Checkout repository
+         uses: actions/checkout@v4
+ 
++      - name: Setup pnpm
++        uses: pnpm/action-setup@v3
++        with:
++          version: 10.28.2
++
+       - name: Setup Node.js
+         uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+-          cache: 'npm'
++          cache: 'pnpm'
+ 
+       - name: Install dependencies
+-        run: npm ci
++        run: pnpm install --frozen-lockfile
+ 
+       - name: Run API tests
+         working-directory: apps/api
+-        run: npm run test:coverage
++        run: pnpm run test:coverage
+ 
+       - name: Upload API coverage
+         uses: codecov/codecov-action@v3
+@@ -153,18 +173,23 @@ jobs:
+       - name: Checkout repository
+         uses: actions/checkout@v4
+ 
++      - name: Setup pnpm
++        uses: pnpm/action-setup@v3
++        with:
++          version: 10.28.2
++
+       - name: Setup Node.js
+         uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+-          cache: 'npm'
++          cache: 'pnpm'
+ 
+       - name: Install dependencies
+-        run: npm ci
++        run: pnpm install --frozen-lockfile
+ 
+       - name: Run Type tests
+         working-directory: packages/types
+-        run: npm test
++        run: pnpm test
+ 
+   # ============================================
+   # E2E Tests
+@@ -178,22 +203,27 @@ jobs:
+       - name: Checkout repository
+         uses: actions/checkout@v4
+ 
++      - name: Setup pnpm
++        uses: pnpm/action-setup@v3
++        with:
++          version: 10.28.2
++
+       - name: Setup Node.js
+         uses: actions/setup-node@v4
+         with:
+           node-version: '20'
+-          cache: 'npm'
++          cache: 'pnpm'
+ 
+       - name: Install dependencies
+-        run: npm ci
++        run: pnpm install --frozen-lockfile
+ 
+       - name: Install Playwright browsers
+         working-directory: apps/web
+-        run: npx playwright install --with-deps
++        run: pnpm exec playwright install --with-deps
+ 
+       - name: Run E2E tests
+         working-directory: apps/web
+-        run: npx playwright test
++        run: pnpm exec playwright test
+         env:
+           BASE_URL: http://localhost:5173
+ 
