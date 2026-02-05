@@ -1,0 +1,4 @@
+1:"$Sreact.fragment"
+2:I[26881,["/life-monorepo/_next/static/chunks/ff532d38b39cbf68.js"],"default"]
+3:I[72088,["/life-monorepo/_next/static/chunks/ff532d38b39cbf68.js"],"default"]
+0:{"buildId":"MpXsVJVywfO7Pwj0a_aeq","rsc":["$","$1","c",{"children":[null,["$","$L2",null,{"parallelRouterKey":"children","template":["$","$L3",null,{}]}]]}],"loading":null,"isPartial":false}

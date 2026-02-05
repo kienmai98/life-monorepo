@@ -1,0 +1,2 @@
+:HL["/life-monorepo/_next/static/chunks/760ece714fd2a97b.css","style"]
+0:{"buildId":"MpXsVJVywfO7Pwj0a_aeq","tree":{"name":"","paramType":null,"paramKey":"","hasRuntimePrefetch":false,"slots":{"children":{"name":"team","paramType":null,"paramKey":"team","hasRuntimePrefetch":false,"slots":{"children":{"name":"__PAGE__","paramType":null,"paramKey":"__PAGE__","hasRuntimePrefetch":false,"slots":null,"isRootLayout":false}},"isRootLayout":false}},"isRootLayout":true},"staleTime":300}

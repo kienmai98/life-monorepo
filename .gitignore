@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+.next/
+*.tsbuildinfo
+
+# Native
+ios/build/
+android/build/
+android/app/build/
+*.apk
+*.ipa
+*.xcarchive
+
+# Testing
+coverage/
+.nyc_output/
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# OpenClaw specific
+memory/
+openclaw-helpers.sh
+openclaw-utils/
+
+# Package manager (using pnpm)
+package-lock.json
+
+# Turbo cache
+.turbo/
+
+# Nested folder artifact
+life-monorepo/
