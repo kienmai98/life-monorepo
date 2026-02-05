@@ -1,36 +1,27 @@
-import { describe, expect, it, vi } from 'vitest';
-import { useAuthStore } from '../stores/authStore';
-
-// Mock zustand
-vi.mock('../stores/authStore');
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it } from 'vitest';
+import { useAuthStore } from '../authStore';
 
 describe('useAuthStore', () => {
-  const mockSetState = vi.fn();
-
   beforeEach(() => {
-    vi.clearAllMocks();
-
-    (useAuthStore as unknown as { mockReturnValue: (value: unknown) => void }).mockReturnValue({
-      user: null,
-      isLoading: false,
-      error: null,
-      isAuthenticated: false,
-      setUser: vi.fn((user) => mockSetState({ user })),
-      setLoading: vi.fn((loading) => mockSetState({ isLoading: loading })),
-      setError: vi.fn((error) => mockSetState({ error })),
-      clearError: vi.fn(() => mockSetState({ error: null })),
-      logout: vi.fn(() => mockSetState({ user: null, error: null })),
+    // Reset store to initial state before each test
+    const { result } = renderHook(() => useAuthStore());
+    act(() => {
+      result.current.logout();
     });
   });
 
   it('initializes with null user', () => {
-    const store = useAuthStore();
-    expect(store.user).toBeNull();
-    expect(store.isAuthenticated).toBe(false);
+    const { result } = renderHook(() => useAuthStore());
+
+    expect(result.current.user).toBeNull();
+    expect(result.current.isAuthenticated).toBe(false);
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.error).toBeNull();
   });
 
   it('updates user correctly', () => {
-    const store = useAuthStore();
+    const { result } = renderHook(() => useAuthStore());
     const mockUser = {
       id: '123',
       email: 'test@example.com',
@@ -38,16 +29,77 @@ describe('useAuthStore', () => {
       photoURL: null,
     };
 
-    store.setUser(mockUser);
+    act(() => {
+      result.current.setUser(mockUser);
+    });
 
-    expect(mockSetState).toHaveBeenCalledWith({ user: mockUser });
+    expect(result.current.user).toEqual(mockUser);
+    expect(result.current.isAuthenticated).toBe(true);
   });
 
   it('clears user on logout', () => {
-    const store = useAuthStore();
+    const { result } = renderHook(() => useAuthStore());
+    const mockUser = {
+      id: '123',
+      email: 'test@example.com',
+      displayName: 'Test User',
+      photoURL: null,
+    };
 
-    store.logout();
+    // First set the user
+    act(() => {
+      result.current.setUser(mockUser);
+    });
+    expect(result.current.user).toEqual(mockUser);
 
-    expect(mockSetState).toHaveBeenCalledWith({ user: null, error: null });
+    // Then logout
+    act(() => {
+      result.current.logout();
+    });
+
+    expect(result.current.user).toBeNull();
+    expect(result.current.isAuthenticated).toBe(false);
+    expect(result.current.error).toBeNull();
+  });
+
+  it('updates loading state', () => {
+    const { result } = renderHook(() => useAuthStore());
+
+    act(() => {
+      result.current.setLoading(true);
+    });
+
+    expect(result.current.isLoading).toBe(true);
+
+    act(() => {
+      result.current.setLoading(false);
+    });
+
+    expect(result.current.isLoading).toBe(false);
+  });
+
+  it('updates error state', () => {
+    const { result } = renderHook(() => useAuthStore());
+
+    act(() => {
+      result.current.setError('Test error');
+    });
+
+    expect(result.current.error).toBe('Test error');
+  });
+
+  it('clears error state', () => {
+    const { result } = renderHook(() => useAuthStore());
+
+    act(() => {
+      result.current.setError('Test error');
+    });
+    expect(result.current.error).toBe('Test error');
+
+    act(() => {
+      result.current.clearError();
+    });
+
+    expect(result.current.error).toBeNull();
   });
 });

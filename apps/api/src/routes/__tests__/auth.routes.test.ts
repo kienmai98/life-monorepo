@@ -1,8 +1,8 @@
 import Fastify from 'fastify';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it } from 'vitest';
-import { jwtPlugin } from '../plugins/jwt';
-import { authRoutes } from '../routes/auth.routes';
+import { jwtPlugin } from '../../plugins/jwt';
+import { authRoutes } from '../auth.routes';
 
 // Create a test app
 const buildApp = () => {

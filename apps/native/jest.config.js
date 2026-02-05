@@ -1,12 +1,16 @@
 /**
  * Jest configuration for React Native app
  * Monochrome theme configuration for test outputs
+ * ESM-compatible configuration for React Native 0.83+
  */
+const reactNativePreset = require('react-native/jest-preset');
+
 module.exports = {
-  preset: 'react-native',
+  ...reactNativePreset,
+  setupFiles: [], // Override to remove the ESM setup file
   setupFilesAfterEnv: ['<rootDir>/src/shared/__tests__/setupTests.ts'],
   transformIgnorePatterns: [
-    'node_modules/(?!(react-native|@react-native|@react-navigation|react-native-paper|react-native-vector-icons|@react-native-community|zustand|@react-native-firebase|react-native-gesture-handler|react-native-reanimated|react-native-screens|react-native-safe-area-context)/)',
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|@react-navigation|react-native-paper|react-native-vector-icons|zustand|@react-native-firebase|react-native-gesture-handler|react-native-reanimated|react-native-screens|react-native-safe-area-context)/)',
   ],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
@@ -31,9 +35,6 @@ module.exports = {
   coverageReporters: ['text', 'text-summary', 'lcov', 'html'],
   coverageDirectory: '<rootDir>/coverage',
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  globals: {
-    'process.env.NODE_ENV': 'test',
-  },
   verbose: true,
   // Monochrome output for cleaner CI logs
   reporters: [

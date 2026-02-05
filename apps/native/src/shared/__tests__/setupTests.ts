@@ -1,4 +1,4 @@
-import '@testing-library/jest-native/extend-expect';
+import { vi } from 'vitest';
 import { server } from '../mocks/server';
 
 // MSW setup
@@ -9,26 +9,26 @@ afterAll(() => server.close());
 // Mock console methods in tests to reduce noise
 global.console = {
   ...console,
-  // Uncomment to ignore specific console methods in tests
-  // log: jest.fn(),
-  // debug: jest.fn(),
-  // info: jest.fn(),
-  warn: jest.fn(),
-  error: jest.fn(),
+  warn: vi.fn(),
+  error: vi.fn(),
 };
 
-// Mock React Native modules
-jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
-
 // Mock async storage
-jest.mock('@react-native-async-storage/async-storage', () =>
-  require('@react-native-async-storage/async-storage/jest/async-storage-mock')
-);
+vi.mock('@react-native-async-storage/async-storage', () => ({
+  setItem: vi.fn(() => Promise.resolve()),
+  getItem: vi.fn(() => Promise.resolve(null)),
+  removeItem: vi.fn(() => Promise.resolve()),
+  clear: vi.fn(() => Promise.resolve()),
+  getAllKeys: vi.fn(() => Promise.resolve([])),
+  multiGet: vi.fn(() => Promise.resolve([])),
+  multiSet: vi.fn(() => Promise.resolve()),
+  multiRemove: vi.fn(() => Promise.resolve()),
+}));
 
 // Setup for Zustand stores
-jest.mock('zustand');
+vi.mock('zustand');
 
 // Global test utilities
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });

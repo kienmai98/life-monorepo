@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { Input } from '../components/Input';
+import { Input } from '../Input';
 
 describe('Input', () => {
   it('renders input with label', () => {
