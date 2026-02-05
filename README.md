@@ -12,6 +12,7 @@ A modern, full-stack application ecosystem for personal life management — buil
 
 ## 📋 Table of Contents
 
+- [Live Demo](#-live-demo)
 - [Architecture Overview](#-architecture-overview)
 - [Quick Start](#-quick-start)
 - [Project Structure](#-project-structure)
@@ -19,6 +20,16 @@ A modern, full-stack application ecosystem for personal life management — buil
 - [Tech Stack](#-tech-stack)
 - [Contributing](#-contributing)
 - [License](#-license)
+
+---
+
+## 🌐 Live Demo
+
+| App | URL | Status |
+|-----|-----|--------|
+| 🎛️ **CMS Dashboard** | [https://kienmai98.github.io/life-monorepo](https://kienmai98.github.io/life-monorepo) | ✅ Live |
+
+*Note: CMS is automatically deployed to GitHub Pages on every push to `main` branch.*
 
 ---
 
@@ -342,6 +353,17 @@ cd apps/native && npm run lint
 | State | Zustand 5.0+ | Global state management |
 | Styling | CSS Modules | Scoped styles |
 
+### CMS (`apps/cms`)
+
+| Category | Technology | Purpose |
+|----------|------------|---------|
+| Framework | Next.js 15+ | React framework |
+| Language | TypeScript 5.8+ | Type safety |
+| Styling | Tailwind CSS | Utility-first CSS |
+| UI | Radix UI | Headless components |
+| Charts | Recharts | Data visualization |
+| Deploy | GitHub Pages | Static hosting |
+
 ### API (`apps/api`)
 
 | Category | Technology | Purpose |
@@ -385,6 +407,20 @@ React web preview application with:
 - 🔗 **Real-time Sync** - Live data updates
 
 [📖 Web App Documentation](./apps/web/README.md)
+
+### @life/cms
+
+Next.js admin dashboard deployed to GitHub Pages:
+
+- 🎛️ **System Dashboard** - Overview of all services
+- 📊 **Usage Analytics** - Track system metrics
+- 👥 **Team Management** - User administration
+- 🤖 **Model Management** - AI model configuration
+- 🚀 **Auto-deploy** - GitHub Pages on every push
+
+🌐 **Live Demo:** [https://kienmai98.github.io/life-monorepo](https://kienmai98.github.io/life-monorepo)
+
+[📖 CMS App Documentation](./apps/cms/README.md)
 
 ### @life/api
 
